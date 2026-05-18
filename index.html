@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sales Process Dashboard — AI & Glean Agent Map</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #121933;
+    --panel-2: #182142;
+    --border: #233066;
+    --text: #e8ecff;
+    --muted: #98a2c8;
+    --accent: #7c9cff;
+    --accent-2: #8b5cf6;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --rose: #fb7185;
+    --cyan: #22d3ee;
+    --lane-customer: #1e293b;
+    --lane-commercial: #1f2a4a;
+    --lane-technical: #1c2750;
+    --lane-operations: #1a2548;
+    --lane-technology: #181f3e;
+    --lane-systems: #161c38;
+    --existing: rgba(124, 156, 255, 0.18);
+    --existing-border: #7c9cff;
+    --glean: rgba(139, 92, 246, 0.18);
+    --glean-border: #8b5cf6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 10% -10%, #1a2358 0%, transparent 60%),
+                radial-gradient(900px 500px at 110% 10%, #2a1a5a 0%, transparent 55%),
+                var(--bg);
+    color: var(--text);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    padding: 28px 32px 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  header h1 { margin: 0; font-size: 26px; letter-spacing: -0.01em; }
+  header p { margin: 6px 0 0; color: var(--muted); }
+  .legend { display: flex; gap: 14px; align-items: center; }
+  .legend .item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .swatch {
+    width: 14px; height: 14px; border-radius: 4px; border: 1px solid;
+  }
+  .swatch.existing { background: var(--existing); border-color: var(--existing-border); }
+  .swatch.glean    { background: var(--glean);    border-color: var(--glean-border); }
+  .swatch.gap      { background: rgba(251,113,133,0.18); border-color: var(--rose); }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 16px 32px 0;
+  }
+  .kpi {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .kpi .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+  .kpi .sub   { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  section { padding: 20px 32px; }
+  h2 { font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; font-weight: 600; }
+
+  /* Swimlane grid */
+  .pipeline {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: auto;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 140px repeat(9, minmax(170px, 1fr));
+    min-width: 1500px;
+  }
+  .col-head {
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 12px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    color: #cfd6ff;
+  }
+  .col-head.first { border-top-left-radius: 14px; }
+  .col-head.last  { border-top-right-radius: 14px; border-right: 0; }
+  .row-head {
+    background: var(--panel-2);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #cfd6ff;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    min-height: 110px;
+  }
+  .cell {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 110px;
+  }
+  .cell.last { border-right: 0; }
+  .cell.lane-customer    { background: var(--lane-customer); }
+  .cell.lane-commercial  { background: var(--lane-commercial); }
+  .cell.lane-technical   { background: var(--lane-technical); }
+  .cell.lane-operations  { background: var(--lane-operations); }
+  .cell.lane-technology  { background: var(--lane-technology); }
+  .cell.lane-systems     { background: var(--lane-systems); }
+
+  .chip {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    color: #d6dbf5;
+    line-height: 1.25;
+  }
+  .chip.activity { background: rgba(255,255,255,0.04); }
+  .chip.diamond {
+    background: rgba(251,191,36,0.08);
+    border-color: rgba(251,191,36,0.35);
+    color: #ffd87a;
+  }
+  .chip.agent {
+    background: var(--existing);
+    border: 1px solid var(--existing-border);
+    color: #cfd9ff;
+    font-weight: 600;
+    position: relative;
+  }
+  .chip.agent::before {
+    content: "AI";
+    font-size: 9px;
+    background: var(--accent);
+    color: #0b1020;
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 700;
+  }
+  .chip.glean {
+    background: var(--glean);
+    border: 1px dashed var(--glean-border);
+    color: #e0d4ff;
+    font-weight: 600;
+  }
+  .chip.glean::before {
+    content: "Glean";
+    font-size: 9px;
+    background: var(--accent-2);
+    color: #fff;
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 700;
+  }
+
+  /* Glean opportunities */
+  .opps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .opp {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-2);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .opp.high   { border-left-color: var(--rose); }
+  .opp.medium { border-left-color: var(--amber); }
+  .opp.low    { border-left-color: var(--cyan); }
+  .opp h3 { margin: 0 0 4px; font-size: 14px; }
+  .opp .where { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .opp .impact {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+  .impact.high   { background: rgba(251,113,133,0.18); color: var(--rose); }
+  .impact.medium { background: rgba(251,191,36,0.18); color: var(--amber); }
+  .impact.low    { background: rgba(34,211,238,0.18);  color: var(--cyan); }
+  .opp ul { margin: 6px 0 0; padding-left: 18px; color: #cfd6ff; }
+  .opp ul li { margin: 3px 0; }
+
+  /* Agent roster */
+  .roster {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 10px;
+  }
+  .agent-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .agent-card .name { font-weight: 600; font-size: 13px; }
+  .agent-card .stage { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .agent-card .role { font-size: 12px; margin-top: 6px; color: #d6dbf5; }
+  .agent-card.unnamed .name { color: var(--amber); }
+
+  footer { color: var(--muted); padding: 8px 32px 32px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Sales Process — AI & Glean Agent Opportunity Map</h1>
+    <p>Visualization of the end-to-end pipeline with existing agent coverage and recommended Glean agent placements.</p>
+  </div>
+  <div class="legend">
+    <div class="item"><span class="swatch existing"></span> Existing AI agent</div>
+    <div class="item"><span class="swatch glean"></span> Recommended Glean agent</div>
+    <div class="item"><span class="swatch gap"></span> Coverage gap</div>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">Pipeline stages</div><div class="value">9</div><div class="sub">ABX → Onboarding</div></div>
+  <div class="kpi"><div class="label">Swimlanes</div><div class="value">6</div><div class="sub">Customer, Commercial, Technical, Ops, Tech, Systems</div></div>
+  <div class="kpi"><div class="label">Existing AI agents</div><div class="value">7</div><div class="sub">Enzo, Jarvis, Reginald, Jeeves, Lurch + 2 unnamed</div></div>
+  <div class="kpi"><div class="label">Recommended Glean agents</div><div class="value">8</div><div class="sub">Across 7 of 9 stages</div></div>
+  <div class="kpi"><div class="label">Coverage gaps</div><div class="value">2</div><div class="sub">Account Routing, Onboarding</div></div>
+</div>
+
+<section>
+  <h2>Pipeline overview</h2>
+  <div class="pipeline">
+    <div class="grid">
+      <!-- header row -->
+      <div class="col-head first"></div>
+      <div class="col-head">ABX Campaign</div>
+      <div class="col-head">Account Routing & Sales Assignment</div>
+      <div class="col-head">Prospecting Hypothesis</div>
+      <div class="col-head">Outreach & Early Exploration</div>
+      <div class="col-head">Opp Creation & Qualification</div>
+      <div class="col-head">Technical Solution Selling</div>
+      <div class="col-head">Customer Evaluation</div>
+      <div class="col-head">Vendor Selection & Deal Closure</div>
+      <div class="col-head last">Onboarding</div>
+
+      <!-- CUSTOMER lane -->
+      <div class="row-head">Customer</div>
+      <div class="cell lane-customer"><span class="chip activity">Interaction with Marketing</span><span class="chip activity">Customer conducts research</span></div>
+      <div class="cell lane-customer"></div>
+      <div class="cell lane-customer"></div>
+      <div class="cell lane-customer"><span class="chip diamond">Interested?</span><span class="chip activity">Intro call with customer</span></div>
+      <div class="cell lane-customer"><span class="chip activity">Customer agrees to evaluate vendor solution</span></div>
+      <div class="cell lane-customer"><span class="chip activity">Customer connects with AE</span><span class="chip activity">Discovery workshops</span></div>
+      <div class="cell lane-customer"><span class="chip activity">Disqualifies on budget</span><span class="chip activity">Champion sells internally</span><span class="chip activity">Pitch to buyer</span></div>
+      <div class="cell lane-customer"><span class="chip activity">Evaluates options</span><span class="chip diamond">Is Vonage best-fit solution?</span></div>
+      <div class="cell lane-customer last"><span class="chip activity">Buyer & procurement complete selection, reward, PO</span></div>
+
+      <!-- COMMERCIAL lane -->
+      <div class="row-head">Commercial</div>
+      <div class="cell lane-commercial"><span class="chip activity">Run Campaign</span></div>
+      <div class="cell lane-commercial"></div>
+      <div class="cell lane-commercial">
+        <span class="chip agent">Enzo · Account Intelligence</span>
+        <span class="chip agent">Jarvis · Prospecting Agent</span>
+        <span class="chip activity">Devise prospecting hypothesis</span>
+        <span class="chip glean">Account 360 (CRM + email + Slack + Gong)</span>
+      </div>
+      <div class="cell lane-commercial">
+        <span class="chip activity">Conduct outreach</span>
+        <span class="chip activity">Explore the pain</span>
+        <span class="chip glean">Content & talk-track retrieval</span>
+      </div>
+      <div class="cell lane-commercial">
+        <span class="chip activity">Meet opp creation requirements</span>
+        <span class="chip diamond">Opp qualification</span>
+        <span class="chip activity">AE accepts opp</span>
+        <span class="chip activity">Discovery workshops</span>
+      </div>
+      <div class="cell lane-commercial">
+        <span class="chip activity">Outline business case, ROI/value estimates</span>
+      </div>
+      <div class="cell lane-commercial">
+        <span class="chip activity">Validate champion</span>
+        <span class="chip activity">Understand buying criteria & process</span>
+        <span class="chip activity">Uncover competition</span>
+        <span class="chip glean">Competitive battle-card retrieval</span>
+      </div>
+      <div class="cell lane-commercial">
+        <span class="chip activity">Map procurement process</span>
+        <span class="chip activity">Commercial & contract terms</span>
+      </div>
+      <div class="cell lane-commercial last">
+        <span class="chip activity">Execute mutual action plan / draft ramp plan</span>
+        <span class="chip glean">Post-sale handoff brief generator</span>
+      </div>
+
+      <!-- TECHNICAL lane -->
+      <div class="row-head">Technical</div>
+      <div class="cell lane-technical"></div>
+      <div class="cell lane-technical"></div>
+      <div class="cell lane-technical"></div>
+      <div class="cell lane-technical">
+        <span class="chip agent">Outreach Strategist (unnamed)</span>
+      </div>
+      <div class="cell lane-technical">
+        <span class="chip agent">Reginald · Pain → Solution Translator</span>
+        <span class="chip activity">Discovery workshops</span>
+        <span class="chip glean">Similar-customer pain pattern search</span>
+      </div>
+      <div class="cell lane-technical">
+        <span class="chip activity">Technical workshops</span>
+        <span class="chip activity">Demo / POC</span>
+        <span class="chip activity">Work through technical aspects of design process</span>
+        <span class="chip agent">SWOT + Quick Disqualification (unnamed)</span>
+        <span class="chip glean">Technical docs / architecture / security RAG</span>
+      </div>
+      <div class="cell lane-technical">
+        <span class="chip agent">Jeeves · Persuasive Selling</span>
+        <span class="chip activity">Validate competitive position</span>
+        <span class="chip activity">Sell to & strengthen buyer perception</span>
+      </div>
+      <div class="cell lane-technical">
+        <span class="chip activity">Technical validation complete</span>
+      </div>
+      <div class="cell lane-technical last"></div>
+
+      <!-- OPERATIONS lane -->
+      <div class="row-head">Operations</div>
+      <div class="cell lane-operations"><span class="chip activity">Plan ABX campaign</span></div>
+      <div class="cell lane-operations"></div>
+      <div class="cell lane-operations"><span class="chip activity">Territory management & ROE definition</span></div>
+      <div class="cell lane-operations"><span class="chip activity">Content committee</span><span class="chip activity">Opt-out management</span></div>
+      <div class="cell lane-operations"><span class="chip activity">Lead nurture</span><span class="chip activity">Opportunity definition</span></div>
+      <div class="cell lane-operations"></div>
+      <div class="cell lane-operations"></div>
+      <div class="cell lane-operations">
+        <span class="chip agent">Lurch · Mutual Action Plan Builder</span>
+        <span class="chip activity">Commercial & contract terms</span>
+      </div>
+      <div class="cell lane-operations last">
+        <span class="chip activity">Legal / contract execution & final confirmation</span>
+      </div>
+
+      <!-- TECHNOLOGY lane -->
+      <div class="row-head">Technology</div>
+      <div class="cell lane-technology"><span class="chip diamond">SQAT</span></div>
+      <div class="cell lane-technology">
+        <span class="chip activity">Account match & creation</span>
+        <span class="chip activity">Priority level & routing</span>
+        <span class="chip glean">Routing rules & territory lookup agent</span>
+      </div>
+      <div class="cell lane-technology"></div>
+      <div class="cell lane-technology"><span class="chip activity">Source prospects in the system</span></div>
+      <div class="cell lane-technology"><span class="chip activity">Open opp in SFDC</span><span class="chip activity">Submit opp to AE</span></div>
+      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
+      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
+      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
+      <div class="cell lane-technology last">
+        <span class="chip activity">Closed / Won booking</span>
+        <span class="chip glean">Onboarding playbook & ramp-plan agent</span>
+      </div>
+
+      <!-- SYSTEMS lane -->
+      <div class="row-head">Systems</div>
+      <div class="cell lane-systems"><span class="chip activity">6sense · LinkedIn · Marketo</span></div>
+      <div class="cell lane-systems"><span class="chip activity">SFDC · LeanData · Clearbit</span></div>
+      <div class="cell lane-systems"><span class="chip activity">SFDC · Outreach · ZoomInfo</span></div>
+      <div class="cell lane-systems"><span class="chip activity">Outreach · Gong · SFDC</span></div>
+      <div class="cell lane-systems"><span class="chip activity">SFDC · Slack</span></div>
+      <div class="cell lane-systems"></div>
+      <div class="cell lane-systems"></div>
+      <div class="cell lane-systems"></div>
+      <div class="cell lane-systems last"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Existing AI agent roster</h2>
+  <div class="roster">
+    <div class="agent-card">
+      <div class="name">Enzo</div>
+      <div class="stage">Prospecting Hypothesis · Commercial</div>
+      <div class="role">Account intelligence — builds account-level context for prospecting.</div>
+    </div>
+    <div class="agent-card">
+      <div class="name">Jarvis</div>
+      <div class="stage">Prospecting Hypothesis · Commercial</div>
+      <div class="role">Prospecting agent — generates and prioritises target contacts.</div>
+    </div>
+    <div class="agent-card unnamed">
+      <div class="name">Outreach Strategist (unnamed)</div>
+      <div class="stage">Outreach & Early Exploration · Technical</div>
+      <div class="role">Designs the technical-flavoured outreach motion.</div>
+    </div>
+    <div class="agent-card">
+      <div class="name">Reginald</div>
+      <div class="stage">Opp Creation & Qualification · Technical</div>
+      <div class="role">Pain-to-solution translator — converts discovery into a solution shape.</div>
+    </div>
+    <div class="agent-card unnamed">
+      <div class="name">SWOT + Quick Disqualification (unnamed)</div>
+      <div class="stage">Technical Solution Selling · Technical</div>
+      <div class="role">Competitive SWOT and fast disqualification.</div>
+    </div>
+    <div class="agent-card">
+      <div class="name">Jeeves</div>
+      <div class="stage">Customer Evaluation · Technical</div>
+      <div class="role">Persuasive selling — strengthens buyer perception during evaluation.</div>
+    </div>
+    <div class="agent-card">
+      <div class="name">Lurch</div>
+      <div class="stage">Vendor Selection & Deal Closure · Operations</div>
+      <div class="role">Mutual action plan builder.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Where Glean agents would be most helpful</h2>
+  <p style="color: var(--muted); margin-top: -4px;">
+    Glean shines where work depends on stitching internal knowledge across CRM, email, Slack, Gong, docs, wikis and tickets.
+    The placements below are ranked by expected leverage.
+  </p>
+  <div class="opps">
+
+    <div class="opp high">
+      <h3>1. Account 360 / Pre-call brief <span class="impact high">High</span></h3>
+      <div class="where">Stage: Prospecting Hypothesis → Outreach · augments Enzo & Jarvis</div>
+      <ul>
+        <li>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</li>
+        <li>Cuts AE/SDR prep time and surfaces "who has touched this account before" instantly.</li>
+        <li>Closes a real gap: Enzo/Jarvis build hypotheses; Glean supplies the lived institutional memory.</li>
+      </ul>
+    </div>
+
+    <div class="opp high">
+      <h3>2. Technical docs / architecture / security RAG <span class="impact high">High</span></h3>
+      <div class="where">Stage: Technical Solution Selling · Technical lane</div>
+      <ul>
+        <li>SE-grade answers from product docs, runbooks, KB, RFP responses, security & compliance library.</li>
+        <li>Drops POC and security-review cycle time; reduces "let me get back to you" loops.</li>
+        <li>Pairs with the SWOT/disqualification agent to back claims with citations.</li>
+      </ul>
+    </div>
+
+    <div class="opp high">
+      <h3>3. Competitive battle-card retrieval <span class="impact high">High</span></h3>
+      <div class="where">Stage: Customer Evaluation · Commercial lane · augments Jeeves</div>
+      <ul>
+        <li>Pulls current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</li>
+        <li>Keeps Jeeves' persuasion grounded in the latest field intelligence, not last quarter's deck.</li>
+      </ul>
+    </div>
+
+    <div class="opp medium">
+      <h3>4. Similar-customer pain-pattern search <span class="impact medium">Medium</span></h3>
+      <div class="where">Stage: Opp Creation & Qualification · Technical lane · augments Reginald</div>
+      <ul>
+        <li>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</li>
+        <li>Feeds Reginald better analogues so the pain→solution translation is grounded in real prior deals.</li>
+      </ul>
+    </div>
+
+    <div class="opp medium">
+      <h3>5. Content & talk-track retrieval for outreach <span class="impact medium">Medium</span></h3>
+      <div class="where">Stage: Outreach & Early Exploration · Commercial lane</div>
+      <ul>
+        <li>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain.</li>
+        <li>Reduces reliance on tribal knowledge of "which deck do I send?"</li>
+      </ul>
+    </div>
+
+    <div class="opp medium">
+      <h3>6. Post-sale handoff brief generator <span class="impact medium">Medium</span></h3>
+      <div class="where">Stage: Vendor Selection & Deal Closure → Onboarding · Commercial lane</div>
+      <ul>
+        <li>Assembles a handoff doc from the deal record: pains, success criteria, technical context, stakeholders, MAP.</li>
+        <li>Reduces dropped context between AE/SE and CS/onboarding teams.</li>
+      </ul>
+    </div>
+
+    <div class="opp low">
+      <h3>7. Routing rules & territory lookup <span class="impact low">Coverage gap</span></h3>
+      <div class="where">Stage: Account Routing & Sales Assignment · Technology lane</div>
+      <ul>
+        <li>Today: no AI in this stage. Glean can answer "who owns this account / what's the ROE here?" from policy docs and SFDC.</li>
+        <li>Low-effort, high-frequency time-saver for SDRs and ops.</li>
+      </ul>
+    </div>
+
+    <div class="opp low">
+      <h3>8. Onboarding playbook & ramp-plan agent <span class="impact low">Coverage gap</span></h3>
+      <div class="where">Stage: Onboarding · Technology lane</div>
+      <ul>
+        <li>Today: no AI in this stage. Glean can surface the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</li>
+        <li>Closes the last-mile gap after Lurch's MAP execution.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  Existing agents reproduced from the Lucid chart. Glean placements are recommendations, not committed scope.
+</footer>
+
+</body>
+</html>
