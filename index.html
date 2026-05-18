@@ -555,6 +555,182 @@
   .step ul { margin: 6px 0 0; padding-left: 20px; color: var(--muted-2); font-size: 12px; }
   .step ul li { margin: 3px 0; }
 
+  /* ============ SELLER PLAYBOOK TAB ============ */
+  .pb-mindset {
+    background: linear-gradient(180deg, rgba(110,168,255,0.08) 0%, rgba(167,139,250,0.06) 100%);
+    border: 1px solid var(--border-soft);
+    border-left: 4px solid var(--accent-2);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+  .pb-mindset .lbl {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent-2); margin-bottom: 6px;
+  }
+  .pb-mindset .body { color: var(--text); font-size: 14px; line-height: 1.6; }
+  .pb-mindset strong { color: #ffe6a8; }
+
+  .pb-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .pb-toolbar .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .pb-toggle {
+    display: inline-flex; background: var(--panel); border: 1px solid var(--border-soft);
+    border-radius: 10px; padding: 3px;
+  }
+  .pb-toggle button {
+    background: transparent; border: 0; color: var(--muted);
+    padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600;
+  }
+  .pb-toggle button.active { background: var(--accent); color: #0a0f24; }
+  .pb-toolbar .hint { color: var(--muted); font-size: 12px; margin-left: auto; }
+
+  .pb-stage {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .pb-stage-head {
+    display: flex; gap: 16px; align-items: center;
+    padding: 14px 22px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .pb-num {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: var(--accent); color: #0a0f24;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; flex-shrink: 0;
+  }
+  .pb-name { font-weight: 700; font-size: 17px; }
+  .pb-meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .pb-purpose {
+    margin-left: auto; max-width: 340px;
+    color: var(--muted-2); font-size: 13px; font-style: italic;
+    text-align: right;
+  }
+  .pb-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 5px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-right: 6px;
+  }
+  .pb-tag.totf { background: rgba(110,168,255,0.15); color: var(--accent); }
+  .pb-tag.motf { background: rgba(52,211,153,0.15); color: var(--accent-3); }
+  .pb-tag.botf { background: rgba(251,191,36,0.15); color: var(--warn); }
+  .pb-tag.post { background: rgba(167,139,250,0.15); color: var(--accent-2); }
+  .pb-tag.owner { background: var(--panel-3); color: var(--muted-2); border: 1px solid var(--border-soft); }
+
+  .pb-body {
+    display: grid;
+    grid-template-columns: 1.2fr 1.1fr;
+    gap: 0;
+  }
+  .pb-col {
+    padding: 16px 22px;
+    border-right: 1px solid var(--border-soft);
+  }
+  .pb-col:last-child { border-right: 0; }
+  .pb-col h5 {
+    margin: 0 0 10px; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pb-col h5 .icon {
+    display: inline-block; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--panel-3); color: var(--accent);
+    font-size: 10px; text-align: center; line-height: 16px; font-weight: 800;
+  }
+
+  .pb-actions { list-style: none; padding: 0; margin: 0; counter-reset: act; }
+  .pb-actions li {
+    counter-increment: act;
+    padding: 7px 0 7px 28px;
+    position: relative;
+    color: var(--muted-2);
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px dashed var(--border-soft);
+  }
+  .pb-actions li:last-child { border-bottom: 0; }
+  .pb-actions li::before {
+    content: counter(act);
+    position: absolute; left: 0; top: 8px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--panel-3); color: var(--accent);
+    font-size: 10px; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  .pb-ask {
+    background: rgba(167,139,250,0.06);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    transition: background 0.15s ease;
+  }
+  .pb-ask:hover { background: rgba(167,139,250,0.12); }
+  .pb-ask .agent {
+    font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent-2); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pb-ask .agent::before { content: "Ask"; opacity: 0.6; font-weight: 700; }
+  .pb-ask .prompt {
+    color: var(--text); font-size: 12px; line-height: 1.5;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .pb-ask .prompt::before { content: "\201C"; opacity: 0.5; }
+  .pb-ask .prompt::after  { content: "\201D"; opacity: 0.5; }
+
+  .pb-meddpicc {
+    margin-top: 10px;
+    display: flex; flex-wrap: wrap; gap: 4px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .pb-meddpicc .lbl {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--muted);
+    width: 100%; margin-bottom: 4px;
+  }
+  .pb-meddpicc .pillar {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px;
+    background: rgba(52,211,153,0.12); color: var(--accent-3);
+    border: 1px solid rgba(52,211,153,0.3);
+  }
+  .pb-meddpicc.empty .pillar { background: var(--panel-3); color: var(--muted); border-color: var(--border-soft); }
+
+  .pb-friction {
+    margin-top: 12px;
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-left: 3px solid var(--warn);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--muted-2); font-size: 12px; line-height: 1.5;
+  }
+  .pb-friction .lbl {
+    display: inline-block;
+    font-size: 9px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--warn); margin-bottom: 4px;
+  }
+  .pb-friction strong { color: #ffe6a8; }
+
   /* Gap callout */
   .callout {
     background: linear-gradient(180deg, rgba(251,191,36,0.08) 0%, transparent 100%);
@@ -631,15 +807,35 @@
 </div>
 
 <div class="tabs" role="tablist">
-  <button class="tab active" data-tab="funnel">Pipeline funnel <span class="count">9</span></button>
+  <button class="tab active" data-tab="seller">Seller playbook <span class="count">9</span></button>
+  <button class="tab" data-tab="funnel">Pipeline funnel</button>
   <button class="tab" data-tab="swimlane">Swimlane</button>
   <button class="tab" data-tab="agents">Live agents <span class="count">7</span></button>
   <button class="tab" data-tab="backlog">Idea backlog <span class="count">9</span></button>
   <button class="tab" data-tab="principles">Principles &amp; playbook</button>
 </div>
 
+<!-- SELLER PLAYBOOK -->
+<section class="panel active" data-panel="seller">
+  <div class="pb-mindset">
+    <div class="lbl">The mindset + the framework</div>
+    <div class="body"><strong>Consultative / Value / Solution Selling</strong> is the mindset · <strong>MEDDPICC</strong> is the framework that ensures we do it well · <strong>Glean agents</strong> remove the manual work at every step. This tab walks the seller through the motion stage by stage.</div>
+  </div>
+
+  <div class="pb-toolbar">
+    <span class="label">Path</span>
+    <div class="pb-toggle" id="pbToggle">
+      <button class="active" data-path="outbound">Outbound (AM-driven)</button>
+      <button data-path="inbound">Inbound (SDR-driven)</button>
+    </div>
+    <div class="hint">Stages 1–3 differ by path · Stages 4–9 are the same.</div>
+  </div>
+
+  <div id="playbook"></div>
+</section>
+
 <!-- FUNNEL -->
-<section class="panel active" data-panel="funnel">
+<section class="panel" data-panel="funnel">
   <h2>The deal journey</h2>
   <p class="sub">Each step is one click. Numbers are illustrative — replace with your own pipeline math.</p>
   <div class="funnel" id="funnel"></div>
@@ -1043,6 +1239,205 @@ const IDEAS = [
     problem:"Pricing / account lookup", why:"Impact 3.5 / 6", process:"Pricing data on demand." }
 ];
 
+/* ===== SELLER PLAYBOOK — the actual seller motion ===== */
+const SELLER_PLAYBOOK = {
+  outbound: [
+    { num:1, name:"Account Targeting", funnel:"TOTF", owner:"AM (with SDR support)",
+      purpose:"Pick the right accounts. Quality &gt; quantity.",
+      actions:[
+        "Pull lookalikes of recent closed-won using Wadsworth",
+        "Run candidate accounts through Enzo for tech-stack + recent activity fact sheet",
+        "Check 6sense intent signals; cross-reference with priority routing in SFDC",
+        "Add account to ABM segment in SFDC so it triggers LeanData routing"
+      ],
+      asks:[
+        { agent:"Wadsworth", prompt:"Find me 10 accounts that look like [closed-won customer] — same industry, similar size, similar tech stack." },
+        { agent:"Enzo", prompt:"Fact sheet on [Company]: tech stack, recent funding, leadership changes, hiring signals, any open opps." }
+      ],
+      meddpicc:[],
+      friction:null
+    },
+    { num:2, name:"Prospecting", funnel:"TOTF", owner:"AM (outbound)",
+      purpose:"Earn the first conversation.",
+      actions:[
+        "Build the prospecting hypothesis with Jarvis (safe to engage? good fit? what's the hook?)",
+        "Add 5–8 contacts per account via LI Sales Nav · Lead IQ · ZoomInfo",
+        "Draft a 3-touch sequence (email + LI + call); personalize each touch with one specific fact",
+        "Execute over 7–10 days; log every dial in Gong",
+        "When Jarvis-to-Outreach agent ships (Jared's idea), use it to pick the flow + tokens automatically"
+      ],
+      asks:[
+        { agent:"Jarvis", prompt:"Build prospecting hypothesis for [Company] — safe to engage? good fit for Vonage? what's the strongest hook based on their tech stack and recent activity?" },
+        { agent:"Jarvis", prompt:"Give me 3 outreach angles for [Company] based on their recent news and tech stack." }
+      ],
+      meddpicc:["Champion (identified)"],
+      friction:null
+    },
+    { num:3, name:"Pre-Acceptance", funnel:"TOTF", owner:"AM (outbound) — direct",
+      purpose:"Prospect agrees to first call. Lock the calendar.",
+      actions:[
+        "Confirm meeting in calendar within 24h",
+        "Use Reginald to generate the Intro Call brief",
+        "Pre-read the brief, edit anything inaccurate, add personal context",
+        "Confirm meeting participants (you want at least one decision-influencer in the room)"
+      ],
+      asks:[
+        { agent:"Reginald", prompt:"Generate Intro Call brief for [Company]. Include: likely pain in API/voice/SMS, the 4-part script (State · Vision · Stakeholders · Next Steps), 3 probing questions per part." }
+      ],
+      meddpicc:["Champion","Identify Pain (starter)"],
+      friction:null
+    }
+  ],
+  inbound: [
+    { num:1, name:"Lead Lands", funnel:"TOTF", owner:"SDR",
+      purpose:"Speed-to-lead. First touch within 5 minutes.",
+      actions:[
+        "LeanData routes the lead to you based on territory",
+        "Get notified in SFDC + Slack",
+        "Open Enzo for instant context — never go in cold",
+        "First touch within 5 minutes (phone, then email)"
+      ],
+      asks:[
+        { agent:"Enzo", prompt:"Quick fact sheet on [Company] — what do they do, what's their tech, who else has been contacting us, any open opps?" }
+      ],
+      meddpicc:[],
+      friction:null
+    },
+    { num:2, name:"Lead Qualification", funnel:"TOTF", owner:"SDR",
+      purpose:"Confirm it's real, not a tire-kicker. This is qualification, NOT discovery.",
+      actions:[
+        "Book a 30-min qualification call within 48h",
+        "Use Reginald to prep BANT-lite questions",
+        "Confirm: budget direction · authority · pain shape · timeline",
+        "Decide: pass to AM, nurture, or disqualify",
+        "Document notes for EVERY lead — not just qualified ones (per the team's friction note)"
+      ],
+      asks:[
+        { agent:"Reginald", prompt:"Prep me for a 30-min qualification call with [Company]. What 5 questions would tell me fastest whether this is real?" }
+      ],
+      meddpicc:["Champion","Identify Pain (early)"],
+      friction:"<strong>Friction:</strong> SDRs aren't expected to do full Discovery — qualify only. <strong>Always</strong> document, even when disqualifying."
+    },
+    { num:3, name:"Pre-Acceptance", funnel:"TOTF", owner:"SDR → AM handoff",
+      purpose:"Clean handoff from SDR to AM.",
+      actions:[
+        "SDR triggers AM Accept in SFDC",
+        "Auto-brief generated and shared with the AM (the yellow sticky &quot;place for automation&quot;)",
+        "AM reviews and accepts (or rejects with a reason) within 24h",
+        "AM books the Intro Call within 48h"
+      ],
+      asks:[
+        { agent:"Reginald (auto)", prompt:"Generate Intro Call brief for [Company] from SDR notes + Gong call. Output: pain, key stakeholders, MEDDPICC starter, suggested 4-part script." }
+      ],
+      meddpicc:["Champion","Identify Pain"],
+      friction:"<strong>Friction:</strong> Manual SDR→AM handoff loses context. The auto-brief is the explicit &quot;place for automation&quot; in the Lucid chart."
+    }
+  ],
+  shared: [
+    { num:4, name:"Interest", funnel:"MOTF", owner:"AM",
+      purpose:"Convert intro into a real opportunity.",
+      actions:[
+        "Run Intro Call using the 4-part script: State · Vision · Stakeholders · Next Steps",
+        "Gong AI captures notes live",
+        "Confirm Pain and Vision; get the customer to articulate their own desired outcome",
+        "Get verbal alignment on a Discovery Workshop date",
+        "Convert lead → Opportunity in SFDC",
+        "Fill early MEDDPICC: Metrics estimate, Decision Criteria (early), Pain"
+      ],
+      asks:[
+        { agent:"Reginald", prompt:"Specifics for Intro Call with [Company] — likely pain in API/voice/SMS, 3 probing questions per script part." },
+        { agent:"Reginald", prompt:"Review my Intro Call notes from Gong; pull MEDDPICC fields and flag what's missing." }
+      ],
+      meddpicc:["Metrics","Decision Criteria (early)","Identify Pain"],
+      friction:"<strong>Friction:</strong> What's a &quot;good&quot; meeting was unclear — the 4-part script is now the standard. Don't move forward without all 4 parts covered."
+    },
+    { num:5, name:"Qualified", funnel:"MOTF", owner:"AM + CSA",
+      purpose:"Deep discovery + technical fit + validated champion.",
+      actions:[
+        "Pre-read the Wadsworth brief — prior touches, support tickets, contract history",
+        "Run Discovery Workshop (1–2 hr): validate pain, document Cost of Inaction",
+        "Map Vonage capabilities to specific pain points",
+        "Frame the business case: ROI / TCO / efficiency gains",
+        "Identify + test the champion — can they get you a meeting with the EB?",
+        "Map the buying committee and Decision Process",
+        "Invite CSA for technical feasibility check"
+      ],
+      asks:[
+        { agent:"Reginald", prompt:"Prep me for Discovery Workshop with [Company]. What probing questions for [their pain]? What should I validate from the Intro Call?" },
+        { agent:"Wadsworth", prompt:"KAM brief on [Company] — recent activity, support tickets, contract history, expansion signals." },
+        { agent:"Glean (CSA-RAG, when built)", prompt:"Find similar customer architectures for [use case]; what worked, what didn't." }
+      ],
+      meddpicc:["Metrics (firm)","Economic Buyer","Decision Criteria","Decision Process","Identify Pain","Champion (validated)"],
+      friction:"<strong>Friction:</strong> Post-Interest requirements were uncovered too late. Tire-kickers advanced. <strong>Fix:</strong> validate Decision Process + champion access to EB <em>before</em> moving to Testing."
+    },
+    { num:6, name:"Testing", funnel:"MOTF/BOTF", owner:"CSA + AM",
+      purpose:"Prove the solution works for them. Fail fast if it doesn't.",
+      actions:[
+        "Run a pre-qualifying call <strong>before</strong> testing (per the team's friction note)",
+        "CSA scopes the POC with written success criteria signed off by champion",
+        "Multi-thread: meet at least 3 stakeholders during this phase",
+        "Validate technical fit, integration, security &amp; compliance, scale",
+        "Build the business case <em>with</em> the champion (not at them)",
+        "Disqualify <strong>fast</strong> if pricing or fit problems surface — don't sunk-cost the POC",
+        "Use Jeeves (when built) for competitive counter-positioning"
+      ],
+      asks:[
+        { agent:"Jax", prompt:"ARR estimate for [Company] at 1M messages/month with [features]?" },
+        { agent:"Jeeves (when built)", prompt:"Who is [Company] also evaluating? Counter-position me against them." }
+      ],
+      meddpicc:["Metrics (validated by POC)","Competition","Implementation Plan"],
+      friction:"<strong>Friction:</strong> Pre-qualifying call was missing · no multithreading · we didn't fail fast on pricing mismatches. <strong>Fix:</strong> pre-qual call is mandatory, multithread to 3+, kill if no EB access by week 2 of POC."
+    },
+    { num:7, name:"Agreement", funnel:"BOTF", owner:"AM + Ops",
+      purpose:"Build the MAP, lock pricing, close paper.",
+      actions:[
+        "Build Mutual Action Plan with the champion (Lurch when built)",
+        "Confirm pricing model and ARR ramp",
+        "Define required documents and approval flow",
+        "Multithread to economic buyer; equip champion to sell internally",
+        "Handle RFI / Infosec questionnaire (Lurch ingests; Glean auto-fill could help)",
+        "Legal redlines + MSA execution",
+        "Get verbal agreement on commercial terms"
+      ],
+      asks:[
+        { agent:"Lurch (when built)", prompt:"Generate MAP for [Company]; target close end of Q2. Include milestones, owners, dates." },
+        { agent:"Lurch (when built)", prompt:"Answer this RFI section using our security library." }
+      ],
+      meddpicc:["Decision Process (locked)","Paper Process"],
+      friction:null
+    },
+    { num:8, name:"Closed Won", funnel:"BOTF", owner:"AM",
+      purpose:"Sign, book, and clean handoff.",
+      actions:[
+        "PO received → booking in SFDC",
+        "Post in #celebrate-wins",
+        "Trigger handoff to AM+CSM for onboarding",
+        "Generate Closed-Won analysis — what made this win? (feeds Robert Liverpool's closed-won analyzer idea)"
+      ],
+      asks:[
+        { agent:"Glean (handoff brief, when built)", prompt:"Generate handoff brief for [Company] — pain, success criteria, technical context, stakeholders, MAP, ramp plan." }
+      ],
+      meddpicc:["All filled"],
+      friction:null
+    },
+    { num:9, name:"Onboarding → Expansion", funnel:"Post-Sales", owner:"AM + CSM",
+      purpose:"Ramp the customer fast. Then expand.",
+      actions:[
+        "Joint AM+CSM kickoff within 7 days",
+        "CSM owns ramp plan execution",
+        "AM watches for expansion signals using Wadsworth (QoQ comparisons)",
+        "30 / 60 / 90 day check-ins",
+        "Upsell / cross-sell loop: when an expansion signal fires, run a mini Pre-Acceptance with the existing relationship"
+      ],
+      asks:[
+        { agent:"Wadsworth", prompt:"QoQ comparison on [Customer] — usage trends, support tickets, exec changes. Any expansion signal?" }
+      ],
+      meddpicc:["Re-validate annually"],
+      friction:null
+    }
+  ]
+};
+
 const PRINCIPLES = [
   { t:"Embed in the workflow",
     d:"Sellers won't open a new tool. The agent has to show up where work already happens — SFDC, Gong, Slack, Outreach — or it gets abandoned." },
@@ -1088,7 +1483,7 @@ const PLAYBOOK = [
 
 /* ============================================================ STATE + RENDER ============================================================ */
 
-const state = { activeStage: 6, filter: "all", tab: "funnel" };
+const state = { activeStage: 6, filter: "all", tab: "seller", path: "outbound" };
 
 function renderFunnel() {
   const root = document.getElementById("funnel");
@@ -1395,7 +1790,71 @@ document.querySelectorAll("#laneFilter button").forEach(b => {
   });
 });
 
+/* ===== seller playbook ===== */
+function renderPlaybook() {
+  const stages = SELLER_PLAYBOOK[state.path].concat(SELLER_PLAYBOOK.shared);
+  const funnelClass = { TOTF:"totf", MOTF:"motf", "MOTF/BOTF":"motf", BOTF:"botf", "Post-Sales":"post" };
+  const root = document.getElementById("playbook");
+  root.innerHTML = stages.map(s => {
+    const fcls = funnelClass[s.funnel] || "totf";
+    const actionsHtml = s.actions.map(a => `<li>${a}</li>`).join("");
+    const asksHtml = s.asks.map(a => `
+      <div class="pb-ask">
+        <div class="agent">${a.agent}</div>
+        <div class="prompt">${a.prompt}</div>
+      </div>`).join("");
+    const meddHtml = s.meddpicc.length
+      ? `<div class="pb-meddpicc">
+           <span class="lbl">MEDDPICC pillars captured at this stage</span>
+           ${s.meddpicc.map(p => `<span class="pillar">${p}</span>`).join("")}
+         </div>`
+      : `<div class="pb-meddpicc empty">
+           <span class="lbl">MEDDPICC</span>
+           <span class="pillar">none yet</span>
+         </div>`;
+    const frictionHtml = s.friction
+      ? `<div class="pb-friction"><div class="lbl">Watch out</div>${s.friction}</div>`
+      : ``;
+    return `
+      <div class="pb-stage">
+        <div class="pb-stage-head">
+          <div class="pb-num">${s.num}</div>
+          <div>
+            <div class="pb-name">${s.name}</div>
+            <div class="pb-meta">
+              <span class="pb-tag ${fcls}">${s.funnel}</span>
+              <span class="pb-tag owner">${s.owner}</span>
+            </div>
+          </div>
+          <div class="pb-purpose">${s.purpose}</div>
+        </div>
+        <div class="pb-body">
+          <div class="pb-col">
+            <h5><span class="icon">✓</span> What you do</h5>
+            <ul class="pb-actions">${actionsHtml}</ul>
+            ${meddHtml}
+          </div>
+          <div class="pb-col">
+            <h5><span class="icon">G</span> Ask Glean</h5>
+            ${asksHtml}
+            ${frictionHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+document.querySelectorAll("#pbToggle button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#pbToggle button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    state.path = b.dataset.path;
+    renderPlaybook();
+  });
+});
+
 /* init */
+renderPlaybook();
 renderFunnel();
 renderDetail();
 renderSwimlane();
