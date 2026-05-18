@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sales Process — AI & Glean Co-Pilot Map</title>
+<title>Sales Process — AI & Glean Co-Pilot Map (v2)</title>
 <style>
   :root {
     --bg: #0a0f24;
@@ -28,6 +28,8 @@
     --glean-border: #a78bfa;
     --gap: rgba(251, 113, 133, 0.16);
     --gap-border: #fb7185;
+    --auto: rgba(251, 191, 36, 0.18);
+    --auto-border: #fbbf24;
     --shadow: 0 10px 30px rgba(0,0,0,0.35);
     --radius: 14px;
   }
@@ -47,7 +49,6 @@
   a { color: var(--accent); text-decoration: none; }
   button { font: inherit; color: inherit; cursor: pointer; }
 
-  /* ---------- header ---------- */
   header {
     padding: 26px 32px 14px;
     display: flex;
@@ -56,39 +57,34 @@
     flex-wrap: wrap;
     gap: 16px;
   }
-  header h1 {
-    margin: 0;
-    font-size: 26px;
-    letter-spacing: -0.01em;
-  }
+  header h1 { margin: 0; font-size: 26px; letter-spacing: -0.01em; }
   header .tag {
     display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--accent-2);
     background: rgba(167,139,250,0.12);
     border: 1px solid rgba(167,139,250,0.35);
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 3px 8px; border-radius: 6px;
     margin-bottom: 8px;
   }
-  header p { margin: 6px 0 0; color: var(--muted); max-width: 720px; }
+  header .ver {
+    display: inline-block; margin-left: 8px;
+    font-size: 11px; font-weight: 700;
+    color: var(--accent-3); background: rgba(52,211,153,0.12);
+    border: 1px solid rgba(52,211,153,0.35);
+    padding: 3px 8px; border-radius: 6px;
+  }
+  header p { margin: 6px 0 0; color: var(--muted); max-width: 760px; }
 
-  .legend {
-    display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
-  }
-  .legend .item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 12px; color: var(--muted);
-  }
+  .legend { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .legend .item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
   .swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid; }
   .swatch.existing { background: var(--existing); border-color: var(--existing-border); }
   .swatch.glean    { background: var(--glean);    border-color: var(--glean-border); }
   .swatch.gap      { background: var(--gap);      border-color: var(--gap-border); }
+  .swatch.auto     { background: var(--auto);     border-color: var(--auto-border); }
 
-  /* ---------- KPI strip ---------- */
   .kpis {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -104,9 +100,7 @@
     overflow: hidden;
   }
   .kpi::after {
-    content: "";
-    position: absolute;
-    inset: 0;
+    content: ""; position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);
     pointer-events: none;
   }
@@ -119,44 +113,33 @@
   .kpi.warn   { border-left: 3px solid var(--warn); }
   .kpi.danger { border-left: 3px solid var(--danger); }
 
-  /* ---------- section frame ---------- */
   section { padding: 22px 32px; }
   section h2 {
     font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--muted); margin: 0 0 12px; font-weight: 700;
   }
-  section .sub {
-    color: var(--muted); margin: -4px 0 14px; font-size: 13px;
-  }
+  section .sub { color: var(--muted); margin: -4px 0 14px; font-size: 13px; }
 
-  /* ---------- tabs ---------- */
   .tabs {
     display: flex; gap: 6px; padding: 0 32px;
     border-bottom: 1px solid var(--border-soft);
   }
   .tab {
-    background: transparent;
-    border: 0;
+    background: transparent; border: 0;
     color: var(--muted);
     padding: 12px 14px;
     border-bottom: 2px solid transparent;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.02em;
+    font-weight: 600; font-size: 13px; letter-spacing: 0.02em;
   }
   .tab:hover { color: var(--text); }
   .tab.active { color: var(--text); border-bottom-color: var(--accent); }
   .tab .count {
-    display: inline-block;
-    font-size: 11px;
-    background: var(--panel-2);
-    padding: 1px 7px;
-    border-radius: 10px;
-    margin-left: 6px;
-    color: var(--muted-2);
+    display: inline-block; font-size: 11px;
+    background: var(--panel-2); padding: 1px 7px;
+    border-radius: 10px; margin-left: 6px; color: var(--muted-2);
   }
 
-  /* ---------- funnel ---------- */
+  /* funnel */
   .funnel {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
@@ -170,72 +153,41 @@
     padding: 12px;
     text-align: left;
     transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: flex; flex-direction: column; gap: 6px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    min-height: 170px;
+    position: relative; overflow: hidden;
+    min-height: 180px;
   }
-  .stage:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-    box-shadow: var(--shadow);
-  }
-  .stage.active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(110,168,255,0.35), var(--shadow);
-  }
+  .stage:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow); }
+  .stage.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(110,168,255,0.35), var(--shadow); }
   .stage .num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--panel-3);
-    border: 1px solid var(--border);
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--panel-3); border: 1px solid var(--border);
     display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px;
-    color: var(--accent);
+    font-weight: 700; font-size: 13px; color: var(--accent);
   }
   .stage.active .num { background: var(--accent); color: #0a0f24; border-color: var(--accent); }
   .stage .sales-name { font-weight: 700; font-size: 14px; letter-spacing: -0.005em; }
   .stage .formal { color: var(--muted); font-size: 11px; }
   .stage .meta {
-    display: flex; gap: 8px; align-items: center;
-    margin-top: auto;
-    flex-wrap: wrap;
+    display: flex; gap: 6px; align-items: center; margin-top: auto; flex-wrap: wrap;
   }
   .pill {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 6px;
-    background: var(--panel-3);
-    color: var(--muted-2);
-    border: 1px solid var(--border-soft);
-    font-weight: 600;
+    font-size: 10px; padding: 2px 6px; border-radius: 6px;
+    background: var(--panel-3); color: var(--muted-2);
+    border: 1px solid var(--border-soft); font-weight: 600;
   }
   .pill.ai    { background: var(--existing); border-color: var(--existing-border); color: #d6e2ff; }
   .pill.glean { background: var(--glean);    border-color: var(--glean-border);    color: #e6dcff; }
   .pill.gap   { background: var(--gap);      border-color: var(--gap-border);      color: #ffd1d9; }
+  .pill.auto  { background: var(--auto);     border-color: var(--auto-border);     color: #ffe6a8; }
   .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.8; }
+  .stage .conv { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .stage .conv .bar { flex: 1; height: 4px; border-radius: 4px; background: var(--panel-3); overflow: hidden; }
+  .stage .conv .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
 
-  .stage .conv {
-    font-size: 11px; color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .stage .conv .bar {
-    flex: 1; height: 4px; border-radius: 4px; background: var(--panel-3); overflow: hidden;
-  }
-  .stage .conv .bar > span {
-    display: block; height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  }
-
-  .arrow {
-    display: none; /* compact mode keeps cards as the funnel */
-  }
-
-  /* ---------- detail panel ---------- */
+  /* detail panel */
   .detail {
     margin-top: 16px;
     background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 100%);
@@ -261,19 +213,13 @@
   .detail .head h3 { margin: 0; font-size: 18px; }
   .detail .head .formal { color: var(--muted); font-size: 12px; margin-top: 2px; }
   .detail .head .stats { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
-
   .col h4 {
-    margin: 0 0 8px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    font-weight: 700;
+    margin: 0 0 8px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); font-weight: 700;
   }
   .col p { margin: 0 0 10px; color: var(--muted-2); }
   .col ul { margin: 0; padding-left: 18px; color: var(--muted-2); }
   .col ul li { margin: 4px 0; }
-
   .agent-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
   .agent-row {
     background: var(--panel);
@@ -287,28 +233,18 @@
   .agent-row .name { font-weight: 700; }
   .agent-row .role { color: var(--muted-2); margin-top: 2px; }
   .agent-row .saves {
-    margin-top: 4px;
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    margin-top: 4px; display: inline-block;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--accent-3);
   }
   .agent-row.glean .saves { color: var(--accent-2); }
   .empty {
-    color: var(--muted);
-    font-style: italic;
-    font-size: 12px;
-    padding: 8px 10px;
-    border: 1px dashed var(--border);
-    border-radius: 8px;
+    color: var(--muted); font-style: italic; font-size: 12px;
+    padding: 8px 10px; border: 1px dashed var(--border); border-radius: 8px;
   }
 
-  /* ---------- swimlane ---------- */
-  .toolbar {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;
-  }
+  /* swimlane */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
   .toolbar .filter-group {
     display: inline-flex; background: var(--panel); border: 1px solid var(--border-soft);
     border-radius: 10px; padding: 3px;
@@ -317,9 +253,7 @@
     background: transparent; border: 0; color: var(--muted); padding: 6px 10px;
     border-radius: 7px; font-size: 12px; font-weight: 600;
   }
-  .toolbar .filter-group button.active {
-    background: var(--panel-3); color: var(--text);
-  }
+  .toolbar .filter-group button.active { background: var(--panel-3); color: var(--text); }
   .toolbar .hint { color: var(--muted); font-size: 12px; margin-left: auto; }
 
   .pipeline {
@@ -330,23 +264,19 @@
   }
   .grid {
     display: grid;
-    grid-template-columns: 130px repeat(9, minmax(170px, 1fr));
-    min-width: 1500px;
+    grid-template-columns: 120px repeat(9, minmax(180px, 1fr));
+    min-width: 1700px;
   }
   .col-head {
     background: var(--panel-2);
     border-bottom: 1px solid var(--border-soft);
     border-right: 1px solid var(--border-soft);
     padding: 10px;
-    font-size: 12px;
-    font-weight: 700;
-    text-align: center;
-    color: #d6dbf5;
-    cursor: pointer;
-    transition: background 0.15s ease;
+    font-size: 12px; font-weight: 700;
+    text-align: center; color: #d6dbf5;
+    cursor: pointer; transition: background 0.15s ease;
   }
   .col-head:hover { background: var(--panel-3); }
-  .col-head.active { background: var(--panel-3); color: var(--text); }
   .col-head.first { border-top-left-radius: var(--radius); cursor: default; }
   .col-head.last  { border-top-right-radius: var(--radius); border-right: 0; }
   .col-head .stage-num {
@@ -359,34 +289,28 @@
     border-right: 1px solid var(--border-soft);
     border-bottom: 1px solid var(--border-soft);
     padding: 14px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #d6dbf5;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    text-align: center;
-    min-height: 100px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 700; color: #d6dbf5;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    text-align: center; min-height: 100px;
+    letter-spacing: 0.06em; text-transform: uppercase;
   }
+  .row-head.agentic { color: #e6dcff; background: linear-gradient(180deg, #1f2c63 0%, #2a1c5a 100%); }
   .cell {
     border-right: 1px solid var(--border-soft);
     border-bottom: 1px solid var(--border-soft);
     padding: 7px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+    display: flex; flex-direction: column; gap: 5px;
     min-height: 100px;
     transition: background 0.15s ease;
   }
   .cell.last { border-right: 0; }
-  .cell.lane-customer    { background: #16213f; }
-  .cell.lane-commercial  { background: #1a234a; }
-  .cell.lane-technical   { background: #1c2552; }
-  .cell.lane-operations  { background: #1a234c; }
-  .cell.lane-technology  { background: #181f42; }
-  .cell.lane-systems     { background: #161c38; }
-  .col-active .cell, .col-active .col-head { background-color: #25316d !important; }
+  .cell.lane-customer   { background: #16213f; }
+  .cell.lane-commercial { background: #1a234a; }
+  .cell.lane-technical  { background: #1c2552; }
+  .cell.lane-operations { background: #1a234c; }
+  .cell.lane-agentic    { background: #211d4d; }
+  .cell.lane-technology { background: #181f42; }
+  .cell.lane-systems    { background: #161c38; }
 
   .chip {
     font-size: 11px;
@@ -404,6 +328,11 @@
     border-color: rgba(251,191,36,0.35);
     color: #ffd87a;
   }
+  .chip.exit {
+    background: rgba(251,113,133,0.10);
+    border-color: rgba(251,113,133,0.35);
+    color: #ffb8c2;
+  }
   .chip.agent {
     background: var(--existing);
     border: 1px solid var(--existing-border);
@@ -412,14 +341,10 @@
     cursor: help;
   }
   .chip.agent::before {
-    content: "AI";
-    font-size: 9px;
-    background: var(--accent);
-    color: #0a0f24;
-    padding: 1px 4px;
-    border-radius: 4px;
-    margin-right: 6px;
-    font-weight: 800;
+    content: "AI"; font-size: 9px;
+    background: var(--accent); color: #0a0f24;
+    padding: 1px 4px; border-radius: 4px;
+    margin-right: 6px; font-weight: 800;
   }
   .chip.glean {
     background: var(--glean);
@@ -429,29 +354,36 @@
     cursor: help;
   }
   .chip.glean::before {
-    content: "Glean";
-    font-size: 9px;
-    background: var(--accent-2);
-    color: #fff;
-    padding: 1px 4px;
-    border-radius: 4px;
-    margin-right: 6px;
-    font-weight: 800;
+    content: "Glean"; font-size: 9px;
+    background: var(--accent-2); color: #fff;
+    padding: 1px 4px; border-radius: 4px;
+    margin-right: 6px; font-weight: 800;
+  }
+  .chip.auto {
+    background: var(--auto);
+    border: 1px dashed var(--auto-border);
+    color: #ffe6a8;
+    font-weight: 700;
+  }
+  .chip.auto::before {
+    content: "AUTO"; font-size: 9px;
+    background: var(--warn); color: #0a0f24;
+    padding: 1px 4px; border-radius: 4px;
+    margin-right: 6px; font-weight: 800;
   }
   .hide-ai .chip.agent { display: none; }
   .hide-glean .chip.glean { display: none; }
-  .show-gaps .cell:not(.has-gap) { opacity: 0.25; }
+  .show-gaps .cell:not(.has-gap) { opacity: 0.22; }
 
-  /* ---------- tooltip ---------- */
+  /* tooltip */
   .tip {
-    position: fixed;
-    z-index: 1000;
+    position: fixed; z-index: 1000;
     background: #0a0f24;
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 10px 12px;
     box-shadow: var(--shadow);
-    max-width: 280px;
+    max-width: 300px;
     font-size: 12px;
     color: var(--text);
     pointer-events: none;
@@ -463,20 +395,17 @@
   .tip .name { font-weight: 700; margin-bottom: 4px; }
   .tip .role { color: var(--muted-2); }
   .tip .saves {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    display: inline-block; margin-top: 6px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--accent-3);
   }
   .tip.glean .saves { color: var(--accent-2); }
 
-  /* ---------- Glean opportunities ---------- */
+  /* Glean cards */
   .opps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     gap: 12px;
   }
   .opp {
@@ -489,35 +418,27 @@
     cursor: pointer;
   }
   .opp:hover { transform: translateY(-2px); border-left-color: var(--accent); }
-  .opp.high   { border-left-color: var(--danger); }
+  .opp.high { border-left-color: var(--danger); }
   .opp.medium { border-left-color: var(--warn); }
-  .opp.gap    { border-left-color: var(--cyan); }
+  .opp.gap { border-left-color: var(--cyan); }
   .opp .rank {
     display: inline-flex; align-items: center; justify-content: center;
     width: 26px; height: 26px; border-radius: 8px;
     background: var(--panel-3); color: var(--text);
-    font-weight: 800; font-size: 12px;
-    margin-right: 10px;
+    font-weight: 800; font-size: 12px; margin-right: 10px;
   }
   .opp h3 { margin: 0 0 4px; font-size: 14px; display: flex; align-items: center; }
   .opp h3 .impact {
-    margin-left: auto;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 5px;
+    margin-left: auto; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 5px;
   }
   .opp.high   .impact { background: rgba(251,113,133,0.18); color: var(--danger); }
   .opp.medium .impact { background: rgba(251,191,36,0.18); color: var(--warn); }
   .opp.gap    .impact { background: rgba(34,211,238,0.18);  color: var(--cyan); }
   .opp .where { color: var(--muted); font-size: 12px; margin: 2px 0 8px; }
   .opp .saves {
-    color: var(--accent-3);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    color: var(--accent-3); font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
     margin-bottom: 6px;
   }
   .opp .body { color: var(--muted-2); font-size: 13px; }
@@ -535,7 +456,6 @@
     margin-top: 8px;
   }
 
-  /* ---------- tab panels ---------- */
   .panel { display: none; }
   .panel.active { display: block; }
 
@@ -549,13 +469,14 @@
 
 <header>
   <div>
-    <span class="tag">Sales Process</span>
+    <span class="tag">Sales Process</span><span class="ver">v2 — Agentic lane</span>
     <h1>From cold account to closed deal — your AI co-pilot map</h1>
-    <p>Click any stage to see who does what, which AI agents help today, and where Glean would unlock the next step-change.</p>
+    <p>Updated to match the revised Lucid chart: 9 stages, dedicated <strong>Agentic</strong> swimlane, and a yellow "place for automation" callout in Opp Creation. Click any stage to drill in.</p>
   </div>
   <div class="legend">
     <div class="item"><span class="swatch existing"></span> Existing AI agent</div>
     <div class="item"><span class="swatch glean"></span> Recommended Glean agent</div>
+    <div class="item"><span class="swatch auto"></span> Author-marked automation</div>
     <div class="item"><span class="swatch gap"></span> Coverage gap</div>
   </div>
 </header>
@@ -568,23 +489,23 @@
   </div>
   <div class="kpi green">
     <div class="label">Existing AI agents</div>
-    <div class="value">7</div>
-    <div class="sub">5 named &middot; 2 to be named</div>
+    <div class="value">5</div>
+    <div class="sub">Jarvis · Gong AI · Reginald · Jeeves · Lurch</div>
   </div>
   <div class="kpi purple">
     <div class="label">Glean opportunities</div>
     <div class="value">8</div>
-    <div class="sub">Across 7 of 9 stages</div>
-  </div>
-  <div class="kpi danger">
-    <div class="label">AI coverage gaps</div>
-    <div class="value">2</div>
-    <div class="sub">Account Routing &middot; Onboarding</div>
+    <div class="sub">High / medium / coverage gaps</div>
   </div>
   <div class="kpi warn">
-    <div class="label">Est. seller time freed</div>
-    <div class="value">~6 hr</div>
-    <div class="sub">Per qualified deal (illustrative)</div>
+    <div class="label">Author-flagged automation</div>
+    <div class="value">1</div>
+    <div class="sub">Stage 5 yellow sticky</div>
+  </div>
+  <div class="kpi danger">
+    <div class="label">Stages with no Agentic chip</div>
+    <div class="value">4</div>
+    <div class="sub">ABX · Routing · Selection · Onboarding</div>
   </div>
 </div>
 
@@ -594,7 +515,7 @@
   <button class="tab" data-tab="glean">Glean roadmap <span class="count">8</span></button>
 </div>
 
-<!-- =============== FUNNEL TAB =============== -->
+<!-- FUNNEL -->
 <section class="panel active" data-panel="funnel">
   <h2>The deal journey</h2>
   <p class="sub">Each step is one click. Numbers are illustrative — replace with your own pipeline math.</p>
@@ -602,7 +523,7 @@
   <div class="detail" id="detail"></div>
 </section>
 
-<!-- =============== SWIMLANE TAB =============== -->
+<!-- SWIMLANE -->
 <section class="panel" data-panel="swimlane">
   <div class="toolbar">
     <div class="filter-group" id="laneFilter">
@@ -611,12 +532,12 @@
       <button data-filter="glean">Glean only</button>
       <button data-filter="gaps">Coverage gaps</button>
     </div>
-    <div class="hint">Hover any agent chip for what it does and time saved. Click a column header to filter the funnel.</div>
+    <div class="hint">Hover any AI/Glean chip for what it does and time saved. Click a column header to drill into the funnel.</div>
   </div>
   <div class="pipeline" id="pipeline"></div>
 </section>
 
-<!-- =============== GLEAN ROADMAP TAB =============== -->
+<!-- GLEAN ROADMAP -->
 <section class="panel" data-panel="glean">
   <h2>Glean roadmap — ranked by leverage</h2>
   <p class="sub">Click any card to expand. Impact band, stage, and estimated time saved per deal shown for each.</p>
@@ -624,7 +545,7 @@
 </section>
 
 <footer>
-  Stage flow reproduced from the Lucid swimlane. Numbers (conversion, time saved) are illustrative starting points — swap in your team's real data.
+  Stage flow reproduced from the revised Lucid swimlane (v2). Numbers (conversion, time saved) are illustrative — swap in your team's real data.
 </footer>
 
 <div class="tip" id="tip" role="tooltip"></div>
@@ -638,112 +559,88 @@ const STAGES = [
     salesName: "Spark interest",
     formal: "ABX Campaign",
     blurb: "Marketing warms up priority accounts before sales touches them.",
-    customer: ["Engages with ads, content, events", "Conducts independent research"],
-    internal: ["Plan the ABX campaign", "Run the campaign", "Watch engagement signals (SQAT scoring)"],
-    systems: ["6sense", "LinkedIn", "Marketo"],
-    convPct: 100,
-    volume: "1,000 target accounts",
-    days: "Continuous",
-    aiAgents: [],
-    gleanOpps: []
+    customer: ["Engages with ads, content, events"],
+    internal: ["Plan and deploy the ABX campaign", "Define 6QA criteria", "Monitor engagement in 6sense"],
+    systems: ["6sense", "Marketo", "LinkedIn"],
+    convPct: 100, volume: "1,000 target accounts", days: "Continuous",
+    aiAgents: [], gleanOpps: []
   },
   {
     num: 2,
     salesName: "Route to seller",
-    formal: "Account Routing & Sales Assignment",
-    blurb: "Account is matched, scored, and routed to the right rep.",
+    formal: "Account Routing &amp; Sales Assignment",
+    blurb: "Match account, score priority, assign owner.",
     customer: [],
-    internal: ["Account match & creation", "Priority level & routing", "Territory + ROE check"],
-    systems: ["SFDC", "LeanData"],
-    convPct: 25,
-    volume: "~250 routed accounts",
-    days: "1–2 days",
-    aiAgents: [],
-    gleanOpps: ["routing"]
+    internal: ["Run 6sense matching algorithm", "Check territory dashboards", "Create / update SFDC record", "LeanData routing &amp; SFDC priority calc"],
+    systems: ["SFDC", "LeanData", "6sense"],
+    convPct: 25, volume: "~250 routed", days: "1–2 days",
+    aiAgents: [], gleanOpps: ["routing"]
   },
   {
     num: 3,
     salesName: "Build the play",
-    formal: "Prospecting Hypothesis",
-    blurb: "Rep builds a hypothesis: who, why now, what hook.",
+    formal: "Forming Prospecting Hypothesis",
+    blurb: "Decide who to chase, why now, and how to enter.",
     customer: [],
-    internal: ["Devise prospecting hypothesis", "Identify buying committee", "Pick the hook"],
-    systems: ["SFDC", "ZoomInfo", "Outreach"],
-    convPct: 20,
-    volume: "~200 hypotheses",
-    days: "Same day",
-    aiAgents: ["enzo", "jarvis"],
-    gleanOpps: ["account360"]
+    internal: ["Check if targets already in system", "LI Sales Nav + Lead IQ + ZoomInfo sourcing", "Change ABM Account Status to Working"],
+    systems: ["SFDC", "LI Sales Nav", "Lead IQ", "ZoomInfo"],
+    convPct: 20, volume: "~200 hypotheses", days: "Same day",
+    aiAgents: ["jarvis"], gleanOpps: ["account360"]
   },
   {
     num: 4,
     salesName: "First conversations",
-    formal: "Outreach & Early Exploration",
-    blurb: "Multi-touch outreach until you earn the first real conversation.",
-    customer: ["Decides if interested", "Joins intro call"],
-    internal: ["Conduct outreach", "Explore the pain", "Manage opt-outs"],
-    systems: ["Outreach", "Gong"],
-    convPct: 10,
-    volume: "~100 conversations",
-    days: "2–3 weeks",
-    aiAgents: ["outreach"],
-    gleanOpps: ["content"]
+    formal: "Outreach &amp; Qualification",
+    blurb: "Multi-touch outreach (the 3 P's) until you earn the first call.",
+    customer: ["Decides whether to engage", "Joins call or opts out"],
+    internal: ["Dial out, voicemail, elevator pitch", "Follow up within 24 hrs", "Customize outreach in Gong / Outreach", "Manage opt-outs"],
+    systems: ["Gong", "Outreach", "SFDC"],
+    convPct: 10, volume: "~100 first calls", days: "2–3 weeks",
+    aiAgents: ["gong"], gleanOpps: ["content"]
   },
   {
     num: 5,
-    salesName: "Qualify the opp",
-    formal: "Opp Creation & Qualification",
-    blurb: "Convert conversation into a real, qualified opportunity.",
-    customer: ["Agrees to evaluate solution"],
-    internal: ["Meet opp creation requirements", "AE accepts opp", "Run discovery workshops"],
-    systems: ["SFDC", "Slack"],
-    convPct: 5,
-    volume: "~50 qualified opps",
-    days: "1–2 weeks",
-    aiAgents: ["reginald"],
-    gleanOpps: ["painpattern"]
+    salesName: "Open the opp",
+    formal: "Opp Creation &amp; Pre-Acceptance",
+    blurb: "Run the Intro Call (4 parts), create the opp, hand to AE.",
+    customer: ["May require NDA"],
+    internal: ["Schedule + prep + run Intro Call (Current State, Vision, Stakeholders, Next Steps)", "Convert lead/contact to Account &amp; Opp", "Review AI MEDDPICC notes; fill exit criteria", "Generate Gong Brief, notify Account owner"],
+    systems: ["SFDC", "Gong", "Evisort"],
+    convPct: 5, volume: "~50 opps", days: "1–2 weeks",
+    aiAgents: ["reginald-intro"], gleanOpps: ["opp-auto", "painpattern"]
   },
   {
     num: 6,
-    salesName: "Win the technical decision",
-    formal: "Technical Solution Selling",
-    blurb: "Prove the solution works for them: workshops, demos, POC, business case.",
-    customer: ["Champion sells internally", "May disqualify on budget"],
-    internal: ["Technical workshops & demos / POC", "Outline business case + ROI", "Validate champion"],
-    systems: ["SFDC", "Slack", "Internal docs"],
-    convPct: 3,
-    volume: "~30 active POCs",
-    days: "3–6 weeks",
-    aiAgents: ["swot"],
-    gleanOpps: ["techdocs"]
+    salesName: "Qualify deeply",
+    formal: "Opp Qualification",
+    blurb: "Discovery + technical fit + champion + competitive positioning.",
+    customer: ["Aligns on vision", "Sells internally; may disqualify on budget"],
+    internal: ["Discovery workshops; document Cost of Inaction; map to pain points; frame business case", "Identify + test champion; map buying committee + decision process", "CSA leads: feasibility, conceptual solution design, integration, security/compliance, implementation, risk"],
+    systems: ["SFDC", "Slack", "Internal docs", "Security library"],
+    convPct: 3, volume: "~30 in qual", days: "3–6 weeks",
+    aiAgents: ["reginald-disco", "jeeves"], gleanOpps: ["csa-rag", "battlecards"]
   },
   {
     num: 7,
     salesName: "Win the bake-off",
-    formal: "Customer Evaluation",
-    blurb: "Buyer compares vendors. You sharpen positioning and uncover competition.",
-    customer: ["Evaluates options", "Picks best-fit"],
-    internal: ["Validate competitive position", "Uncover competition", "Pitch to buyer"],
-    systems: ["SFDC", "Battle cards"],
-    convPct: 2,
-    volume: "~20 in eval",
-    days: "2–4 weeks",
-    aiAgents: ["jeeves"],
-    gleanOpps: ["battlecards"]
+    formal: "Evaluation",
+    blurb: "Customer compares vendors; you sharpen pricing, MAP, and paper.",
+    customer: ["Picks top option", "Signs up via Customer Dashboard"],
+    internal: ["Sell to strengths; develop pitch strategy", "Build MAP, agree task owners, confirm pricing &amp; ARR ramp", "Run contract exception path through Ops if needed"],
+    systems: ["SFDC", "JIRA", "MAP template"],
+    convPct: 2, volume: "~20 in eval", days: "2–4 weeks",
+    aiAgents: ["lurch"], gleanOpps: ["rfi"]
   },
   {
     num: 8,
-    salesName: "Close & sign",
-    formal: "Vendor Selection & Deal Closure",
-    blurb: "Selection, procurement, legal — get the paper signed.",
-    customer: ["Procurement runs selection process", "Issues PO"],
-    internal: ["Map procurement process", "Commercial & contract terms", "Legal execution"],
-    systems: ["SFDC", "CLM", "DocuSign"],
-    convPct: 1.2,
-    volume: "~12 closed",
-    days: "3–6 weeks",
-    aiAgents: ["lurch"],
-    gleanOpps: ["handoff"]
+    salesName: "Close &amp; sign",
+    formal: "Selection &amp; Closure",
+    blurb: "Vendor selection, final tech sign-off, legal + PO.",
+    customer: ["Confirms vendor; issues PO"],
+    internal: ["Verbal agreement on commercial terms", "Final Solution Design Review; security &amp; compliance; integration test; internal tech sign-off", "MSA / legal redlines / contract execution"],
+    systems: ["DocuSign", "CLM", "SFDC"],
+    convPct: 1.2, volume: "~12 closed", days: "3–6 weeks",
+    aiAgents: [], gleanOpps: ["handoff"]
   },
   {
     num: 9,
@@ -751,211 +648,213 @@ const STAGES = [
     formal: "Onboarding",
     blurb: "Bridge to CS / onboarding so the customer ramps fast.",
     customer: ["Begins implementation"],
-    internal: ["Execute mutual action plan", "Draft ramp plan", "Closed-won booking"],
+    internal: ["Closed-Won booking", "Draft &amp; confirm ramp plan", "Handoff to CS / onboarding"],
     systems: ["SFDC", "Gainsight", "Internal playbooks"],
-    convPct: 1.2,
-    volume: "~12 onboarded",
-    days: "Ongoing",
-    aiAgents: [],
-    gleanOpps: ["onboarding"]
+    convPct: 1.2, volume: "~12 onboarded", days: "Ongoing",
+    aiAgents: [], gleanOpps: ["onboarding"]
   }
 ];
 
 const AGENTS = {
-  enzo: {
-    name: "Enzo",
-    role: "Account Intelligence — builds a fact sheet on the account: tech stack, hiring, news, org chart.",
-    saves: "~45 min per account",
-    lane: "commercial"
-  },
   jarvis: {
     name: "Jarvis",
-    role: "Prospecting Agent — picks the right 5–8 contacts to target based on ICP and recent buying signals.",
-    saves: "~30 min per account",
-    lane: "commercial"
+    role: "Chat to decide whether an account is safe to engage and a good fit for Vonage; asks follow-up questions and exports a prospecting hypothesis.",
+    saves: "~45 min per account",
+    lane: "agentic"
   },
-  outreach: {
-    name: "Outreach Strategist (to be named)",
-    role: "Drafts the multi-touch outreach sequence — emails, LinkedIn, call scripts — tailored to the account.",
-    saves: "~1 hr per account",
-    lane: "technical",
-    unnamed: true
+  gong: {
+    name: "Gong AI",
+    role: "Calls intelligence, summaries, and next-step suggestions baked into the outreach flow.",
+    saves: "~20 min per call reviewed",
+    lane: "agentic"
   },
-  reginald: {
-    name: "Reginald",
-    role: "Pain → Solution Translator — turns discovery notes into a tailored solution narrative & value hypothesis.",
-    saves: "~2 hr per opp",
-    lane: "technical"
+  "reginald-intro": {
+    name: "Reginald (Intro Call)",
+    role: "Chat with agent to learn specifics for the Intro Call, plan the call, and prep against the 4-part script (Current State, Vision, Stakeholders, Next Steps).",
+    saves: "~1 hr per intro call",
+    lane: "agentic"
   },
-  swot: {
-    name: "SWOT + Quick Disqualification (to be named)",
-    role: "Scores deal viability and flags red flags early so you don't burn cycles on bad fits.",
-    saves: "Avoids ~10 hr on dead deals",
-    lane: "technical",
-    unnamed: true
+  "reginald-disco": {
+    name: "Reginald (Disco Call)",
+    role: "Same agent, reused: chat to learn specifics for the discovery workshop and plan the call.",
+    saves: "~1.5 hr per discovery cycle",
+    lane: "agentic"
   },
   jeeves: {
     name: "Jeeves",
-    role: "Persuasive Selling — generates objection handling and persuasive narratives based on competitive context.",
-    saves: "~1.5 hr per eval",
-    lane: "technical"
+    role: "Competitor counter-intelligence; maps Vonage strengths to the buyer's evaluation criteria and frames the differentiation story.",
+    saves: "~2 hr per competitive cycle",
+    lane: "agentic"
   },
   lurch: {
     name: "Lurch",
-    role: "Mutual Action Plan Builder — generates the MAP with stakeholders, milestones, and dates.",
-    saves: "~2 hr per closing deal",
-    lane: "operations"
+    role: "Ingests customer docs (RFI, Infosec questionnaire); references the MAP template; creates the Mutual Action Plan and helps the rep complete tasks; learns the paper process from system notes.",
+    saves: "~3 hr per closing deal",
+    lane: "agentic"
   }
 };
 
 const GLEAN = {
-  account360: {
+  "csa-rag": {
     rank: 1, impact: "high",
-    title: "Account 360 / pre-call brief",
-    where: "Stage 3 Build the play → Stage 4 First conversations · augments Enzo & Jarvis",
-    saves: "~30 min before every call",
-    lane: "commercial",
-    body: `<p>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</p>
-           <ul><li>Cuts SDR/AE prep time and surfaces "who has touched this account before" instantly.</li>
-               <li>Closes a real gap: Enzo/Jarvis build hypotheses; Glean supplies the lived institutional memory.</li></ul>`
-  },
-  techdocs: {
-    rank: 2, impact: "high",
-    title: "Technical docs / security RAG",
-    where: "Stage 6 Win the technical decision · Technical lane",
+    title: "CSA technical &amp; security RAG",
+    where: "Stage 6 Qualify deeply · Technical lane (CSA workstream)",
     saves: "2–4 hr per POC and per security review",
-    lane: "technical",
-    body: `<p>SE-grade answers from product docs, runbooks, KB, RFP responses and the security &amp; compliance library.</p>
-           <ul><li>Drops POC and security-review cycle time; reduces "let me get back to you" loops.</li>
-               <li>Pairs with the SWOT/disqualification agent to back claims with citations.</li></ul>`
+    body: `<p>The CSA workstream in Opp Qualification today has <strong>no AI</strong>: conceptual solution design, integration requirements, data/message flow, security &amp; compliance, implementation approach, risk assessment.</p>
+           <ul><li>Glean answers from product docs, runbooks, prior RFP responses, security library, and similar customer architectures with citations.</li>
+               <li>Pairs with Jeeves to back competitive claims with technical evidence.</li>
+               <li>Closes the biggest agentic gap in the chart.</li></ul>`
+  },
+  "opp-auto": {
+    rank: 2, impact: "high",
+    title: "Opp Creation auto-brief (the yellow sticky)",
+    where: "Stage 5 Open the opp · Systems lane · the author's own &quot;place for automation&quot; marker",
+    saves: "~30 min per opp, no manual handoff drift",
+    body: `<p>Right after "Generate Gong Brief &amp; share with AM" and before "Notify Account owner" — the chart itself flags an automation gap.</p>
+           <ul><li>Glean assembles the Account brief from Gong notes, MEDDPICC fields, and SFDC history and posts it to the AM automatically.</li>
+               <li>Removes a manual SDR→AE handoff step and prevents context loss between Pre-Acceptance and Acceptance.</li></ul>`
+  },
+  account360: {
+    rank: 3, impact: "high",
+    title: "Account 360 / pre-call brief",
+    where: "Stage 3 Build the play → Stage 4 First conversations · augments Jarvis",
+    saves: "~30 min before every call",
+    body: `<p>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</p>
+           <ul><li>Jarvis builds the hypothesis; Glean supplies the lived institutional memory.</li>
+               <li>Closes a gap that Enzo used to (partially) cover in v1.</li></ul>`
   },
   battlecards: {
-    rank: 3, impact: "high",
+    rank: 4, impact: "high",
     title: "Live competitive battle-cards",
-    where: "Stage 7 Win the bake-off · Commercial lane · augments Jeeves",
+    where: "Stage 6 Qualify deeply · augments Jeeves",
     saves: "Stops stale-intel losses",
-    lane: "commercial",
     body: `<p>Pulls current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</p>
-           <ul><li>Keeps Jeeves' persuasion grounded in the latest field intelligence, not last quarter's deck.</li></ul>`
+           <ul><li>Keeps Jeeves grounded in the latest field intelligence, not last quarter's deck.</li></ul>`
+  },
+  rfi: {
+    rank: 5, impact: "medium",
+    title: "RFI / Infosec questionnaire auto-fill",
+    where: "Stage 7 Win the bake-off · augments Lurch",
+    saves: "~4 hr per RFI/security questionnaire",
+    body: `<p>Lurch already ingests RFI and Infosec docs. Glean pre-fills the answers from the security library, prior responses, and product docs with citations — the rep just reviews.</p>
+           <ul><li>Compounding value: every answered RFI grows the corpus for the next one.</li></ul>`
   },
   painpattern: {
-    rank: 4, impact: "medium",
+    rank: 6, impact: "medium",
     title: "Similar-customer pain-pattern search",
-    where: "Stage 5 Qualify the opp · Technical lane · augments Reginald",
+    where: "Stage 5 Open the opp → Stage 6 Qualify deeply · augments Reginald",
     saves: "~1 hr per discovery",
-    lane: "technical",
     body: `<p>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</p>
            <ul><li>Feeds Reginald better analogues so the pain→solution translation is grounded in real prior deals.</li></ul>`
   },
   content: {
-    rank: 5, impact: "medium",
-    title: "Content & talk-track retrieval",
+    rank: 7, impact: "medium",
+    title: "Content &amp; talk-track retrieval",
     where: "Stage 4 First conversations · Commercial lane",
     saves: "~20 min per outreach",
-    lane: "commercial",
-    body: `<p>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain.</p>
-           <ul><li>Reduces reliance on tribal knowledge of "which deck do I send?"</li></ul>`
+    body: `<p>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain — alongside Gong AI's call intelligence.</p>`
   },
   handoff: {
-    rank: 6, impact: "medium",
+    rank: 8, impact: "medium",
     title: "Post-sale handoff brief generator",
-    where: "Stage 8 Close & sign → Stage 9 Hand off · Commercial lane",
+    where: "Stage 8 Close &amp; sign → Stage 9 Hand off · Commercial lane",
     saves: "~1.5 hr per closed deal",
-    lane: "commercial",
-    body: `<p>Assembles a handoff doc from the deal record: pains, success criteria, technical context, stakeholders, MAP.</p>
+    body: `<p>Assembles a handoff doc from the deal record: pains, success criteria, technical sign-off notes, stakeholders, MAP, ramp plan.</p>
            <ul><li>Reduces dropped context between AE/SE and CS/onboarding teams.</li></ul>`
   },
   routing: {
-    rank: 7, impact: "gap",
-    title: "Routing rules & territory lookup",
+    rank: 9, impact: "gap",
+    title: "Routing rules &amp; territory lookup",
     where: "Stage 2 Route to seller · Technology lane",
     saves: "Removes routing friction for SDRs &amp; ops",
-    lane: "technology",
-    body: `<p>Today: <strong>no AI in this stage</strong>. Glean can answer "who owns this account / what's the ROE here?" from policy docs and SFDC.</p>
-           <ul><li>Low-effort, high-frequency time-saver for SDRs and ops.</li></ul>`
+    body: `<p>Today: <strong>no AI in this stage</strong>. Glean answers "who owns this account / what's the ROE here?" from LeanData rules, territory docs, and SFDC.</p>`
   },
   onboarding: {
-    rank: 8, impact: "gap",
-    title: "Onboarding playbook & ramp-plan agent",
+    rank: 10, impact: "gap",
+    title: "Onboarding playbook &amp; ramp-plan agent",
     where: "Stage 9 Hand off to launch · Technology lane",
     saves: "Faster time-to-value for new customers",
-    lane: "technology",
-    body: `<p>Today: <strong>no AI in this stage</strong>. Glean can surface the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</p>
+    body: `<p>Today: <strong>no AI in this stage</strong>. Glean surfaces the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</p>
            <ul><li>Closes the last-mile gap after Lurch's MAP execution.</li></ul>`
   }
 };
 
-const LANES = ["customer", "commercial", "technical", "operations", "technology", "systems"];
+const LANES = ["customer", "commercial", "technical", "operations", "agentic", "technology", "systems"];
 
-/* Activities and AI/Glean chips placed per (stage, lane). */
+/* swimlane content per (stage, lane) — captures the revised chart */
 const SWIMLANE = {
-  // stage num : { lane : [chips] }
   1: {
-    customer:   [{t:"a", txt:"Interaction with Marketing"}, {t:"a", txt:"Customer conducts research"}],
-    commercial: [{t:"a", txt:"Run campaign"}],
-    operations: [{t:"a", txt:"Plan ABX campaign"}],
-    technology: [{t:"d", txt:"SQAT scoring"}],
-    systems:    [{t:"a", txt:"6sense · LinkedIn · Marketo"}]
+    commercial: [{t:"a", txt:"ABX Campaign Planning"}],
+    operations: [{t:"a", txt:"Campaign Deployed"}, {t:"a", txt:"6QA Criteria Defined"}],
+    technology: [{t:"a", txt:"Engagement monitored in 6sense"}, {t:"d", txt:"Account meets 6QA?"}],
+    systems:    [{t:"a", txt:"ABM Segment checkbox = True"}]
   },
   2: {
-    technology: [{t:"a", txt:"Account match & creation"}, {t:"a", txt:"Priority level & routing"}, {t:"g", id:"routing"}],
-    systems:    [{t:"a", txt:"SFDC · LeanData · Clearbit"}]
+    commercial: [{t:"a", txt:"Find self-sourced account"}, {t:"a", txt:"Select account"}],
+    agentic:    [{t:"g", id:"routing"}],
+    technology: [{t:"a", txt:"6sense matching algorithm"}, {t:"a", txt:"Check territory dashboard"}, {t:"d", txt:"Prioritized accounts assigned?"}],
+    systems:    [{t:"a", txt:"Is account in SFDC?"}, {t:"a", txt:"Create / reference SFDC record"}, {t:"a", txt:"LeanData territory mapping"}, {t:"a", txt:"SFDC calculates priority"}]
   },
   3: {
-    commercial: [{t:"ai", id:"enzo"}, {t:"ai", id:"jarvis"}, {t:"a", txt:"Devise prospecting hypothesis"}, {t:"g", id:"account360"}],
-    operations: [{t:"a", txt:"Territory mgmt & ROE definition"}],
-    systems:    [{t:"a", txt:"SFDC · Outreach · ZoomInfo"}]
+    commercial: [{t:"d", txt:"Targets already in system?"}],
+    agentic:    [{t:"ai", id:"jarvis"}, {t:"d", txt:"Safe to engage?"}, {t:"d", txt:"Good fit for Vonage?"}, {t:"a", txt:"Ask follow-up questions"}, {t:"a", txt:"Export the output"}, {t:"g", id:"account360"}],
+    technology: [{t:"a", txt:"LI Sales Nav · Lead IQ · ZoomInfo sourcing"}],
+    systems:    [{t:"a", txt:"Change ABM Account Status to Working"}, {t:"a", txt:"Upload doc into SFDC Notes"}]
   },
   4: {
-    customer:   [{t:"d", txt:"Interested?"}, {t:"a", txt:"Intro call with customer"}],
-    commercial: [{t:"a", txt:"Conduct outreach"}, {t:"a", txt:"Explore the pain"}, {t:"g", id:"content"}],
-    technical:  [{t:"ai", id:"outreach"}],
-    operations: [{t:"a", txt:"Content committee"}, {t:"a", txt:"Opt-out management"}],
-    technology: [{t:"a", txt:"Source prospects in system"}],
-    systems:    [{t:"a", txt:"Outreach · Gong · SFDC"}]
+    customer:   [{t:"d", txt:"Did they answer?"}, {t:"d", txt:"Reply negatively / opt out?"}, {t:"d", txt:"Agree to move forward?"}],
+    commercial: [{t:"a", txt:"Voicemail / dial out / elevator pitch"}, {t:"a", txt:"Follow up within 24 hrs"}, {t:"a", txt:"Engage aligned to the 3 P's"}],
+    operations: [{t:"a", txt:"Opt-out management"}],
+    agentic:    [{t:"ai", id:"gong"}, {t:"g", id:"content"}],
+    technology: [{t:"a", txt:"Navigate to Gong, locate prospect"}, {t:"a", txt:"Add to Company flow"}, {t:"a", txt:"Customize outreach"}],
+    systems:    [{t:"a", txt:"Nurture"}]
   },
   5: {
-    customer:   [{t:"a", txt:"Customer agrees to evaluate solution"}],
-    commercial: [{t:"a", txt:"Meet opp creation requirements"}, {t:"d", txt:"Opp qualification"}, {t:"a", txt:"AE accepts opp"}, {t:"a", txt:"Discovery workshops"}],
-    technical:  [{t:"ai", id:"reginald"}, {t:"a", txt:"Discovery workshops"}, {t:"g", id:"painpattern"}],
-    operations: [{t:"a", txt:"Lead nurture"}, {t:"a", txt:"Opportunity definition"}],
-    technology: [{t:"a", txt:"Open opp in SFDC"}, {t:"a", txt:"Submit opp to AE"}],
-    systems:    [{t:"a", txt:"SFDC · Slack"}]
+    customer:   [{t:"d", txt:"NDA needed?"}],
+    commercial: [{t:"a", txt:"Schedule + prep + run Intro Call"}, {t:"a", txt:"4-part script: State · Vision · Stakeholders · Next Steps"}, {t:"d", txt:"Deal right for Vonage now?"}, {t:"d", txt:"Meets criteria to pass to AM?"}, {t:"d", txt:"AM accepts?"}],
+    operations: [{t:"a", txt:"Evisort process (NDA)"}],
+    agentic:    [{t:"ai", id:"reginald-intro"}, {t:"g", id:"painpattern"}],
+    technology: [{t:"d", txt:"Pscores ≥ Opp creation threshold?"}, {t:"a", txt:"Gong Brief"}, {t:"a", txt:"Convert lead/contact to Account &amp; Opp"}, {t:"a", txt:"Review AI MEDDPICC notes"}, {t:"a", txt:"Fill Stage Exit Criteria"}, {t:"a", txt:"Generate Gong Brief &amp; share with AM"}, {t:"auto", id:"opp-auto"}, {t:"a", txt:"Notify Account owner"}],
+    systems:    [{t:"a", txt:"SFDC Contact object · Opp Creation form"}, {t:"a", txt:"Data pushed to SFDC"}, {t:"exit", txt:"Closed Lost"}, {t:"a", txt:"Timestamp on Sales Acceptance"}]
   },
   6: {
-    customer:   [{t:"a", txt:"Customer connects with AE"}, {t:"a", txt:"Discovery workshops"}],
-    commercial: [{t:"a", txt:"Outline business case · ROI / value"}],
-    technical:  [{t:"a", txt:"Technical workshops"}, {t:"a", txt:"Demo / POC"}, {t:"a", txt:"Work through technical design"}, {t:"ai", id:"swot"}, {t:"g", id:"techdocs"}],
-    technology: [{t:"a", txt:"Closed / Lost"}]
+    customer:   [{t:"d", txt:"Alignment on shared vision?"}, {t:"d", txt:"Disqualified on budget?"}, {t:"d", txt:"Has technical resources?"}, {t:"d", txt:"Demo / POC required?"}, {t:"d", txt:"Sees value vs cost?"}, {t:"a", txt:"Champion reinforces urgency internally"}],
+    commercial: [{t:"a", txt:"Discovery workshops; document Cost of Inaction"}, {t:"a", txt:"Map Vonage to pain points; frame business case"}, {t:"a", txt:"Identify + test champion"}, {t:"a", txt:"Map buying committee + decision process"}, {t:"a", txt:"Enable champion; prepare to pitch to buyer"}],
+    technical:  [{t:"a", txt:"Invite CSA"}, {t:"a", txt:"CSA evaluates Vonage fit"}, {t:"d", txt:"Worth pursuing?"}, {t:"a", txt:"Conduct demo / POC"}, {t:"a", txt:"Gather technical requirements"}, {t:"a", txt:"Conceptual solution design"}, {t:"a", txt:"Integration · data flow · security &amp; compliance"}, {t:"a", txt:"Implementation approach &amp; timeline"}, {t:"a", txt:"Risk assessment"}],
+    operations: [{t:"a", txt:"CSA / AM matrix"}],
+    agentic:    [{t:"ai", id:"reginald-disco"}, {t:"ai", id:"jeeves"}, {t:"g", id:"csa-rag"}, {t:"g", id:"battlecards"}],
+    technology: [{t:"a", txt:"Advance Opp to Interest Stage"}, {t:"a", txt:"Manual: CSA added to Opp team"}, {t:"a", txt:"Advance Opp to Qualified Stage"}],
+    systems:    [{t:"a", txt:"Add Product to Opp"}, {t:"a", txt:"Estimate ARR"}, {t:"exit", txt:"Closed / Lost"}]
   },
   7: {
-    customer:   [{t:"a", txt:"Disqualifies on budget"}, {t:"a", txt:"Champion sells internally"}, {t:"a", txt:"Pitch to buyer"}],
-    commercial: [{t:"a", txt:"Validate champion"}, {t:"a", txt:"Understand buying criteria"}, {t:"a", txt:"Uncover competition"}, {t:"g", id:"battlecards"}],
-    technical:  [{t:"ai", id:"jeeves"}, {t:"a", txt:"Validate competitive position"}, {t:"a", txt:"Strengthen buyer perception"}],
-    technology: [{t:"a", txt:"Closed / Lost"}]
+    customer:   [{t:"d", txt:"Is Vonage the top option?"}, {t:"a", txt:"Sign up via Customer Dashboard"}],
+    commercial: [{t:"a", txt:"Assess Vonage position vs buying criteria"}, {t:"a", txt:"Pitch strategy; sell to strengths"}, {t:"a", txt:"Approval flow + execution method"}, {t:"a", txt:"Confirm pricing model · ARR &amp; ramp"}, {t:"a", txt:"Mutual Action Plan; task owners"}],
+    technical:  [{t:"a", txt:"Conduct demo aligned to decision criteria"}],
+    operations: [{t:"d", txt:"Contract exceptions?"}, {t:"a", txt:"JIRA exception ticket; negotiate revised terms"}, {t:"a", txt:"Get internal approval; communicate resolution"}],
+    agentic:    [{t:"ai", id:"lurch"}, {t:"g", id:"rfi"}],
+    technology: [{t:"a", txt:"JIRA: segmentation &amp; API key"}],
+    systems:    [{t:"a", txt:"Add API key in SFDC"}, {t:"exit", txt:"Closed / Lost"}]
   },
   8: {
-    customer:   [{t:"a", txt:"Evaluates options"}, {t:"d", txt:"Best-fit decision"}],
-    commercial: [{t:"a", txt:"Map procurement process"}, {t:"a", txt:"Commercial & contract terms"}],
-    technical:  [{t:"a", txt:"Technical validation complete"}],
-    operations: [{t:"ai", id:"lurch"}, {t:"a", txt:"Commercial & contract terms"}],
-    technology: [{t:"a", txt:"Closed / Lost"}]
+    customer:   [{t:"d", txt:"Is Vonage selected?"}, {t:"a", txt:"Vendor selection confirmation"}, {t:"a", txt:"PO creation / delivery"}],
+    commercial: [{t:"a", txt:"Verbal agreement on commercial terms"}, {t:"a", txt:"Monitor progress; cadence"}, {t:"a", txt:"Escalate / resolve roadblocks"}, {t:"a", txt:"Draft &amp; confirm ramp plan"}],
+    technical:  [{t:"a", txt:"Final solution design review"}, {t:"a", txt:"Security &amp; compliance checks"}, {t:"a", txt:"Performance / integration test"}, {t:"a", txt:"Internal technical sign-off"}],
+    operations: [{t:"a", txt:"MSA + Terms templates"}, {t:"a", txt:"Legal redlines · approve internally"}, {t:"a", txt:"Execute contract (DocuSign)"}, {t:"a", txt:"Upload contract in system"}],
+    agentic:    [{t:"g", id:"handoff"}],
+    systems:    [{t:"a", txt:"Advance SFDC stage to &quot;Agreement&quot;"}, {t:"exit", txt:"Closed / Lost"}, {t:"a", txt:"Closed-Won Booking"}]
   },
   9: {
-    customer:   [{t:"a", txt:"Buyer + procurement complete selection, reward, PO"}],
-    commercial: [{t:"a", txt:"Execute MAP / draft ramp plan"}, {t:"g", id:"handoff"}],
-    operations: [{t:"a", txt:"Legal / contract execution"}],
-    technology: [{t:"a", txt:"Closed / Won booking"}, {t:"g", id:"onboarding"}]
+    customer:   [{t:"a", txt:"Begins implementation"}],
+    commercial: [{t:"a", txt:"Confirm &amp; communicate close readiness"}],
+    operations: [{t:"a", txt:"Handoff to CS / onboarding"}],
+    agentic:    [{t:"g", id:"onboarding"}],
+    technology: [{t:"a", txt:"Closed-Won booking"}]
   }
 };
 
 /* ----------------------- STATE ----------------------- */
 
-const state = {
-  activeStage: 3,
-  filter: "all",
-  tab: "funnel"
-};
+const state = { activeStage: 6, filter: "all", tab: "funnel" };
 
 /* ----------------------- RENDER: FUNNEL ----------------------- */
 
@@ -964,7 +863,7 @@ function renderFunnel() {
   root.innerHTML = STAGES.map(s => {
     const aiCount    = s.aiAgents.length;
     const gleanCount = s.gleanOpps.length;
-    const isGap      = aiCount === 0;
+    const hasAuto    = (SWIMLANE[s.num] && Object.values(SWIMLANE[s.num]).some(arr => arr.some(c => c.t === "auto")));
     return `
       <button class="stage ${s.num === state.activeStage ? "active" : ""}" data-stage="${s.num}">
         <div class="num">${s.num}</div>
@@ -977,6 +876,7 @@ function renderFunnel() {
         <div class="meta">
           ${aiCount ? `<span class="pill ai"><span class="dot"></span>${aiCount} AI</span>` : `<span class="pill gap"><span class="dot"></span>No AI</span>`}
           ${gleanCount ? `<span class="pill glean"><span class="dot"></span>${gleanCount} Glean</span>` : ``}
+          ${hasAuto ? `<span class="pill auto"><span class="dot"></span>Auto opp</span>` : ``}
         </div>
       </button>
     `;
@@ -994,6 +894,7 @@ function renderFunnel() {
 function renderDetail() {
   const s = STAGES.find(x => x.num === state.activeStage);
   const root = document.getElementById("detail");
+
   const aiHtml = s.aiAgents.length
     ? s.aiAgents.map(id => {
         const a = AGENTS[id];
@@ -1003,7 +904,7 @@ function renderDetail() {
           <span class="saves">Saves ${a.saves}</span>
         </div>`;
       }).join("")
-    : `<div class="empty">No AI agent in this stage today — coverage gap.</div>`;
+    : `<div class="empty">No agent in the Agentic lane today — coverage gap.</div>`;
 
   const gleanHtml = s.gleanOpps.length
     ? s.gleanOpps.map(id => {
@@ -1072,10 +973,11 @@ function renderSwimlane() {
   const rows = LANES.map(lane => {
     const cells = STAGES.map(s => {
       const chips = (SWIMLANE[s.num] && SWIMLANE[s.num][lane]) || [];
-      const hasGap = (s.aiAgents.length === 0) && lane !== "systems";
+      const hasGap = (lane === "agentic") && (!s.aiAgents.length);
       const inner = chips.map(c => {
         if (c.t === "a") return `<span class="chip activity">${c.txt}</span>`;
         if (c.t === "d") return `<span class="chip diamond">${c.txt}</span>`;
+        if (c.t === "exit") return `<span class="chip exit">${c.txt}</span>`;
         if (c.t === "ai") {
           const a = AGENTS[c.id];
           return `<span class="chip agent" data-tip-type="ai" data-tip-id="${c.id}">${a.name}</span>`;
@@ -1084,23 +986,25 @@ function renderSwimlane() {
           const g = GLEAN[c.id];
           return `<span class="chip glean" data-tip-type="glean" data-tip-id="${c.id}">${g.title}</span>`;
         }
+        if (c.t === "auto") {
+          const g = GLEAN[c.id];
+          return `<span class="chip auto" data-tip-type="glean" data-tip-id="${c.id}">Place for automation</span>`;
+        }
         return "";
       }).join("");
       return `<div class="cell lane-${lane} ${hasGap ? "has-gap" : ""}">${inner}</div>`;
     }).join("");
-    return `<div class="row-head">${lane}</div>${cells}`;
+    return `<div class="row-head ${lane === "agentic" ? "agentic" : ""}">${lane}</div>${cells}`;
   }).join("");
 
   root.innerHTML = `<div class="grid">${head}${rows}</div>`;
 
-  // hover tooltips
   root.querySelectorAll("[data-tip-type]").forEach(el => {
     el.addEventListener("mouseenter", e => showTip(e, el));
     el.addEventListener("mousemove",  e => moveTip(e));
     el.addEventListener("mouseleave", hideTip);
   });
 
-  // click column header → switch to funnel detail
   root.querySelectorAll(".col-head[data-stage]").forEach(el => {
     el.addEventListener("click", () => {
       state.activeStage = Number(el.dataset.stage);
@@ -1116,9 +1020,9 @@ function renderSwimlane() {
 function renderGleanRoadmap() {
   const root = document.getElementById("opps");
   const ordered = Object.values(GLEAN).sort((a,b) => a.rank - b.rank);
-  root.innerHTML = ordered.map(g => `
+  root.innerHTML = ordered.map((g, i) => `
     <div class="opp ${g.impact} collapsed" data-id="${g.rank}">
-      <h3><span class="rank">${g.rank}</span>${g.title}<span class="impact">${g.impact === "gap" ? "Coverage gap" : g.impact}</span></h3>
+      <h3><span class="rank">${i+1}</span>${g.title}<span class="impact">${g.impact === "gap" ? "Coverage gap" : g.impact}</span></h3>
       <div class="where">${g.where}</div>
       <div class="saves">Saves ${g.saves}</div>
       <div class="body">${g.body}</div>
