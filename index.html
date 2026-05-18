@@ -3,142 +3,400 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sales Process Dashboard — AI & Glean Agent Map</title>
+<title>Sales Process — AI & Glean Co-Pilot Map</title>
 <style>
   :root {
-    --bg: #0b1020;
-    --panel: #121933;
-    --panel-2: #182142;
-    --border: #233066;
-    --text: #e8ecff;
+    --bg: #0a0f24;
+    --bg-2: #0e1530;
+    --panel: #131b3c;
+    --panel-2: #1a2350;
+    --panel-3: #212c63;
+    --border: #2a3676;
+    --border-soft: #1e2858;
+    --text: #eef1ff;
     --muted: #98a2c8;
-    --accent: #7c9cff;
-    --accent-2: #8b5cf6;
-    --green: #34d399;
-    --amber: #fbbf24;
-    --rose: #fb7185;
+    --muted-2: #c2c9eb;
+    --accent: #6ea8ff;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --warn: #fbbf24;
+    --danger: #fb7185;
     --cyan: #22d3ee;
-    --lane-customer: #1e293b;
-    --lane-commercial: #1f2a4a;
-    --lane-technical: #1c2750;
-    --lane-operations: #1a2548;
-    --lane-technology: #181f3e;
-    --lane-systems: #161c38;
-    --existing: rgba(124, 156, 255, 0.18);
-    --existing-border: #7c9cff;
-    --glean: rgba(139, 92, 246, 0.18);
-    --glean-border: #8b5cf6;
+    --existing: rgba(110, 168, 255, 0.18);
+    --existing-border: #6ea8ff;
+    --glean: rgba(167, 139, 250, 0.18);
+    --glean-border: #a78bfa;
+    --gap: rgba(251, 113, 133, 0.16);
+    --gap-border: #fb7185;
+    --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    --radius: 14px;
   }
+
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    background: radial-gradient(1200px 600px at 10% -10%, #1a2358 0%, transparent 60%),
-                radial-gradient(900px 500px at 110% 10%, #2a1a5a 0%, transparent 55%),
-                var(--bg);
+    background:
+      radial-gradient(1100px 600px at 0% -10%, #1c2870 0%, transparent 55%),
+      radial-gradient(900px 500px at 110% 0%, #3a1f7a 0%, transparent 50%),
+      var(--bg);
     color: var(--text);
-    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
+  a { color: var(--accent); text-decoration: none; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  /* ---------- header ---------- */
   header {
-    padding: 28px 32px 8px;
+    padding: 26px 32px 14px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
   }
-  header h1 { margin: 0; font-size: 26px; letter-spacing: -0.01em; }
-  header p { margin: 6px 0 0; color: var(--muted); }
-  .legend { display: flex; gap: 14px; align-items: center; }
-  .legend .item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
-  .swatch {
-    width: 14px; height: 14px; border-radius: 4px; border: 1px solid;
+  header h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: -0.01em;
   }
+  header .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    background: rgba(167,139,250,0.12);
+    border: 1px solid rgba(167,139,250,0.35);
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  header p { margin: 6px 0 0; color: var(--muted); max-width: 720px; }
+
+  .legend {
+    display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  }
+  .legend .item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--muted);
+  }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid; }
   .swatch.existing { background: var(--existing); border-color: var(--existing-border); }
   .swatch.glean    { background: var(--glean);    border-color: var(--glean-border); }
-  .swatch.gap      { background: rgba(251,113,133,0.18); border-color: var(--rose); }
+  .swatch.gap      { background: var(--gap);      border-color: var(--gap-border); }
 
+  /* ---------- KPI strip ---------- */
   .kpis {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: 12px;
-    padding: 16px 32px 0;
+    padding: 8px 32px 0;
   }
   .kpi {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
     padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
   }
-  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .kpi .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
-  .kpi .sub   { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .kpi::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);
+    pointer-events: none;
+  }
+  .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; }
+  .kpi .value { font-size: 26px; font-weight: 700; margin-top: 4px; letter-spacing: -0.01em; }
+  .kpi .sub   { color: var(--muted-2); font-size: 12px; margin-top: 2px; }
+  .kpi.accent { border-left: 3px solid var(--accent); }
+  .kpi.purple { border-left: 3px solid var(--accent-2); }
+  .kpi.green  { border-left: 3px solid var(--accent-3); }
+  .kpi.warn   { border-left: 3px solid var(--warn); }
+  .kpi.danger { border-left: 3px solid var(--danger); }
 
-  section { padding: 20px 32px; }
-  h2 { font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; font-weight: 600; }
+  /* ---------- section frame ---------- */
+  section { padding: 22px 32px; }
+  section h2 {
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 12px; font-weight: 700;
+  }
+  section .sub {
+    color: var(--muted); margin: -4px 0 14px; font-size: 13px;
+  }
 
-  /* Swimlane grid */
+  /* ---------- tabs ---------- */
+  .tabs {
+    display: flex; gap: 6px; padding: 0 32px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .tab {
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    padding: 12px 14px;
+    border-bottom: 2px solid transparent;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab .count {
+    display: inline-block;
+    font-size: 11px;
+    background: var(--panel-2);
+    padding: 1px 7px;
+    border-radius: 10px;
+    margin-left: 6px;
+    color: var(--muted-2);
+  }
+
+  /* ---------- funnel ---------- */
+  .funnel {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    align-items: stretch;
+  }
+  .stage {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 12px;
+    text-align: left;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 170px;
+  }
+  .stage:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  .stage.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(110,168,255,0.35), var(--shadow);
+  }
+  .stage .num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    color: var(--accent);
+  }
+  .stage.active .num { background: var(--accent); color: #0a0f24; border-color: var(--accent); }
+  .stage .sales-name { font-weight: 700; font-size: 14px; letter-spacing: -0.005em; }
+  .stage .formal { color: var(--muted); font-size: 11px; }
+  .stage .meta {
+    display: flex; gap: 8px; align-items: center;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--panel-3);
+    color: var(--muted-2);
+    border: 1px solid var(--border-soft);
+    font-weight: 600;
+  }
+  .pill.ai    { background: var(--existing); border-color: var(--existing-border); color: #d6e2ff; }
+  .pill.glean { background: var(--glean);    border-color: var(--glean-border);    color: #e6dcff; }
+  .pill.gap   { background: var(--gap);      border-color: var(--gap-border);      color: #ffd1d9; }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.8; }
+
+  .stage .conv {
+    font-size: 11px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .stage .conv .bar {
+    flex: 1; height: 4px; border-radius: 4px; background: var(--panel-3); overflow: hidden;
+  }
+  .stage .conv .bar > span {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .arrow {
+    display: none; /* compact mode keeps cards as the funnel */
+  }
+
+  /* ---------- detail panel ---------- */
+  .detail {
+    margin-top: 16px;
+    background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: 18px;
+  }
+  .detail .head {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 12px;
+  }
+  .detail .head .num {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--accent); color: #0a0f24;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px;
+  }
+  .detail .head h3 { margin: 0; font-size: 18px; }
+  .detail .head .formal { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .detail .head .stats { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .col h4 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .col p { margin: 0 0 10px; color: var(--muted-2); }
+  .col ul { margin: 0; padding-left: 18px; color: var(--muted-2); }
+  .col ul li { margin: 4px 0; }
+
+  .agent-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .agent-row {
+    background: var(--panel);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--existing-border);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+  .agent-row.glean { border-left-color: var(--glean-border); }
+  .agent-row .name { font-weight: 700; }
+  .agent-row .role { color: var(--muted-2); margin-top: 2px; }
+  .agent-row .saves {
+    margin-top: 4px;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-3);
+  }
+  .agent-row.glean .saves { color: var(--accent-2); }
+  .empty {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 12px;
+    padding: 8px 10px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+
+  /* ---------- swimlane ---------- */
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;
+  }
+  .toolbar .filter-group {
+    display: inline-flex; background: var(--panel); border: 1px solid var(--border-soft);
+    border-radius: 10px; padding: 3px;
+  }
+  .toolbar .filter-group button {
+    background: transparent; border: 0; color: var(--muted); padding: 6px 10px;
+    border-radius: 7px; font-size: 12px; font-weight: 600;
+  }
+  .toolbar .filter-group button.active {
+    background: var(--panel-3); color: var(--text);
+  }
+  .toolbar .hint { color: var(--muted); font-size: 12px; margin-left: auto; }
+
   .pipeline {
     background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
     overflow: auto;
   }
   .grid {
     display: grid;
-    grid-template-columns: 140px repeat(9, minmax(170px, 1fr));
+    grid-template-columns: 130px repeat(9, minmax(170px, 1fr));
     min-width: 1500px;
   }
   .col-head {
     background: var(--panel-2);
-    border-bottom: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    padding: 12px 10px;
+    border-bottom: 1px solid var(--border-soft);
+    border-right: 1px solid var(--border-soft);
+    padding: 10px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
-    color: #cfd6ff;
+    color: #d6dbf5;
+    cursor: pointer;
+    transition: background 0.15s ease;
   }
-  .col-head.first { border-top-left-radius: 14px; }
-  .col-head.last  { border-top-right-radius: 14px; border-right: 0; }
+  .col-head:hover { background: var(--panel-3); }
+  .col-head.active { background: var(--panel-3); color: var(--text); }
+  .col-head.first { border-top-left-radius: var(--radius); cursor: default; }
+  .col-head.last  { border-top-right-radius: var(--radius); border-right: 0; }
+  .col-head .stage-num {
+    display: inline-block; width: 20px; height: 20px; line-height: 20px;
+    border-radius: 50%; background: var(--accent); color: #0a0f24;
+    font-weight: 800; font-size: 11px; margin-right: 6px;
+  }
   .row-head {
     background: var(--panel-2);
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
     padding: 14px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #cfd6ff;
+    font-size: 11px;
+    font-weight: 700;
+    color: #d6dbf5;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     text-align: center;
-    min-height: 110px;
+    min-height: 100px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
   .cell {
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 8px;
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 7px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-height: 110px;
+    gap: 5px;
+    min-height: 100px;
+    transition: background 0.15s ease;
   }
   .cell.last { border-right: 0; }
-  .cell.lane-customer    { background: var(--lane-customer); }
-  .cell.lane-commercial  { background: var(--lane-commercial); }
-  .cell.lane-technical   { background: var(--lane-technical); }
-  .cell.lane-operations  { background: var(--lane-operations); }
-  .cell.lane-technology  { background: var(--lane-technology); }
-  .cell.lane-systems     { background: var(--lane-systems); }
+  .cell.lane-customer    { background: #16213f; }
+  .cell.lane-commercial  { background: #1a234a; }
+  .cell.lane-technical   { background: #1c2552; }
+  .cell.lane-operations  { background: #1a234c; }
+  .cell.lane-technology  { background: #181f42; }
+  .cell.lane-systems     { background: #161c38; }
+  .col-active .cell, .col-active .col-head { background-color: #25316d !important; }
 
   .chip {
     font-size: 11px;
-    padding: 4px 8px;
+    padding: 5px 8px;
     border-radius: 6px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-soft);
     background: rgba(255,255,255,0.03);
     color: #d6dbf5;
     line-height: 1.25;
+    position: relative;
   }
   .chip.activity { background: rgba(255,255,255,0.04); }
   .chip.diamond {
@@ -150,24 +408,25 @@
     background: var(--existing);
     border: 1px solid var(--existing-border);
     color: #cfd9ff;
-    font-weight: 600;
-    position: relative;
+    font-weight: 700;
+    cursor: help;
   }
   .chip.agent::before {
     content: "AI";
     font-size: 9px;
     background: var(--accent);
-    color: #0b1020;
+    color: #0a0f24;
     padding: 1px 4px;
     border-radius: 4px;
     margin-right: 6px;
-    font-weight: 700;
+    font-weight: 800;
   }
   .chip.glean {
     background: var(--glean);
     border: 1px dashed var(--glean-border);
-    color: #e0d4ff;
-    font-weight: 600;
+    color: #e6dcff;
+    font-weight: 700;
+    cursor: help;
   }
   .chip.glean::before {
     content: "Glean";
@@ -177,68 +436,122 @@
     padding: 1px 4px;
     border-radius: 4px;
     margin-right: 6px;
-    font-weight: 700;
+    font-weight: 800;
   }
+  .hide-ai .chip.agent { display: none; }
+  .hide-glean .chip.glean { display: none; }
+  .show-gaps .cell:not(.has-gap) { opacity: 0.25; }
 
-  /* Glean opportunities */
+  /* ---------- tooltip ---------- */
+  .tip {
+    position: fixed;
+    z-index: 1000;
+    background: #0a0f24;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-shadow: var(--shadow);
+    max-width: 280px;
+    font-size: 12px;
+    color: var(--text);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
+  }
+  .tip.show { opacity: 1; transform: translateY(0); }
+  .tip .name { font-weight: 700; margin-bottom: 4px; }
+  .tip .role { color: var(--muted-2); }
+  .tip .saves {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-3);
+  }
+  .tip.glean .saves { color: var(--accent-2); }
+
+  /* ---------- Glean opportunities ---------- */
   .opps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 12px;
   }
   .opp {
-    background: var(--panel);
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+    border: 1px solid var(--border-soft);
     border-left: 4px solid var(--accent-2);
-    border-radius: 12px;
-    padding: 14px 16px;
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
   }
-  .opp.high   { border-left-color: var(--rose); }
-  .opp.medium { border-left-color: var(--amber); }
-  .opp.low    { border-left-color: var(--cyan); }
-  .opp h3 { margin: 0 0 4px; font-size: 14px; }
-  .opp .where { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
-  .opp .impact {
-    display: inline-block;
+  .opp:hover { transform: translateY(-2px); border-left-color: var(--accent); }
+  .opp.high   { border-left-color: var(--danger); }
+  .opp.medium { border-left-color: var(--warn); }
+  .opp.gap    { border-left-color: var(--cyan); }
+  .opp .rank {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--panel-3); color: var(--text);
+    font-weight: 800; font-size: 12px;
+    margin-right: 10px;
+  }
+  .opp h3 { margin: 0 0 4px; font-size: 14px; display: flex; align-items: center; }
+  .opp h3 .impact {
+    margin-left: auto;
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
+    padding: 2px 7px;
+    border-radius: 5px;
   }
-  .impact.high   { background: rgba(251,113,133,0.18); color: var(--rose); }
-  .impact.medium { background: rgba(251,191,36,0.18); color: var(--amber); }
-  .impact.low    { background: rgba(34,211,238,0.18);  color: var(--cyan); }
-  .opp ul { margin: 6px 0 0; padding-left: 18px; color: #cfd6ff; }
-  .opp ul li { margin: 3px 0; }
+  .opp.high   .impact { background: rgba(251,113,133,0.18); color: var(--danger); }
+  .opp.medium .impact { background: rgba(251,191,36,0.18); color: var(--warn); }
+  .opp.gap    .impact { background: rgba(34,211,238,0.18);  color: var(--cyan); }
+  .opp .where { color: var(--muted); font-size: 12px; margin: 2px 0 8px; }
+  .opp .saves {
+    color: var(--accent-3);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .opp .body { color: var(--muted-2); font-size: 13px; }
+  .opp .body p { margin: 6px 0; }
+  .opp .body ul { margin: 4px 0 0; padding-left: 18px; }
+  .opp.collapsed .body { display: none; }
+  .opp .expand {
+    display: inline-block; margin-top: 8px;
+    color: var(--accent); font-size: 12px; font-weight: 600;
+  }
 
-  /* Agent roster */
-  .roster {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 10px;
+  footer {
+    color: var(--muted); padding: 12px 32px 32px; font-size: 12px;
+    border-top: 1px solid var(--border-soft);
+    margin-top: 8px;
   }
-  .agent-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-  }
-  .agent-card .name { font-weight: 600; font-size: 13px; }
-  .agent-card .stage { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .agent-card .role { font-size: 12px; margin-top: 6px; color: #d6dbf5; }
-  .agent-card.unnamed .name { color: var(--amber); }
 
-  footer { color: var(--muted); padding: 8px 32px 32px; font-size: 12px; }
+  /* ---------- tab panels ---------- */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  @media (max-width: 1100px) {
+    .funnel { grid-template-columns: repeat(3, 1fr); }
+    .detail { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>Sales Process — AI & Glean Agent Opportunity Map</h1>
-    <p>Visualization of the end-to-end pipeline with existing agent coverage and recommended Glean agent placements.</p>
+    <span class="tag">Sales Process</span>
+    <h1>From cold account to closed deal — your AI co-pilot map</h1>
+    <p>Click any stage to see who does what, which AI agents help today, and where Glean would unlock the next step-change.</p>
   </div>
   <div class="legend">
     <div class="item"><span class="swatch existing"></span> Existing AI agent</div>
@@ -248,290 +561,642 @@
 </header>
 
 <div class="kpis">
-  <div class="kpi"><div class="label">Pipeline stages</div><div class="value">9</div><div class="sub">ABX → Onboarding</div></div>
-  <div class="kpi"><div class="label">Swimlanes</div><div class="value">6</div><div class="sub">Customer, Commercial, Technical, Ops, Tech, Systems</div></div>
-  <div class="kpi"><div class="label">Existing AI agents</div><div class="value">7</div><div class="sub">Enzo, Jarvis, Reginald, Jeeves, Lurch + 2 unnamed</div></div>
-  <div class="kpi"><div class="label">Recommended Glean agents</div><div class="value">8</div><div class="sub">Across 7 of 9 stages</div></div>
-  <div class="kpi"><div class="label">Coverage gaps</div><div class="value">2</div><div class="sub">Account Routing, Onboarding</div></div>
+  <div class="kpi accent">
+    <div class="label">Pipeline stages</div>
+    <div class="value">9</div>
+    <div class="sub">Numbered &amp; clickable</div>
+  </div>
+  <div class="kpi green">
+    <div class="label">Existing AI agents</div>
+    <div class="value">7</div>
+    <div class="sub">5 named &middot; 2 to be named</div>
+  </div>
+  <div class="kpi purple">
+    <div class="label">Glean opportunities</div>
+    <div class="value">8</div>
+    <div class="sub">Across 7 of 9 stages</div>
+  </div>
+  <div class="kpi danger">
+    <div class="label">AI coverage gaps</div>
+    <div class="value">2</div>
+    <div class="sub">Account Routing &middot; Onboarding</div>
+  </div>
+  <div class="kpi warn">
+    <div class="label">Est. seller time freed</div>
+    <div class="value">~6 hr</div>
+    <div class="sub">Per qualified deal (illustrative)</div>
+  </div>
 </div>
 
-<section>
-  <h2>Pipeline overview</h2>
-  <div class="pipeline">
-    <div class="grid">
-      <!-- header row -->
-      <div class="col-head first"></div>
-      <div class="col-head">ABX Campaign</div>
-      <div class="col-head">Account Routing & Sales Assignment</div>
-      <div class="col-head">Prospecting Hypothesis</div>
-      <div class="col-head">Outreach & Early Exploration</div>
-      <div class="col-head">Opp Creation & Qualification</div>
-      <div class="col-head">Technical Solution Selling</div>
-      <div class="col-head">Customer Evaluation</div>
-      <div class="col-head">Vendor Selection & Deal Closure</div>
-      <div class="col-head last">Onboarding</div>
+<div class="tabs" role="tablist">
+  <button class="tab active" data-tab="funnel">Pipeline funnel <span class="count">9</span></button>
+  <button class="tab" data-tab="swimlane">Swimlane view</button>
+  <button class="tab" data-tab="glean">Glean roadmap <span class="count">8</span></button>
+</div>
 
-      <!-- CUSTOMER lane -->
-      <div class="row-head">Customer</div>
-      <div class="cell lane-customer"><span class="chip activity">Interaction with Marketing</span><span class="chip activity">Customer conducts research</span></div>
-      <div class="cell lane-customer"></div>
-      <div class="cell lane-customer"></div>
-      <div class="cell lane-customer"><span class="chip diamond">Interested?</span><span class="chip activity">Intro call with customer</span></div>
-      <div class="cell lane-customer"><span class="chip activity">Customer agrees to evaluate vendor solution</span></div>
-      <div class="cell lane-customer"><span class="chip activity">Customer connects with AE</span><span class="chip activity">Discovery workshops</span></div>
-      <div class="cell lane-customer"><span class="chip activity">Disqualifies on budget</span><span class="chip activity">Champion sells internally</span><span class="chip activity">Pitch to buyer</span></div>
-      <div class="cell lane-customer"><span class="chip activity">Evaluates options</span><span class="chip diamond">Is Vonage best-fit solution?</span></div>
-      <div class="cell lane-customer last"><span class="chip activity">Buyer & procurement complete selection, reward, PO</span></div>
-
-      <!-- COMMERCIAL lane -->
-      <div class="row-head">Commercial</div>
-      <div class="cell lane-commercial"><span class="chip activity">Run Campaign</span></div>
-      <div class="cell lane-commercial"></div>
-      <div class="cell lane-commercial">
-        <span class="chip agent">Enzo · Account Intelligence</span>
-        <span class="chip agent">Jarvis · Prospecting Agent</span>
-        <span class="chip activity">Devise prospecting hypothesis</span>
-        <span class="chip glean">Account 360 (CRM + email + Slack + Gong)</span>
-      </div>
-      <div class="cell lane-commercial">
-        <span class="chip activity">Conduct outreach</span>
-        <span class="chip activity">Explore the pain</span>
-        <span class="chip glean">Content & talk-track retrieval</span>
-      </div>
-      <div class="cell lane-commercial">
-        <span class="chip activity">Meet opp creation requirements</span>
-        <span class="chip diamond">Opp qualification</span>
-        <span class="chip activity">AE accepts opp</span>
-        <span class="chip activity">Discovery workshops</span>
-      </div>
-      <div class="cell lane-commercial">
-        <span class="chip activity">Outline business case, ROI/value estimates</span>
-      </div>
-      <div class="cell lane-commercial">
-        <span class="chip activity">Validate champion</span>
-        <span class="chip activity">Understand buying criteria & process</span>
-        <span class="chip activity">Uncover competition</span>
-        <span class="chip glean">Competitive battle-card retrieval</span>
-      </div>
-      <div class="cell lane-commercial">
-        <span class="chip activity">Map procurement process</span>
-        <span class="chip activity">Commercial & contract terms</span>
-      </div>
-      <div class="cell lane-commercial last">
-        <span class="chip activity">Execute mutual action plan / draft ramp plan</span>
-        <span class="chip glean">Post-sale handoff brief generator</span>
-      </div>
-
-      <!-- TECHNICAL lane -->
-      <div class="row-head">Technical</div>
-      <div class="cell lane-technical"></div>
-      <div class="cell lane-technical"></div>
-      <div class="cell lane-technical"></div>
-      <div class="cell lane-technical">
-        <span class="chip agent">Outreach Strategist (unnamed)</span>
-      </div>
-      <div class="cell lane-technical">
-        <span class="chip agent">Reginald · Pain → Solution Translator</span>
-        <span class="chip activity">Discovery workshops</span>
-        <span class="chip glean">Similar-customer pain pattern search</span>
-      </div>
-      <div class="cell lane-technical">
-        <span class="chip activity">Technical workshops</span>
-        <span class="chip activity">Demo / POC</span>
-        <span class="chip activity">Work through technical aspects of design process</span>
-        <span class="chip agent">SWOT + Quick Disqualification (unnamed)</span>
-        <span class="chip glean">Technical docs / architecture / security RAG</span>
-      </div>
-      <div class="cell lane-technical">
-        <span class="chip agent">Jeeves · Persuasive Selling</span>
-        <span class="chip activity">Validate competitive position</span>
-        <span class="chip activity">Sell to & strengthen buyer perception</span>
-      </div>
-      <div class="cell lane-technical">
-        <span class="chip activity">Technical validation complete</span>
-      </div>
-      <div class="cell lane-technical last"></div>
-
-      <!-- OPERATIONS lane -->
-      <div class="row-head">Operations</div>
-      <div class="cell lane-operations"><span class="chip activity">Plan ABX campaign</span></div>
-      <div class="cell lane-operations"></div>
-      <div class="cell lane-operations"><span class="chip activity">Territory management & ROE definition</span></div>
-      <div class="cell lane-operations"><span class="chip activity">Content committee</span><span class="chip activity">Opt-out management</span></div>
-      <div class="cell lane-operations"><span class="chip activity">Lead nurture</span><span class="chip activity">Opportunity definition</span></div>
-      <div class="cell lane-operations"></div>
-      <div class="cell lane-operations"></div>
-      <div class="cell lane-operations">
-        <span class="chip agent">Lurch · Mutual Action Plan Builder</span>
-        <span class="chip activity">Commercial & contract terms</span>
-      </div>
-      <div class="cell lane-operations last">
-        <span class="chip activity">Legal / contract execution & final confirmation</span>
-      </div>
-
-      <!-- TECHNOLOGY lane -->
-      <div class="row-head">Technology</div>
-      <div class="cell lane-technology"><span class="chip diamond">SQAT</span></div>
-      <div class="cell lane-technology">
-        <span class="chip activity">Account match & creation</span>
-        <span class="chip activity">Priority level & routing</span>
-        <span class="chip glean">Routing rules & territory lookup agent</span>
-      </div>
-      <div class="cell lane-technology"></div>
-      <div class="cell lane-technology"><span class="chip activity">Source prospects in the system</span></div>
-      <div class="cell lane-technology"><span class="chip activity">Open opp in SFDC</span><span class="chip activity">Submit opp to AE</span></div>
-      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
-      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
-      <div class="cell lane-technology"><span class="chip activity">Closed / Lost</span></div>
-      <div class="cell lane-technology last">
-        <span class="chip activity">Closed / Won booking</span>
-        <span class="chip glean">Onboarding playbook & ramp-plan agent</span>
-      </div>
-
-      <!-- SYSTEMS lane -->
-      <div class="row-head">Systems</div>
-      <div class="cell lane-systems"><span class="chip activity">6sense · LinkedIn · Marketo</span></div>
-      <div class="cell lane-systems"><span class="chip activity">SFDC · LeanData · Clearbit</span></div>
-      <div class="cell lane-systems"><span class="chip activity">SFDC · Outreach · ZoomInfo</span></div>
-      <div class="cell lane-systems"><span class="chip activity">Outreach · Gong · SFDC</span></div>
-      <div class="cell lane-systems"><span class="chip activity">SFDC · Slack</span></div>
-      <div class="cell lane-systems"></div>
-      <div class="cell lane-systems"></div>
-      <div class="cell lane-systems"></div>
-      <div class="cell lane-systems last"></div>
-    </div>
-  </div>
+<!-- =============== FUNNEL TAB =============== -->
+<section class="panel active" data-panel="funnel">
+  <h2>The deal journey</h2>
+  <p class="sub">Each step is one click. Numbers are illustrative — replace with your own pipeline math.</p>
+  <div class="funnel" id="funnel"></div>
+  <div class="detail" id="detail"></div>
 </section>
 
-<section>
-  <h2>Existing AI agent roster</h2>
-  <div class="roster">
-    <div class="agent-card">
-      <div class="name">Enzo</div>
-      <div class="stage">Prospecting Hypothesis · Commercial</div>
-      <div class="role">Account intelligence — builds account-level context for prospecting.</div>
+<!-- =============== SWIMLANE TAB =============== -->
+<section class="panel" data-panel="swimlane">
+  <div class="toolbar">
+    <div class="filter-group" id="laneFilter">
+      <button data-filter="all" class="active">Show everything</button>
+      <button data-filter="ai">Existing AI only</button>
+      <button data-filter="glean">Glean only</button>
+      <button data-filter="gaps">Coverage gaps</button>
     </div>
-    <div class="agent-card">
-      <div class="name">Jarvis</div>
-      <div class="stage">Prospecting Hypothesis · Commercial</div>
-      <div class="role">Prospecting agent — generates and prioritises target contacts.</div>
-    </div>
-    <div class="agent-card unnamed">
-      <div class="name">Outreach Strategist (unnamed)</div>
-      <div class="stage">Outreach & Early Exploration · Technical</div>
-      <div class="role">Designs the technical-flavoured outreach motion.</div>
-    </div>
-    <div class="agent-card">
-      <div class="name">Reginald</div>
-      <div class="stage">Opp Creation & Qualification · Technical</div>
-      <div class="role">Pain-to-solution translator — converts discovery into a solution shape.</div>
-    </div>
-    <div class="agent-card unnamed">
-      <div class="name">SWOT + Quick Disqualification (unnamed)</div>
-      <div class="stage">Technical Solution Selling · Technical</div>
-      <div class="role">Competitive SWOT and fast disqualification.</div>
-    </div>
-    <div class="agent-card">
-      <div class="name">Jeeves</div>
-      <div class="stage">Customer Evaluation · Technical</div>
-      <div class="role">Persuasive selling — strengthens buyer perception during evaluation.</div>
-    </div>
-    <div class="agent-card">
-      <div class="name">Lurch</div>
-      <div class="stage">Vendor Selection & Deal Closure · Operations</div>
-      <div class="role">Mutual action plan builder.</div>
-    </div>
+    <div class="hint">Hover any agent chip for what it does and time saved. Click a column header to filter the funnel.</div>
   </div>
+  <div class="pipeline" id="pipeline"></div>
 </section>
 
-<section>
-  <h2>Where Glean agents would be most helpful</h2>
-  <p style="color: var(--muted); margin-top: -4px;">
-    Glean shines where work depends on stitching internal knowledge across CRM, email, Slack, Gong, docs, wikis and tickets.
-    The placements below are ranked by expected leverage.
-  </p>
-  <div class="opps">
-
-    <div class="opp high">
-      <h3>1. Account 360 / Pre-call brief <span class="impact high">High</span></h3>
-      <div class="where">Stage: Prospecting Hypothesis → Outreach · augments Enzo & Jarvis</div>
-      <ul>
-        <li>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</li>
-        <li>Cuts AE/SDR prep time and surfaces "who has touched this account before" instantly.</li>
-        <li>Closes a real gap: Enzo/Jarvis build hypotheses; Glean supplies the lived institutional memory.</li>
-      </ul>
-    </div>
-
-    <div class="opp high">
-      <h3>2. Technical docs / architecture / security RAG <span class="impact high">High</span></h3>
-      <div class="where">Stage: Technical Solution Selling · Technical lane</div>
-      <ul>
-        <li>SE-grade answers from product docs, runbooks, KB, RFP responses, security & compliance library.</li>
-        <li>Drops POC and security-review cycle time; reduces "let me get back to you" loops.</li>
-        <li>Pairs with the SWOT/disqualification agent to back claims with citations.</li>
-      </ul>
-    </div>
-
-    <div class="opp high">
-      <h3>3. Competitive battle-card retrieval <span class="impact high">High</span></h3>
-      <div class="where">Stage: Customer Evaluation · Commercial lane · augments Jeeves</div>
-      <ul>
-        <li>Pulls current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</li>
-        <li>Keeps Jeeves' persuasion grounded in the latest field intelligence, not last quarter's deck.</li>
-      </ul>
-    </div>
-
-    <div class="opp medium">
-      <h3>4. Similar-customer pain-pattern search <span class="impact medium">Medium</span></h3>
-      <div class="where">Stage: Opp Creation & Qualification · Technical lane · augments Reginald</div>
-      <ul>
-        <li>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</li>
-        <li>Feeds Reginald better analogues so the pain→solution translation is grounded in real prior deals.</li>
-      </ul>
-    </div>
-
-    <div class="opp medium">
-      <h3>5. Content & talk-track retrieval for outreach <span class="impact medium">Medium</span></h3>
-      <div class="where">Stage: Outreach & Early Exploration · Commercial lane</div>
-      <ul>
-        <li>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain.</li>
-        <li>Reduces reliance on tribal knowledge of "which deck do I send?"</li>
-      </ul>
-    </div>
-
-    <div class="opp medium">
-      <h3>6. Post-sale handoff brief generator <span class="impact medium">Medium</span></h3>
-      <div class="where">Stage: Vendor Selection & Deal Closure → Onboarding · Commercial lane</div>
-      <ul>
-        <li>Assembles a handoff doc from the deal record: pains, success criteria, technical context, stakeholders, MAP.</li>
-        <li>Reduces dropped context between AE/SE and CS/onboarding teams.</li>
-      </ul>
-    </div>
-
-    <div class="opp low">
-      <h3>7. Routing rules & territory lookup <span class="impact low">Coverage gap</span></h3>
-      <div class="where">Stage: Account Routing & Sales Assignment · Technology lane</div>
-      <ul>
-        <li>Today: no AI in this stage. Glean can answer "who owns this account / what's the ROE here?" from policy docs and SFDC.</li>
-        <li>Low-effort, high-frequency time-saver for SDRs and ops.</li>
-      </ul>
-    </div>
-
-    <div class="opp low">
-      <h3>8. Onboarding playbook & ramp-plan agent <span class="impact low">Coverage gap</span></h3>
-      <div class="where">Stage: Onboarding · Technology lane</div>
-      <ul>
-        <li>Today: no AI in this stage. Glean can surface the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</li>
-        <li>Closes the last-mile gap after Lurch's MAP execution.</li>
-      </ul>
-    </div>
-
-  </div>
+<!-- =============== GLEAN ROADMAP TAB =============== -->
+<section class="panel" data-panel="glean">
+  <h2>Glean roadmap — ranked by leverage</h2>
+  <p class="sub">Click any card to expand. Impact band, stage, and estimated time saved per deal shown for each.</p>
+  <div class="opps" id="opps"></div>
 </section>
 
 <footer>
-  Existing agents reproduced from the Lucid chart. Glean placements are recommendations, not committed scope.
+  Stage flow reproduced from the Lucid swimlane. Numbers (conversion, time saved) are illustrative starting points — swap in your team's real data.
 </footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+/* ----------------------- DATA ----------------------- */
+
+const STAGES = [
+  {
+    num: 1,
+    salesName: "Spark interest",
+    formal: "ABX Campaign",
+    blurb: "Marketing warms up priority accounts before sales touches them.",
+    customer: ["Engages with ads, content, events", "Conducts independent research"],
+    internal: ["Plan the ABX campaign", "Run the campaign", "Watch engagement signals (SQAT scoring)"],
+    systems: ["6sense", "LinkedIn", "Marketo"],
+    convPct: 100,
+    volume: "1,000 target accounts",
+    days: "Continuous",
+    aiAgents: [],
+    gleanOpps: []
+  },
+  {
+    num: 2,
+    salesName: "Route to seller",
+    formal: "Account Routing & Sales Assignment",
+    blurb: "Account is matched, scored, and routed to the right rep.",
+    customer: [],
+    internal: ["Account match & creation", "Priority level & routing", "Territory + ROE check"],
+    systems: ["SFDC", "LeanData"],
+    convPct: 25,
+    volume: "~250 routed accounts",
+    days: "1–2 days",
+    aiAgents: [],
+    gleanOpps: ["routing"]
+  },
+  {
+    num: 3,
+    salesName: "Build the play",
+    formal: "Prospecting Hypothesis",
+    blurb: "Rep builds a hypothesis: who, why now, what hook.",
+    customer: [],
+    internal: ["Devise prospecting hypothesis", "Identify buying committee", "Pick the hook"],
+    systems: ["SFDC", "ZoomInfo", "Outreach"],
+    convPct: 20,
+    volume: "~200 hypotheses",
+    days: "Same day",
+    aiAgents: ["enzo", "jarvis"],
+    gleanOpps: ["account360"]
+  },
+  {
+    num: 4,
+    salesName: "First conversations",
+    formal: "Outreach & Early Exploration",
+    blurb: "Multi-touch outreach until you earn the first real conversation.",
+    customer: ["Decides if interested", "Joins intro call"],
+    internal: ["Conduct outreach", "Explore the pain", "Manage opt-outs"],
+    systems: ["Outreach", "Gong"],
+    convPct: 10,
+    volume: "~100 conversations",
+    days: "2–3 weeks",
+    aiAgents: ["outreach"],
+    gleanOpps: ["content"]
+  },
+  {
+    num: 5,
+    salesName: "Qualify the opp",
+    formal: "Opp Creation & Qualification",
+    blurb: "Convert conversation into a real, qualified opportunity.",
+    customer: ["Agrees to evaluate solution"],
+    internal: ["Meet opp creation requirements", "AE accepts opp", "Run discovery workshops"],
+    systems: ["SFDC", "Slack"],
+    convPct: 5,
+    volume: "~50 qualified opps",
+    days: "1–2 weeks",
+    aiAgents: ["reginald"],
+    gleanOpps: ["painpattern"]
+  },
+  {
+    num: 6,
+    salesName: "Win the technical decision",
+    formal: "Technical Solution Selling",
+    blurb: "Prove the solution works for them: workshops, demos, POC, business case.",
+    customer: ["Champion sells internally", "May disqualify on budget"],
+    internal: ["Technical workshops & demos / POC", "Outline business case + ROI", "Validate champion"],
+    systems: ["SFDC", "Slack", "Internal docs"],
+    convPct: 3,
+    volume: "~30 active POCs",
+    days: "3–6 weeks",
+    aiAgents: ["swot"],
+    gleanOpps: ["techdocs"]
+  },
+  {
+    num: 7,
+    salesName: "Win the bake-off",
+    formal: "Customer Evaluation",
+    blurb: "Buyer compares vendors. You sharpen positioning and uncover competition.",
+    customer: ["Evaluates options", "Picks best-fit"],
+    internal: ["Validate competitive position", "Uncover competition", "Pitch to buyer"],
+    systems: ["SFDC", "Battle cards"],
+    convPct: 2,
+    volume: "~20 in eval",
+    days: "2–4 weeks",
+    aiAgents: ["jeeves"],
+    gleanOpps: ["battlecards"]
+  },
+  {
+    num: 8,
+    salesName: "Close & sign",
+    formal: "Vendor Selection & Deal Closure",
+    blurb: "Selection, procurement, legal — get the paper signed.",
+    customer: ["Procurement runs selection process", "Issues PO"],
+    internal: ["Map procurement process", "Commercial & contract terms", "Legal execution"],
+    systems: ["SFDC", "CLM", "DocuSign"],
+    convPct: 1.2,
+    volume: "~12 closed",
+    days: "3–6 weeks",
+    aiAgents: ["lurch"],
+    gleanOpps: ["handoff"]
+  },
+  {
+    num: 9,
+    salesName: "Hand off to launch",
+    formal: "Onboarding",
+    blurb: "Bridge to CS / onboarding so the customer ramps fast.",
+    customer: ["Begins implementation"],
+    internal: ["Execute mutual action plan", "Draft ramp plan", "Closed-won booking"],
+    systems: ["SFDC", "Gainsight", "Internal playbooks"],
+    convPct: 1.2,
+    volume: "~12 onboarded",
+    days: "Ongoing",
+    aiAgents: [],
+    gleanOpps: ["onboarding"]
+  }
+];
+
+const AGENTS = {
+  enzo: {
+    name: "Enzo",
+    role: "Account Intelligence — builds a fact sheet on the account: tech stack, hiring, news, org chart.",
+    saves: "~45 min per account",
+    lane: "commercial"
+  },
+  jarvis: {
+    name: "Jarvis",
+    role: "Prospecting Agent — picks the right 5–8 contacts to target based on ICP and recent buying signals.",
+    saves: "~30 min per account",
+    lane: "commercial"
+  },
+  outreach: {
+    name: "Outreach Strategist (to be named)",
+    role: "Drafts the multi-touch outreach sequence — emails, LinkedIn, call scripts — tailored to the account.",
+    saves: "~1 hr per account",
+    lane: "technical",
+    unnamed: true
+  },
+  reginald: {
+    name: "Reginald",
+    role: "Pain → Solution Translator — turns discovery notes into a tailored solution narrative & value hypothesis.",
+    saves: "~2 hr per opp",
+    lane: "technical"
+  },
+  swot: {
+    name: "SWOT + Quick Disqualification (to be named)",
+    role: "Scores deal viability and flags red flags early so you don't burn cycles on bad fits.",
+    saves: "Avoids ~10 hr on dead deals",
+    lane: "technical",
+    unnamed: true
+  },
+  jeeves: {
+    name: "Jeeves",
+    role: "Persuasive Selling — generates objection handling and persuasive narratives based on competitive context.",
+    saves: "~1.5 hr per eval",
+    lane: "technical"
+  },
+  lurch: {
+    name: "Lurch",
+    role: "Mutual Action Plan Builder — generates the MAP with stakeholders, milestones, and dates.",
+    saves: "~2 hr per closing deal",
+    lane: "operations"
+  }
+};
+
+const GLEAN = {
+  account360: {
+    rank: 1, impact: "high",
+    title: "Account 360 / pre-call brief",
+    where: "Stage 3 Build the play → Stage 4 First conversations · augments Enzo & Jarvis",
+    saves: "~30 min before every call",
+    lane: "commercial",
+    body: `<p>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</p>
+           <ul><li>Cuts SDR/AE prep time and surfaces "who has touched this account before" instantly.</li>
+               <li>Closes a real gap: Enzo/Jarvis build hypotheses; Glean supplies the lived institutional memory.</li></ul>`
+  },
+  techdocs: {
+    rank: 2, impact: "high",
+    title: "Technical docs / security RAG",
+    where: "Stage 6 Win the technical decision · Technical lane",
+    saves: "2–4 hr per POC and per security review",
+    lane: "technical",
+    body: `<p>SE-grade answers from product docs, runbooks, KB, RFP responses and the security &amp; compliance library.</p>
+           <ul><li>Drops POC and security-review cycle time; reduces "let me get back to you" loops.</li>
+               <li>Pairs with the SWOT/disqualification agent to back claims with citations.</li></ul>`
+  },
+  battlecards: {
+    rank: 3, impact: "high",
+    title: "Live competitive battle-cards",
+    where: "Stage 7 Win the bake-off · Commercial lane · augments Jeeves",
+    saves: "Stops stale-intel losses",
+    lane: "commercial",
+    body: `<p>Pulls current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</p>
+           <ul><li>Keeps Jeeves' persuasion grounded in the latest field intelligence, not last quarter's deck.</li></ul>`
+  },
+  painpattern: {
+    rank: 4, impact: "medium",
+    title: "Similar-customer pain-pattern search",
+    where: "Stage 5 Qualify the opp · Technical lane · augments Reginald",
+    saves: "~1 hr per discovery",
+    lane: "technical",
+    body: `<p>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</p>
+           <ul><li>Feeds Reginald better analogues so the pain→solution translation is grounded in real prior deals.</li></ul>`
+  },
+  content: {
+    rank: 5, impact: "medium",
+    title: "Content & talk-track retrieval",
+    where: "Stage 4 First conversations · Commercial lane",
+    saves: "~20 min per outreach",
+    lane: "commercial",
+    body: `<p>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain.</p>
+           <ul><li>Reduces reliance on tribal knowledge of "which deck do I send?"</li></ul>`
+  },
+  handoff: {
+    rank: 6, impact: "medium",
+    title: "Post-sale handoff brief generator",
+    where: "Stage 8 Close & sign → Stage 9 Hand off · Commercial lane",
+    saves: "~1.5 hr per closed deal",
+    lane: "commercial",
+    body: `<p>Assembles a handoff doc from the deal record: pains, success criteria, technical context, stakeholders, MAP.</p>
+           <ul><li>Reduces dropped context between AE/SE and CS/onboarding teams.</li></ul>`
+  },
+  routing: {
+    rank: 7, impact: "gap",
+    title: "Routing rules & territory lookup",
+    where: "Stage 2 Route to seller · Technology lane",
+    saves: "Removes routing friction for SDRs &amp; ops",
+    lane: "technology",
+    body: `<p>Today: <strong>no AI in this stage</strong>. Glean can answer "who owns this account / what's the ROE here?" from policy docs and SFDC.</p>
+           <ul><li>Low-effort, high-frequency time-saver for SDRs and ops.</li></ul>`
+  },
+  onboarding: {
+    rank: 8, impact: "gap",
+    title: "Onboarding playbook & ramp-plan agent",
+    where: "Stage 9 Hand off to launch · Technology lane",
+    saves: "Faster time-to-value for new customers",
+    lane: "technology",
+    body: `<p>Today: <strong>no AI in this stage</strong>. Glean can surface the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</p>
+           <ul><li>Closes the last-mile gap after Lurch's MAP execution.</li></ul>`
+  }
+};
+
+const LANES = ["customer", "commercial", "technical", "operations", "technology", "systems"];
+
+/* Activities and AI/Glean chips placed per (stage, lane). */
+const SWIMLANE = {
+  // stage num : { lane : [chips] }
+  1: {
+    customer:   [{t:"a", txt:"Interaction with Marketing"}, {t:"a", txt:"Customer conducts research"}],
+    commercial: [{t:"a", txt:"Run campaign"}],
+    operations: [{t:"a", txt:"Plan ABX campaign"}],
+    technology: [{t:"d", txt:"SQAT scoring"}],
+    systems:    [{t:"a", txt:"6sense · LinkedIn · Marketo"}]
+  },
+  2: {
+    technology: [{t:"a", txt:"Account match & creation"}, {t:"a", txt:"Priority level & routing"}, {t:"g", id:"routing"}],
+    systems:    [{t:"a", txt:"SFDC · LeanData · Clearbit"}]
+  },
+  3: {
+    commercial: [{t:"ai", id:"enzo"}, {t:"ai", id:"jarvis"}, {t:"a", txt:"Devise prospecting hypothesis"}, {t:"g", id:"account360"}],
+    operations: [{t:"a", txt:"Territory mgmt & ROE definition"}],
+    systems:    [{t:"a", txt:"SFDC · Outreach · ZoomInfo"}]
+  },
+  4: {
+    customer:   [{t:"d", txt:"Interested?"}, {t:"a", txt:"Intro call with customer"}],
+    commercial: [{t:"a", txt:"Conduct outreach"}, {t:"a", txt:"Explore the pain"}, {t:"g", id:"content"}],
+    technical:  [{t:"ai", id:"outreach"}],
+    operations: [{t:"a", txt:"Content committee"}, {t:"a", txt:"Opt-out management"}],
+    technology: [{t:"a", txt:"Source prospects in system"}],
+    systems:    [{t:"a", txt:"Outreach · Gong · SFDC"}]
+  },
+  5: {
+    customer:   [{t:"a", txt:"Customer agrees to evaluate solution"}],
+    commercial: [{t:"a", txt:"Meet opp creation requirements"}, {t:"d", txt:"Opp qualification"}, {t:"a", txt:"AE accepts opp"}, {t:"a", txt:"Discovery workshops"}],
+    technical:  [{t:"ai", id:"reginald"}, {t:"a", txt:"Discovery workshops"}, {t:"g", id:"painpattern"}],
+    operations: [{t:"a", txt:"Lead nurture"}, {t:"a", txt:"Opportunity definition"}],
+    technology: [{t:"a", txt:"Open opp in SFDC"}, {t:"a", txt:"Submit opp to AE"}],
+    systems:    [{t:"a", txt:"SFDC · Slack"}]
+  },
+  6: {
+    customer:   [{t:"a", txt:"Customer connects with AE"}, {t:"a", txt:"Discovery workshops"}],
+    commercial: [{t:"a", txt:"Outline business case · ROI / value"}],
+    technical:  [{t:"a", txt:"Technical workshops"}, {t:"a", txt:"Demo / POC"}, {t:"a", txt:"Work through technical design"}, {t:"ai", id:"swot"}, {t:"g", id:"techdocs"}],
+    technology: [{t:"a", txt:"Closed / Lost"}]
+  },
+  7: {
+    customer:   [{t:"a", txt:"Disqualifies on budget"}, {t:"a", txt:"Champion sells internally"}, {t:"a", txt:"Pitch to buyer"}],
+    commercial: [{t:"a", txt:"Validate champion"}, {t:"a", txt:"Understand buying criteria"}, {t:"a", txt:"Uncover competition"}, {t:"g", id:"battlecards"}],
+    technical:  [{t:"ai", id:"jeeves"}, {t:"a", txt:"Validate competitive position"}, {t:"a", txt:"Strengthen buyer perception"}],
+    technology: [{t:"a", txt:"Closed / Lost"}]
+  },
+  8: {
+    customer:   [{t:"a", txt:"Evaluates options"}, {t:"d", txt:"Best-fit decision"}],
+    commercial: [{t:"a", txt:"Map procurement process"}, {t:"a", txt:"Commercial & contract terms"}],
+    technical:  [{t:"a", txt:"Technical validation complete"}],
+    operations: [{t:"ai", id:"lurch"}, {t:"a", txt:"Commercial & contract terms"}],
+    technology: [{t:"a", txt:"Closed / Lost"}]
+  },
+  9: {
+    customer:   [{t:"a", txt:"Buyer + procurement complete selection, reward, PO"}],
+    commercial: [{t:"a", txt:"Execute MAP / draft ramp plan"}, {t:"g", id:"handoff"}],
+    operations: [{t:"a", txt:"Legal / contract execution"}],
+    technology: [{t:"a", txt:"Closed / Won booking"}, {t:"g", id:"onboarding"}]
+  }
+};
+
+/* ----------------------- STATE ----------------------- */
+
+const state = {
+  activeStage: 3,
+  filter: "all",
+  tab: "funnel"
+};
+
+/* ----------------------- RENDER: FUNNEL ----------------------- */
+
+function renderFunnel() {
+  const root = document.getElementById("funnel");
+  root.innerHTML = STAGES.map(s => {
+    const aiCount    = s.aiAgents.length;
+    const gleanCount = s.gleanOpps.length;
+    const isGap      = aiCount === 0;
+    return `
+      <button class="stage ${s.num === state.activeStage ? "active" : ""}" data-stage="${s.num}">
+        <div class="num">${s.num}</div>
+        <div class="sales-name">${s.salesName}</div>
+        <div class="formal">${s.formal}</div>
+        <div class="conv">
+          <span>${s.convPct}%</span>
+          <span class="bar"><span style="width:${s.convPct}%"></span></span>
+        </div>
+        <div class="meta">
+          ${aiCount ? `<span class="pill ai"><span class="dot"></span>${aiCount} AI</span>` : `<span class="pill gap"><span class="dot"></span>No AI</span>`}
+          ${gleanCount ? `<span class="pill glean"><span class="dot"></span>${gleanCount} Glean</span>` : ``}
+        </div>
+      </button>
+    `;
+  }).join("");
+
+  root.querySelectorAll(".stage").forEach(el => {
+    el.addEventListener("click", () => {
+      state.activeStage = Number(el.dataset.stage);
+      renderFunnel();
+      renderDetail();
+    });
+  });
+}
+
+function renderDetail() {
+  const s = STAGES.find(x => x.num === state.activeStage);
+  const root = document.getElementById("detail");
+  const aiHtml = s.aiAgents.length
+    ? s.aiAgents.map(id => {
+        const a = AGENTS[id];
+        return `<div class="agent-row">
+          <div class="name">${a.name}</div>
+          <div class="role">${a.role}</div>
+          <span class="saves">Saves ${a.saves}</span>
+        </div>`;
+      }).join("")
+    : `<div class="empty">No AI agent in this stage today — coverage gap.</div>`;
+
+  const gleanHtml = s.gleanOpps.length
+    ? s.gleanOpps.map(id => {
+        const g = GLEAN[id];
+        return `<div class="agent-row glean">
+          <div class="name">${g.title}</div>
+          <div class="role">${stripHtml(g.body)}</div>
+          <span class="saves">Saves ${g.saves}</span>
+        </div>`;
+      }).join("")
+    : `<div class="empty">No Glean opportunity flagged here.</div>`;
+
+  root.innerHTML = `
+    <div class="head">
+      <div class="num">${s.num}</div>
+      <div>
+        <h3>${s.salesName}</h3>
+        <div class="formal">${s.formal} · ${s.blurb}</div>
+      </div>
+      <div class="stats">
+        <span class="pill">${s.volume}</span>
+        <span class="pill">${s.days}</span>
+        <span class="pill">${s.convPct}% of top-of-funnel</span>
+      </div>
+    </div>
+
+    <div class="col">
+      <h4>What the customer is doing</h4>
+      ${s.customer.length ? `<ul>${s.customer.map(x => `<li>${x}</li>`).join("")}</ul>` : `<p>—</p>`}
+      <h4 style="margin-top:14px;">What we're doing internally</h4>
+      <ul>${s.internal.map(x => `<li>${x}</li>`).join("")}</ul>
+      <h4 style="margin-top:14px;">Systems involved</h4>
+      <p>${s.systems.join(" · ")}</p>
+    </div>
+
+    <div class="col">
+      <h4>AI agents today</h4>
+      <div class="agent-list">${aiHtml}</div>
+    </div>
+
+    <div class="col">
+      <h4>Where Glean would help</h4>
+      <div class="agent-list">${gleanHtml}</div>
+    </div>
+  `;
+}
+
+function stripHtml(html) {
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return tmp.textContent.replace(/\s+/g, " ").trim();
+}
+
+/* ----------------------- RENDER: SWIMLANE ----------------------- */
+
+function renderSwimlane() {
+  const root = document.getElementById("pipeline");
+
+  const head = [`<div class="col-head first"></div>`]
+    .concat(STAGES.map(s => `
+      <div class="col-head" data-stage="${s.num}">
+        <span class="stage-num">${s.num}</span>${s.salesName}
+      </div>`))
+    .join("");
+
+  const rows = LANES.map(lane => {
+    const cells = STAGES.map(s => {
+      const chips = (SWIMLANE[s.num] && SWIMLANE[s.num][lane]) || [];
+      const hasGap = (s.aiAgents.length === 0) && lane !== "systems";
+      const inner = chips.map(c => {
+        if (c.t === "a") return `<span class="chip activity">${c.txt}</span>`;
+        if (c.t === "d") return `<span class="chip diamond">${c.txt}</span>`;
+        if (c.t === "ai") {
+          const a = AGENTS[c.id];
+          return `<span class="chip agent" data-tip-type="ai" data-tip-id="${c.id}">${a.name}</span>`;
+        }
+        if (c.t === "g") {
+          const g = GLEAN[c.id];
+          return `<span class="chip glean" data-tip-type="glean" data-tip-id="${c.id}">${g.title}</span>`;
+        }
+        return "";
+      }).join("");
+      return `<div class="cell lane-${lane} ${hasGap ? "has-gap" : ""}">${inner}</div>`;
+    }).join("");
+    return `<div class="row-head">${lane}</div>${cells}`;
+  }).join("");
+
+  root.innerHTML = `<div class="grid">${head}${rows}</div>`;
+
+  // hover tooltips
+  root.querySelectorAll("[data-tip-type]").forEach(el => {
+    el.addEventListener("mouseenter", e => showTip(e, el));
+    el.addEventListener("mousemove",  e => moveTip(e));
+    el.addEventListener("mouseleave", hideTip);
+  });
+
+  // click column header → switch to funnel detail
+  root.querySelectorAll(".col-head[data-stage]").forEach(el => {
+    el.addEventListener("click", () => {
+      state.activeStage = Number(el.dataset.stage);
+      switchTab("funnel");
+    });
+  });
+
+  applyFilter();
+}
+
+/* ----------------------- RENDER: GLEAN ROADMAP ----------------------- */
+
+function renderGleanRoadmap() {
+  const root = document.getElementById("opps");
+  const ordered = Object.values(GLEAN).sort((a,b) => a.rank - b.rank);
+  root.innerHTML = ordered.map(g => `
+    <div class="opp ${g.impact} collapsed" data-id="${g.rank}">
+      <h3><span class="rank">${g.rank}</span>${g.title}<span class="impact">${g.impact === "gap" ? "Coverage gap" : g.impact}</span></h3>
+      <div class="where">${g.where}</div>
+      <div class="saves">Saves ${g.saves}</div>
+      <div class="body">${g.body}</div>
+      <span class="expand">Show details ▾</span>
+    </div>
+  `).join("");
+
+  root.querySelectorAll(".opp").forEach(el => {
+    el.addEventListener("click", () => {
+      const c = el.classList.toggle("collapsed");
+      el.querySelector(".expand").textContent = c ? "Show details ▾" : "Hide details ▴";
+    });
+  });
+}
+
+/* ----------------------- TOOLTIP ----------------------- */
+
+const tip = document.getElementById("tip");
+function showTip(e, el) {
+  const type = el.dataset.tipType;
+  const id = el.dataset.tipId;
+  const data = type === "ai" ? AGENTS[id] : GLEAN[id];
+  if (!data) return;
+  const name = type === "ai" ? data.name : data.title;
+  const role = type === "ai" ? data.role : stripHtml(data.body);
+  tip.className = "tip " + type;
+  tip.innerHTML = `<div class="name">${name}</div>
+                   <div class="role">${role}</div>
+                   <span class="saves">Saves ${data.saves}</span>`;
+  moveTip(e);
+  tip.classList.add("show");
+}
+function moveTip(e) {
+  const pad = 14;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  if (x + w > window.innerWidth - 8)  x = e.clientX - w - pad;
+  if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+  tip.style.left = x + "px";
+  tip.style.top  = y + "px";
+}
+function hideTip() { tip.classList.remove("show"); }
+
+/* ----------------------- TABS ----------------------- */
+
+function switchTab(name) {
+  state.tab = name;
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.dataset.panel === name));
+}
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
+
+/* ----------------------- FILTERS ----------------------- */
+
+function applyFilter() {
+  const grid = document.querySelector("#pipeline .grid");
+  if (!grid) return;
+  grid.classList.remove("hide-ai", "hide-glean", "show-gaps");
+  if (state.filter === "ai")    grid.classList.add("hide-glean");
+  if (state.filter === "glean") grid.classList.add("hide-ai");
+  if (state.filter === "gaps")  grid.classList.add("show-gaps");
+}
+document.querySelectorAll("#laneFilter button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#laneFilter button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    state.filter = b.dataset.filter;
+    applyFilter();
+  });
+});
+
+/* ----------------------- INIT ----------------------- */
+
+renderFunnel();
+renderDetail();
+renderSwimlane();
+renderGleanRoadmap();
+</script>
 
 </body>
 </html>
