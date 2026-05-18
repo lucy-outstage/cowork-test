@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sales Process — AI & Glean Co-Pilot Map (v2)</title>
+<title>Glean Agents — Decision Dashboard</title>
 <style>
   :root {
     --bg: #0a0f24;
@@ -30,10 +30,12 @@
     --gap-border: #fb7185;
     --auto: rgba(251, 191, 36, 0.18);
     --auto-border: #fbbf24;
+    --live: #22c55e;
+    --designed: #fbbf24;
+    --thirdparty: #94a3b8;
     --shadow: 0 10px 30px rgba(0,0,0,0.35);
     --radius: 14px;
   }
-
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
@@ -51,22 +53,17 @@
 
   header {
     padding: 26px 32px 14px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
   }
   header h1 { margin: 0; font-size: 26px; letter-spacing: -0.01em; }
   header .tag {
-    display: inline-block;
-    font-size: 11px; font-weight: 700;
+    display: inline-block; font-size: 11px; font-weight: 700;
     letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--accent-2);
     background: rgba(167,139,250,0.12);
     border: 1px solid rgba(167,139,250,0.35);
-    padding: 3px 8px; border-radius: 6px;
-    margin-bottom: 8px;
+    padding: 3px 8px; border-radius: 6px; margin-bottom: 8px;
   }
   header .ver {
     display: inline-block; margin-left: 8px;
@@ -95,15 +92,11 @@
     background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
     border: 1px solid var(--border-soft);
     border-radius: var(--radius);
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
+    padding: 14px 16px; position: relative; overflow: hidden;
   }
-  .kpi::after {
-    content: ""; position: absolute; inset: 0;
+  .kpi::after { content: ""; position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);
-    pointer-events: none;
-  }
+    pointer-events: none; }
   .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; }
   .kpi .value { font-size: 26px; font-weight: 700; margin-top: 4px; letter-spacing: -0.01em; }
   .kpi .sub   { color: var(--muted-2); font-size: 12px; margin-top: 2px; }
@@ -120,15 +113,10 @@
   }
   section .sub { color: var(--muted); margin: -4px 0 14px; font-size: 13px; }
 
-  .tabs {
-    display: flex; gap: 6px; padding: 0 32px;
-    border-bottom: 1px solid var(--border-soft);
-  }
+  .tabs { display: flex; gap: 6px; padding: 0 32px; border-bottom: 1px solid var(--border-soft); flex-wrap: wrap; }
   .tab {
-    background: transparent; border: 0;
-    color: var(--muted);
-    padding: 12px 14px;
-    border-bottom: 2px solid transparent;
+    background: transparent; border: 0; color: var(--muted);
+    padding: 12px 14px; border-bottom: 2px solid transparent;
     font-weight: 600; font-size: 13px; letter-spacing: 0.02em;
   }
   .tab:hover { color: var(--text); }
@@ -141,21 +129,15 @@
 
   /* funnel */
   .funnel {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    gap: 8px;
-    align-items: stretch;
+    display: grid; grid-template-columns: repeat(9, 1fr); gap: 8px;
   }
   .stage {
     background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
     border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    padding: 12px;
-    text-align: left;
+    border-radius: var(--radius); padding: 12px; text-align: left;
     transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     display: flex; flex-direction: column; gap: 6px;
-    cursor: pointer;
-    position: relative; overflow: hidden;
+    cursor: pointer; position: relative; overflow: hidden;
     min-height: 180px;
   }
   .stage:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow); }
@@ -167,11 +149,10 @@
     font-weight: 700; font-size: 13px; color: var(--accent);
   }
   .stage.active .num { background: var(--accent); color: #0a0f24; border-color: var(--accent); }
-  .stage .sales-name { font-weight: 700; font-size: 14px; letter-spacing: -0.005em; }
+  .stage .sales-name { font-weight: 700; font-size: 14px; }
   .stage .formal { color: var(--muted); font-size: 11px; }
-  .stage .meta {
-    display: flex; gap: 6px; align-items: center; margin-top: auto; flex-wrap: wrap;
-  }
+  .stage .meta { display: flex; gap: 6px; align-items: center; margin-top: auto; flex-wrap: wrap; }
+
   .pill {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; padding: 2px 6px; border-radius: 6px;
@@ -182,27 +163,23 @@
   .pill.glean { background: var(--glean);    border-color: var(--glean-border);    color: #e6dcff; }
   .pill.gap   { background: var(--gap);      border-color: var(--gap-border);      color: #ffd1d9; }
   .pill.auto  { background: var(--auto);     border-color: var(--auto-border);     color: #ffe6a8; }
+  .pill.designed { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.35); color: #ffd87a; }
   .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.8; }
   .stage .conv { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
   .stage .conv .bar { flex: 1; height: 4px; border-radius: 4px; background: var(--panel-3); overflow: hidden; }
   .stage .conv .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
 
-  /* detail panel */
+  /* detail */
   .detail {
     margin-top: 16px;
     background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 100%);
     border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 1.1fr 1fr 1fr;
-    gap: 18px;
+    border-radius: var(--radius); padding: 20px;
+    display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 18px;
   }
   .detail .head {
-    grid-column: 1 / -1;
-    display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid var(--border-soft);
-    padding-bottom: 12px;
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border-soft); padding-bottom: 12px;
   }
   .detail .head .num {
     width: 40px; height: 40px; border-radius: 12px;
@@ -213,23 +190,19 @@
   .detail .head h3 { margin: 0; font-size: 18px; }
   .detail .head .formal { color: var(--muted); font-size: 12px; margin-top: 2px; }
   .detail .head .stats { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
-  .col h4 {
-    margin: 0 0 8px; font-size: 11px; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--muted); font-weight: 700;
-  }
+  .col h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
   .col p { margin: 0 0 10px; color: var(--muted-2); }
   .col ul { margin: 0; padding-left: 18px; color: var(--muted-2); }
   .col ul li { margin: 4px 0; }
   .agent-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
   .agent-row {
-    background: var(--panel);
-    border: 1px solid var(--border-soft);
+    background: var(--panel); border: 1px solid var(--border-soft);
     border-left: 3px solid var(--existing-border);
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 8px 10px; border-radius: 8px; font-size: 12px;
   }
   .agent-row.glean { border-left-color: var(--glean-border); }
+  .agent-row.designed { border-left-color: var(--designed); }
   .agent-row .name { font-weight: 700; }
   .agent-row .role { color: var(--muted-2); margin-top: 2px; }
   .agent-row .saves {
@@ -238,6 +211,7 @@
     color: var(--accent-3);
   }
   .agent-row.glean .saves { color: var(--accent-2); }
+  .agent-row.designed .saves { color: var(--designed); }
   .empty {
     color: var(--muted); font-style: italic; font-size: 12px;
     padding: 8px 10px; border: 1px dashed var(--border); border-radius: 8px;
@@ -257,10 +231,8 @@
   .toolbar .hint { color: var(--muted); font-size: 12px; margin-left: auto; }
 
   .pipeline {
-    background: var(--panel);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius);
-    overflow: auto;
+    background: var(--panel); border: 1px solid var(--border-soft);
+    border-radius: var(--radius); overflow: auto;
   }
   .grid {
     display: grid;
@@ -271,8 +243,7 @@
     background: var(--panel-2);
     border-bottom: 1px solid var(--border-soft);
     border-right: 1px solid var(--border-soft);
-    padding: 10px;
-    font-size: 12px; font-weight: 700;
+    padding: 10px; font-size: 12px; font-weight: 700;
     text-align: center; color: #d6dbf5;
     cursor: pointer; transition: background 0.15s ease;
   }
@@ -298,10 +269,8 @@
   .cell {
     border-right: 1px solid var(--border-soft);
     border-bottom: 1px solid var(--border-soft);
-    padding: 7px;
-    display: flex; flex-direction: column; gap: 5px;
+    padding: 7px; display: flex; flex-direction: column; gap: 5px;
     min-height: 100px;
-    transition: background 0.15s ease;
   }
   .cell.last { border-right: 0; }
   .cell.lane-customer   { background: #16213f; }
@@ -313,45 +282,37 @@
   .cell.lane-systems    { background: #161c38; }
 
   .chip {
-    font-size: 11px;
-    padding: 5px 8px;
-    border-radius: 6px;
-    border: 1px solid var(--border-soft);
-    background: rgba(255,255,255,0.03);
-    color: #d6dbf5;
-    line-height: 1.25;
-    position: relative;
+    font-size: 11px; padding: 5px 8px; border-radius: 6px;
+    border: 1px solid var(--border-soft); background: rgba(255,255,255,0.03);
+    color: #d6dbf5; line-height: 1.25; position: relative;
   }
   .chip.activity { background: rgba(255,255,255,0.04); }
   .chip.diamond {
     background: rgba(251,191,36,0.08);
-    border-color: rgba(251,191,36,0.35);
-    color: #ffd87a;
+    border-color: rgba(251,191,36,0.35); color: #ffd87a;
   }
   .chip.exit {
     background: rgba(251,113,133,0.10);
-    border-color: rgba(251,113,133,0.35);
-    color: #ffb8c2;
+    border-color: rgba(251,113,133,0.35); color: #ffb8c2;
   }
   .chip.agent {
     background: var(--existing);
     border: 1px solid var(--existing-border);
-    color: #cfd9ff;
-    font-weight: 700;
-    cursor: help;
+    color: #cfd9ff; font-weight: 700; cursor: help;
   }
   .chip.agent::before {
-    content: "AI"; font-size: 9px;
-    background: var(--accent); color: #0a0f24;
+    content: "LIVE"; font-size: 9px;
+    background: var(--live); color: #0a0f24;
     padding: 1px 4px; border-radius: 4px;
     margin-right: 6px; font-weight: 800;
   }
+  .chip.agent.designed { border-color: var(--designed); background: rgba(251,191,36,0.10); }
+  .chip.agent.designed::before { content: "DESIGN"; background: var(--designed); }
+  .chip.agent.thirdparty { border-color: var(--thirdparty); background: rgba(148,163,184,0.10); color: #d6dbf5; }
+  .chip.agent.thirdparty::before { content: "3RD"; background: var(--thirdparty); color: #0a0f24; }
   .chip.glean {
-    background: var(--glean);
-    border: 1px dashed var(--glean-border);
-    color: #e6dcff;
-    font-weight: 700;
-    cursor: help;
+    background: var(--glean); border: 1px dashed var(--glean-border);
+    color: #e6dcff; font-weight: 700; cursor: help;
   }
   .chip.glean::before {
     content: "Glean"; font-size: 9px;
@@ -360,10 +321,8 @@
     margin-right: 6px; font-weight: 800;
   }
   .chip.auto {
-    background: var(--auto);
-    border: 1px dashed var(--auto-border);
-    color: #ffe6a8;
-    font-weight: 700;
+    background: var(--auto); border: 1px dashed var(--auto-border);
+    color: #ffe6a8; font-weight: 700;
   }
   .chip.auto::before {
     content: "AUTO"; font-size: 9px;
@@ -378,17 +337,10 @@
   /* tooltip */
   .tip {
     position: fixed; z-index: 1000;
-    background: #0a0f24;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    box-shadow: var(--shadow);
-    max-width: 300px;
-    font-size: 12px;
-    color: var(--text);
-    pointer-events: none;
-    opacity: 0;
-    transform: translateY(4px);
+    background: #0a0f24; border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 12px; box-shadow: var(--shadow);
+    max-width: 300px; font-size: 12px; color: var(--text);
+    pointer-events: none; opacity: 0; transform: translateY(4px);
     transition: opacity 0.12s ease, transform 0.12s ease;
   }
   .tip.show { opacity: 1; transform: translateY(0); }
@@ -397,63 +349,230 @@
   .tip .saves {
     display: inline-block; margin-top: 6px;
     font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--accent-3);
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-3);
   }
   .tip.glean .saves { color: var(--accent-2); }
 
-  /* Glean cards */
-  .opps {
+  /* ============ LIVE AGENTS TAB ============ */
+  .agents-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
   }
-  .opp {
+  .agent-card {
     background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
     border: 1px solid var(--border-soft);
-    border-left: 4px solid var(--accent-2);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 16px; position: relative; overflow: hidden;
+  }
+  .agent-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--accent);
+  }
+  .agent-card.j::before { background: #6C63FF; }
+  .agent-card.r::before { background: #22c55e; }
+  .agent-card.w::before { background: #f43f5e; }
+  .agent-card.e::before { background: #14b8a6; }
+  .agent-card.x::before { background: #f59e0b; }
+  .agent-card.designed::before { background: var(--designed); }
+  .agent-card .row1 { display: flex; align-items: center; gap: 10px; }
+  .agent-card .avatar {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #fff; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .agent-card.j .avatar { background: #6C63FF; }
+  .agent-card.r .avatar { background: #22c55e; }
+  .agent-card.w .avatar { background: #f43f5e; }
+  .agent-card.e .avatar { background: #14b8a6; }
+  .agent-card.x .avatar { background: #f59e0b; }
+  .agent-card.designed .avatar { background: var(--designed); color: #0a0f24; }
+  .agent-card .name { font-weight: 700; font-size: 15px; }
+  .agent-card .role-tag { color: var(--muted); font-size: 11px; }
+  .agent-card .status-tag {
+    margin-left: auto; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 5px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .agent-card.designed .status-tag { background: rgba(251,191,36,0.18); color: var(--designed); }
+  .agent-card:not(.designed) .status-tag { background: rgba(34,197,94,0.18); color: var(--live); }
+  .agent-card .stage-tag {
+    margin-top: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--muted-2);
+    background: var(--panel-3); border: 1px solid var(--border-soft);
+    padding: 3px 8px; border-radius: 6px; font-weight: 600;
+  }
+  .agent-card .stage-tag .n {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); color: #0a0f24;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+  }
+  .agent-card .desc { color: var(--muted-2); font-size: 12px; margin: 10px 0; line-height: 1.5; }
+  .agent-card .metrics {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px; margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .agent-card .metric { text-align: center; }
+  .agent-card .metric .v { font-size: 16px; font-weight: 800; }
+  .agent-card .metric .l { font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  .agent-card .feedback {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 11px; color: var(--muted-2); font-style: italic;
+  }
+  .agent-card .feedback .lbl {
+    display: block; color: var(--muted); font-style: normal;
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 4px; font-weight: 700;
+  }
+  .impact-bar {
+    margin-top: 6px;
+    background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px;
+    overflow: hidden;
+  }
+  .impact-bar > span { display: block; height: 100%; border-radius: 3px; }
+
+  /* ============ KANBAN TAB ============ */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(260px, 1fr));
+    gap: 12px;
+    overflow-x: auto;
+  }
+  .col {
+    background: var(--panel); border: 1px solid var(--border-soft);
+    border-radius: var(--radius); padding: 12px;
+    min-height: 400px;
+    display: flex; flex-direction: column;
+  }
+  .col-head-k {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border-soft);
+    margin-bottom: 10px;
+  }
+  .col-head-k .name { font-weight: 700; font-size: 13px; letter-spacing: 0.02em; }
+  .col-head-k .count {
+    margin-left: auto;
+    background: var(--panel-3); color: var(--muted-2);
+    font-size: 11px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+  }
+  .col-head-k .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .col[data-col="submitted"] .col-head-k .dot { background: var(--accent); }
+  .col[data-col="triaged"]   .col-head-k .dot { background: var(--warn); }
+  .col[data-col="building"]  .col-head-k .dot { background: var(--accent-2); }
+  .col[data-col="live"]      .col-head-k .dot { background: var(--live); }
+  .card {
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
     transition: transform 0.15s ease, border-color 0.15s ease;
     cursor: pointer;
   }
-  .opp:hover { transform: translateY(-2px); border-left-color: var(--accent); }
-  .opp.high { border-left-color: var(--danger); }
-  .opp.medium { border-left-color: var(--warn); }
-  .opp.gap { border-left-color: var(--cyan); }
-  .opp .rank {
+  .card:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .card .meta {
+    font-size: 10px; color: var(--muted);
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .card .meta .req { font-weight: 700; color: var(--muted-2); }
+  .card .desc { font-size: 12px; color: var(--muted-2); line-height: 1.45; }
+  .card .tags { display: flex; gap: 4px; margin-top: 8px; flex-wrap: wrap; }
+  .card .tag {
+    font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 5px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    background: var(--panel-3); color: var(--muted-2);
+    border: 1px solid var(--border-soft);
+  }
+  .card .tag.priority-high { background: rgba(251,113,133,0.15); color: var(--danger); border-color: rgba(251,113,133,0.3); }
+  .card .tag.priority-medium { background: rgba(251,191,36,0.15); color: var(--warn); border-color: rgba(251,191,36,0.3); }
+  .card .tag.stage { background: rgba(110,168,255,0.12); color: var(--accent); border-color: rgba(110,168,255,0.3); }
+  .card .tag.extends { background: rgba(167,139,250,0.12); color: var(--accent-2); border-color: rgba(167,139,250,0.3); }
+  .card.live { border-left: 3px solid var(--live); }
+  .card.designed { border-left: 3px solid var(--designed); }
+  .card.expanded .body { display: block; }
+  .card .body { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-soft); font-size: 12px; color: var(--muted-2); }
+  .card .body h5 { margin: 0 0 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .card .body p { margin: 0 0 8px; }
+
+  /* ============ PRINCIPLES TAB ============ */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .principles-grid h3 {
+    margin: 0 0 12px; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+    font-weight: 700;
+  }
+  .principle {
+    background: var(--panel); border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 10px;
+    display: flex; gap: 12px;
+  }
+  .principle .n {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+    background: var(--accent-2); color: #fff;
     display: inline-flex; align-items: center; justify-content: center;
-    width: 26px; height: 26px; border-radius: 8px;
-    background: var(--panel-3); color: var(--text);
-    font-weight: 800; font-size: 12px; margin-right: 10px;
+    font-weight: 800; font-size: 14px;
   }
-  .opp h3 { margin: 0 0 4px; font-size: 14px; display: flex; align-items: center; }
-  .opp h3 .impact {
-    margin-left: auto; font-size: 10px; font-weight: 700;
-    text-transform: uppercase; padding: 2px 7px; border-radius: 5px;
+  .principle .t { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .principle .d { font-size: 12px; color: var(--muted-2); line-height: 1.5; }
+
+  .step {
+    background: var(--panel); border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 10px;
+    position: relative;
   }
-  .opp.high   .impact { background: rgba(251,113,133,0.18); color: var(--danger); }
-  .opp.medium .impact { background: rgba(251,191,36,0.18); color: var(--warn); }
-  .opp.gap    .impact { background: rgba(34,211,238,0.18);  color: var(--cyan); }
-  .opp .where { color: var(--muted); font-size: 12px; margin: 2px 0 8px; }
-  .opp .saves {
-    color: var(--accent-3); font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    margin-bottom: 6px;
+  .step .head { display: flex; align-items: center; gap: 10px; }
+  .step .n {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #0a0f24;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px;
   }
-  .opp .body { color: var(--muted-2); font-size: 13px; }
-  .opp .body p { margin: 6px 0; }
-  .opp .body ul { margin: 4px 0 0; padding-left: 18px; }
-  .opp.collapsed .body { display: none; }
-  .opp .expand {
-    display: inline-block; margin-top: 8px;
-    color: var(--accent); font-size: 12px; font-weight: 600;
+  .step .t { font-weight: 700; font-size: 14px; flex: 1; }
+  .step .time {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    color: var(--muted); background: var(--panel-3);
+    padding: 2px 7px; border-radius: 5px; border: 1px solid var(--border-soft);
   }
+  .step .d { color: var(--muted-2); font-size: 12px; margin-top: 8px; }
+  .step ul { margin: 6px 0 0; padding-left: 20px; color: var(--muted-2); font-size: 12px; }
+  .step ul li { margin: 3px 0; }
+
+  /* Gap callout */
+  .callout {
+    background: linear-gradient(180deg, rgba(251,191,36,0.08) 0%, transparent 100%);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-left: 4px solid var(--warn);
+    border-radius: var(--radius);
+    padding: 14px 18px; margin-bottom: 18px;
+  }
+  .callout .head {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; color: var(--warn); margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .callout .body { color: var(--muted-2); font-size: 13px; line-height: 1.5; }
 
   footer {
     color: var(--muted); padding: 12px 32px 32px; font-size: 12px;
-    border-top: 1px solid var(--border-soft);
-    margin-top: 8px;
+    border-top: 1px solid var(--border-soft); margin-top: 8px;
   }
 
   .panel { display: none; }
@@ -462,6 +581,8 @@
   @media (max-width: 1100px) {
     .funnel { grid-template-columns: repeat(3, 1fr); }
     .detail { grid-template-columns: 1fr; }
+    .kanban { grid-template-columns: 1fr; }
+    .principles-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -469,50 +590,52 @@
 
 <header>
   <div>
-    <span class="tag">Sales Process</span><span class="ver">v2 — Agentic lane</span>
-    <h1>From cold account to closed deal — your AI co-pilot map</h1>
-    <p>Updated to match the revised Lucid chart: 9 stages, dedicated <strong>Agentic</strong> swimlane, and a yellow "place for automation" callout in Opp Creation. Click any stage to drill in.</p>
+    <span class="tag">Decision Dashboard</span><span class="ver">v3 — process + agents + ideas + principles</span>
+    <h1>Glean Agents — what's live, what's next, what we believe</h1>
+    <p>Pipeline map · live agent performance · backlog of 9 field-submitted ideas · the principles and 7-step playbook for adding the next agent.</p>
   </div>
   <div class="legend">
-    <div class="item"><span class="swatch existing"></span> Existing AI agent</div>
-    <div class="item"><span class="swatch glean"></span> Recommended Glean agent</div>
-    <div class="item"><span class="swatch auto"></span> Author-marked automation</div>
+    <div class="item"><span class="swatch existing"></span> Live agent</div>
+    <div class="item"><span class="swatch glean"></span> Glean opportunity</div>
+    <div class="item"><span class="swatch auto"></span> Author-marked auto</div>
     <div class="item"><span class="swatch gap"></span> Coverage gap</div>
   </div>
 </header>
 
 <div class="kpis">
-  <div class="kpi accent">
-    <div class="label">Pipeline stages</div>
-    <div class="value">9</div>
-    <div class="sub">Numbered &amp; clickable</div>
-  </div>
   <div class="kpi green">
-    <div class="label">Existing AI agents</div>
+    <div class="label">Live agents</div>
     <div class="value">5</div>
-    <div class="sub">Jarvis · Gong AI · Reginald · Jeeves · Lurch</div>
-  </div>
-  <div class="kpi purple">
-    <div class="label">Glean opportunities</div>
-    <div class="value">8</div>
-    <div class="sub">High / medium / coverage gaps</div>
+    <div class="sub">Jarvis · Reginald · Wadsworth · Enzo · Jax</div>
   </div>
   <div class="kpi warn">
-    <div class="label">Author-flagged automation</div>
-    <div class="value">1</div>
-    <div class="sub">Stage 5 yellow sticky</div>
+    <div class="label">Designed (not yet built)</div>
+    <div class="value">2</div>
+    <div class="sub">Jeeves · Lurch</div>
+  </div>
+  <div class="kpi purple">
+    <div class="label">Ideas in backlog</div>
+    <div class="value">9</div>
+    <div class="sub">Submitted by 6 requestors</div>
+  </div>
+  <div class="kpi accent">
+    <div class="label">Users trained</div>
+    <div class="value">320</div>
+    <div class="sub">By May 8, 2026</div>
   </div>
   <div class="kpi danger">
-    <div class="label">Stages with no Agentic chip</div>
-    <div class="value">4</div>
-    <div class="sub">ABX · Routing · Selection · Onboarding</div>
+    <div class="label">Est. bookings impact</div>
+    <div class="value">$6.4M</div>
+    <div class="sub">All live agents combined</div>
   </div>
 </div>
 
 <div class="tabs" role="tablist">
   <button class="tab active" data-tab="funnel">Pipeline funnel <span class="count">9</span></button>
-  <button class="tab" data-tab="swimlane">Swimlane view</button>
-  <button class="tab" data-tab="glean">Glean roadmap <span class="count">8</span></button>
+  <button class="tab" data-tab="swimlane">Swimlane</button>
+  <button class="tab" data-tab="agents">Live agents <span class="count">7</span></button>
+  <button class="tab" data-tab="backlog">Idea backlog <span class="count">9</span></button>
+  <button class="tab" data-tab="principles">Principles &amp; playbook</button>
 </div>
 
 <!-- FUNNEL -->
@@ -528,260 +651,241 @@
   <div class="toolbar">
     <div class="filter-group" id="laneFilter">
       <button data-filter="all" class="active">Show everything</button>
-      <button data-filter="ai">Existing AI only</button>
+      <button data-filter="ai">Live agents only</button>
       <button data-filter="glean">Glean only</button>
       <button data-filter="gaps">Coverage gaps</button>
     </div>
-    <div class="hint">Hover any AI/Glean chip for what it does and time saved. Click a column header to drill into the funnel.</div>
+    <div class="hint">Hover any AI/Glean chip for what it does and time saved. <strong>LIVE</strong> = deployed; <strong>DESIGN</strong> = in Lucid chart but not built; <strong>3RD</strong> = third-party (Gong).</div>
   </div>
   <div class="pipeline" id="pipeline"></div>
 </section>
 
-<!-- GLEAN ROADMAP -->
-<section class="panel" data-panel="glean">
-  <h2>Glean roadmap — ranked by leverage</h2>
-  <p class="sub">Click any card to expand. Impact band, stage, and estimated time saved per deal shown for each.</p>
-  <div class="opps" id="opps"></div>
+<!-- LIVE AGENTS -->
+<section class="panel" data-panel="agents">
+  <div class="callout">
+    <div class="head">Design vs reality gap</div>
+    <div class="body">The Lucid swimlane shows 7 agents in the Agentic lane. Today only <strong>5 are live</strong> (Jarvis, Reginald, Wadsworth, Enzo, Jax). <strong>Jeeves and Lurch are designed but not yet built</strong>. <strong>Wadsworth, Enzo and Jax are live but not yet in the process map</strong> — that's the first thing to reconcile when v3 of the Lucid is drawn.</div>
+  </div>
+
+  <h2>Live agents — impact &amp; feedback at a glance</h2>
+  <p class="sub">Data: Glean AI Agents Roadmap, prioritization scorecard, and #glean-agent-api-pilots-feedback (Feb–May 2026).</p>
+  <div class="agents-grid" id="agents-live"></div>
+
+  <h2 style="margin-top: 24px;">Designed, not yet built</h2>
+  <p class="sub">In the Lucid process map but not deployed. Candidates for the next build cycle.</p>
+  <div class="agents-grid" id="agents-designed"></div>
+</section>
+
+<!-- BACKLOG -->
+<section class="panel" data-panel="backlog">
+  <h2>Field-submitted ideas — decision board</h2>
+  <p class="sub">9 ideas raised in Slack / feedback form from sellers, KAMs and leaders (Mar–May 2026). Drag in your head: Submitted → Triaged → Building → Live.</p>
+  <div class="kanban" id="kanban"></div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="panel" data-panel="principles">
+  <div class="principles-grid">
+    <div>
+      <h3>1st principles · what makes a Glean agent create impact</h3>
+      <div id="principles"></div>
+    </div>
+    <div>
+      <h3>How to introduce a new agent · 7-step playbook</h3>
+      <div id="steps"></div>
+    </div>
+  </div>
 </section>
 
 <footer>
-  Stage flow reproduced from the revised Lucid swimlane (v2). Numbers (conversion, time saved) are illustrative — swap in your team's real data.
+  Process flow from the Lucid v2 chart. Live-agent metrics from the Glean AI Agents Roadmap doc (May 2026). Field ideas via Slack and feedback form. Numbers (conversion, time saved, bookings) are illustrative starting points — swap in real data.
 </footer>
 
 <div class="tip" id="tip" role="tooltip"></div>
 
 <script>
-/* ----------------------- DATA ----------------------- */
+/* ============================================================ DATA ============================================================ */
 
 const STAGES = [
-  {
-    num: 1,
-    salesName: "Spark interest",
-    formal: "ABX Campaign",
-    blurb: "Marketing warms up priority accounts before sales touches them.",
-    customer: ["Engages with ads, content, events"],
-    internal: ["Plan and deploy the ABX campaign", "Define 6QA criteria", "Monitor engagement in 6sense"],
-    systems: ["6sense", "Marketo", "LinkedIn"],
-    convPct: 100, volume: "1,000 target accounts", days: "Continuous",
-    aiAgents: [], gleanOpps: []
-  },
-  {
-    num: 2,
-    salesName: "Route to seller",
-    formal: "Account Routing &amp; Sales Assignment",
-    blurb: "Match account, score priority, assign owner.",
-    customer: [],
-    internal: ["Run 6sense matching algorithm", "Check territory dashboards", "Create / update SFDC record", "LeanData routing &amp; SFDC priority calc"],
-    systems: ["SFDC", "LeanData", "6sense"],
-    convPct: 25, volume: "~250 routed", days: "1–2 days",
-    aiAgents: [], gleanOpps: ["routing"]
-  },
-  {
-    num: 3,
-    salesName: "Build the play",
-    formal: "Forming Prospecting Hypothesis",
-    blurb: "Decide who to chase, why now, and how to enter.",
-    customer: [],
-    internal: ["Check if targets already in system", "LI Sales Nav + Lead IQ + ZoomInfo sourcing", "Change ABM Account Status to Working"],
-    systems: ["SFDC", "LI Sales Nav", "Lead IQ", "ZoomInfo"],
-    convPct: 20, volume: "~200 hypotheses", days: "Same day",
-    aiAgents: ["jarvis"], gleanOpps: ["account360"]
-  },
-  {
-    num: 4,
-    salesName: "First conversations",
-    formal: "Outreach &amp; Qualification",
-    blurb: "Multi-touch outreach (the 3 P's) until you earn the first call.",
-    customer: ["Decides whether to engage", "Joins call or opts out"],
-    internal: ["Dial out, voicemail, elevator pitch", "Follow up within 24 hrs", "Customize outreach in Gong / Outreach", "Manage opt-outs"],
-    systems: ["Gong", "Outreach", "SFDC"],
-    convPct: 10, volume: "~100 first calls", days: "2–3 weeks",
-    aiAgents: ["gong"], gleanOpps: ["content"]
-  },
-  {
-    num: 5,
-    salesName: "Open the opp",
-    formal: "Opp Creation &amp; Pre-Acceptance",
-    blurb: "Run the Intro Call (4 parts), create the opp, hand to AE.",
-    customer: ["May require NDA"],
-    internal: ["Schedule + prep + run Intro Call (Current State, Vision, Stakeholders, Next Steps)", "Convert lead/contact to Account &amp; Opp", "Review AI MEDDPICC notes; fill exit criteria", "Generate Gong Brief, notify Account owner"],
-    systems: ["SFDC", "Gong", "Evisort"],
-    convPct: 5, volume: "~50 opps", days: "1–2 weeks",
-    aiAgents: ["reginald-intro"], gleanOpps: ["opp-auto", "painpattern"]
-  },
-  {
-    num: 6,
-    salesName: "Qualify deeply",
-    formal: "Opp Qualification",
-    blurb: "Discovery + technical fit + champion + competitive positioning.",
-    customer: ["Aligns on vision", "Sells internally; may disqualify on budget"],
-    internal: ["Discovery workshops; document Cost of Inaction; map to pain points; frame business case", "Identify + test champion; map buying committee + decision process", "CSA leads: feasibility, conceptual solution design, integration, security/compliance, implementation, risk"],
-    systems: ["SFDC", "Slack", "Internal docs", "Security library"],
-    convPct: 3, volume: "~30 in qual", days: "3–6 weeks",
-    aiAgents: ["reginald-disco", "jeeves"], gleanOpps: ["csa-rag", "battlecards"]
-  },
-  {
-    num: 7,
-    salesName: "Win the bake-off",
-    formal: "Evaluation",
-    blurb: "Customer compares vendors; you sharpen pricing, MAP, and paper.",
-    customer: ["Picks top option", "Signs up via Customer Dashboard"],
-    internal: ["Sell to strengths; develop pitch strategy", "Build MAP, agree task owners, confirm pricing &amp; ARR ramp", "Run contract exception path through Ops if needed"],
-    systems: ["SFDC", "JIRA", "MAP template"],
-    convPct: 2, volume: "~20 in eval", days: "2–4 weeks",
-    aiAgents: ["lurch"], gleanOpps: ["rfi"]
-  },
-  {
-    num: 8,
-    salesName: "Close &amp; sign",
-    formal: "Selection &amp; Closure",
-    blurb: "Vendor selection, final tech sign-off, legal + PO.",
-    customer: ["Confirms vendor; issues PO"],
-    internal: ["Verbal agreement on commercial terms", "Final Solution Design Review; security &amp; compliance; integration test; internal tech sign-off", "MSA / legal redlines / contract execution"],
-    systems: ["DocuSign", "CLM", "SFDC"],
-    convPct: 1.2, volume: "~12 closed", days: "3–6 weeks",
-    aiAgents: [], gleanOpps: ["handoff"]
-  },
-  {
-    num: 9,
-    salesName: "Hand off to launch",
-    formal: "Onboarding",
-    blurb: "Bridge to CS / onboarding so the customer ramps fast.",
-    customer: ["Begins implementation"],
-    internal: ["Closed-Won booking", "Draft &amp; confirm ramp plan", "Handoff to CS / onboarding"],
-    systems: ["SFDC", "Gainsight", "Internal playbooks"],
-    convPct: 1.2, volume: "~12 onboarded", days: "Ongoing",
-    aiAgents: [], gleanOpps: ["onboarding"]
-  }
+  { num:1, salesName:"Spark interest", formal:"ABX Campaign",
+    blurb:"Marketing warms up priority accounts before sales touches them.",
+    customer:["Engages with ads, content, events"],
+    internal:["Plan + deploy ABX campaign","Define 6QA criteria","Monitor engagement in 6sense"],
+    systems:["6sense","Marketo","LinkedIn"],
+    convPct:100, volume:"1,000 accounts", days:"Continuous",
+    aiAgents:[], gleanOpps:[] },
+  { num:2, salesName:"Route to seller", formal:"Account Routing &amp; Sales Assignment",
+    blurb:"Match account, score priority, assign owner.",
+    customer:[],
+    internal:["6sense matching","Territory dashboards","SFDC record · LeanData routing"],
+    systems:["SFDC","LeanData","6sense"],
+    convPct:25, volume:"~250 routed", days:"1–2 days",
+    aiAgents:[], gleanOpps:["routing"] },
+  { num:3, salesName:"Build the play", formal:"Forming Prospecting Hypothesis",
+    blurb:"Decide who to chase, why now, and how to enter.",
+    customer:[],
+    internal:["LI Sales Nav + Lead IQ + ZoomInfo sourcing","Change ABM Account Status to Working"],
+    systems:["SFDC","LI Sales Nav","Lead IQ","ZoomInfo"],
+    convPct:20, volume:"~200 hypotheses", days:"Same day",
+    aiAgents:["jarvis","enzo","wadsworth"], gleanOpps:["account360"] },
+  { num:4, salesName:"First conversations", formal:"Outreach &amp; Qualification",
+    blurb:"Multi-touch outreach (the 3 P's) until you earn the first call.",
+    customer:["Engages or opts out"],
+    internal:["Voicemail / dial / pitch","Follow up in 24h","Customize outreach"],
+    systems:["Gong","Outreach","SFDC"],
+    convPct:10, volume:"~100 first calls", days:"2–3 weeks",
+    aiAgents:["gong"], gleanOpps:["content"] },
+  { num:5, salesName:"Open the opp", formal:"Opp Creation &amp; Pre-Acceptance",
+    blurb:"Run Intro Call (4 parts), create opp, hand to AE.",
+    customer:["May require NDA"],
+    internal:["Schedule + prep + run Intro Call","Convert lead/contact to Account &amp; Opp","Review AI MEDDPICC notes; fill exit criteria","Generate Gong Brief; notify Account owner"],
+    systems:["SFDC","Gong","Evisort"],
+    convPct:5, volume:"~50 opps", days:"1–2 weeks",
+    aiAgents:["reginald-intro","jax"], gleanOpps:["opp-auto","painpattern"] },
+  { num:6, salesName:"Qualify deeply", formal:"Opp Qualification",
+    blurb:"Discovery + technical fit + champion + competitive positioning.",
+    customer:["Aligns on vision","Sells internally; may disqualify on budget"],
+    internal:["Discovery workshops; Cost of Inaction; business case","Champion + buying committee + decision process","CSA: feasibility, design, integration, security, risk"],
+    systems:["SFDC","Slack","Security library"],
+    convPct:3, volume:"~30 in qual", days:"3–6 weeks",
+    aiAgents:["reginald-disco","jeeves"], gleanOpps:["csa-rag","battlecards"] },
+  { num:7, salesName:"Win the bake-off", formal:"Evaluation",
+    blurb:"Customer compares vendors; sharpen pricing, MAP, paper.",
+    customer:["Picks top option","Signs up via Customer Dashboard"],
+    internal:["Pitch strategy; sell to strengths","Build MAP; pricing &amp; ARR ramp","Contract exception path through Ops"],
+    systems:["SFDC","JIRA","MAP template"],
+    convPct:2, volume:"~20 in eval", days:"2–4 weeks",
+    aiAgents:["lurch"], gleanOpps:["rfi"] },
+  { num:8, salesName:"Close &amp; sign", formal:"Selection &amp; Closure",
+    blurb:"Vendor selection, tech sign-off, legal + PO.",
+    customer:["Confirms vendor; issues PO"],
+    internal:["Verbal agreement on terms","Final design review, security, integration test, sign-off","MSA · legal redlines · execution"],
+    systems:["DocuSign","CLM","SFDC"],
+    convPct:1.2, volume:"~12 closed", days:"3–6 weeks",
+    aiAgents:[], gleanOpps:["handoff"] },
+  { num:9, salesName:"Hand off to launch", formal:"Onboarding",
+    blurb:"Bridge to CS / onboarding so the customer ramps fast.",
+    customer:["Begins implementation"],
+    internal:["Closed-Won booking","Ramp plan","Handoff to CS"],
+    systems:["SFDC","Gainsight","Playbooks"],
+    convPct:1.2, volume:"~12 onboarded", days:"Ongoing",
+    aiAgents:[], gleanOpps:["onboarding"] }
 ];
 
+/* Live + designed + third-party agents */
 const AGENTS = {
   jarvis: {
-    name: "Jarvis",
-    role: "Chat to decide whether an account is safe to engage and a good fit for Vonage; asks follow-up questions and exports a prospecting hypothesis.",
-    saves: "~45 min per account",
-    lane: "agentic"
+    name:"Jarvis", code:"j", status:"live", stage:3, color:"#6C63FF",
+    role:"Prospecting hypothesis — chat to decide safe to engage and good fit for Vonage, then ask follow-ups and export the output.",
+    saves:"~45 min per account",
+    impact: 4.7, mentions: 17, bookings: 2700000, pipeline: 10800000,
+    topFeedback:"Speed (Matt F) · SFDC source-of-truth (Darren M) · Snowflake + Gong integration · Open opp awareness."
   },
-  gong: {
-    name: "Gong AI",
-    role: "Calls intelligence, summaries, and next-step suggestions baked into the outreach flow.",
-    saves: "~20 min per call reviewed",
-    lane: "agentic"
+  reginald: {
+    name:"Reginald", code:"r", status:"live", stage:5,
+    role:"Pain-to-solution mapping; Intro Call and Disco Call prep using the 4-part script.",
+    saves:"~1.5 hr per call cycle",
+    impact: 4.6, mentions: 5, bookings: 1400000,
+    topFeedback:"SFDC integration · Past engagements section · Competitive comparison · Conciseness."
   },
-  "reginald-intro": {
-    name: "Reginald (Intro Call)",
-    role: "Chat with agent to learn specifics for the Intro Call, plan the call, and prep against the 4-part script (Current State, Vision, Stakeholders, Next Steps).",
-    saves: "~1 hr per intro call",
-    lane: "agentic"
+  wadsworth: {
+    name:"Wadsworth", code:"w", status:"live", stage:3,
+    role:"Sales Intelligence Brief for KAMs — automated account brief, now Gong-powered. Used for any meeting prep across the funnel.",
+    saves:"~1 hr per meeting prep",
+    impact: 4.4, mentions: 3, bookings: 1200000,
+    topFeedback:"QoQ comparisons · Human-in-the-loop review step requested."
   },
-  "reginald-disco": {
-    name: "Reginald (Disco Call)",
-    role: "Same agent, reused: chat to learn specifics for the discovery workshop and plan the call.",
-    saves: "~1.5 hr per discovery cycle",
-    lane: "agentic"
+  enzo: {
+    name:"Enzo", code:"e", status:"live", stage:3,
+    role:"Account intelligence — pull from SFDC, prospect lists, account context.",
+    saves:"~30 min per account",
+    impact: 3.5, mentions: 2, bookings: 600000,
+    topFeedback:"SFDC integration needed; spreadsheets have stale rep assignments."
   },
+  jax: {
+    name:"Jax", code:"x", status:"live", stage:5,
+    role:"Pricing / account lookup.",
+    saves:"~15 min per pricing question",
+    impact: 3.5, mentions: 2, bookings: 500000,
+    topFeedback:"Add pricing breakdown by product (Bobby M) · Resolve overlap with Enzo (Simon S)."
+  },
+  /* Designed but not yet built */
   jeeves: {
-    name: "Jeeves",
-    role: "Competitor counter-intelligence; maps Vonage strengths to the buyer's evaluation criteria and frames the differentiation story.",
-    saves: "~2 hr per competitive cycle",
-    lane: "agentic"
+    name:"Jeeves", code:"jeeves", status:"designed", stage:6,
+    role:"Competitor counter-intelligence; map Vonage strengths to buyer's evaluation criteria; frame differentiation story.",
+    saves:"~2 hr per competitive cycle",
+    impact: null, mentions: 0, bookings: 0,
+    topFeedback:"Not yet built."
   },
   lurch: {
-    name: "Lurch",
-    role: "Ingests customer docs (RFI, Infosec questionnaire); references the MAP template; creates the Mutual Action Plan and helps the rep complete tasks; learns the paper process from system notes.",
-    saves: "~3 hr per closing deal",
-    lane: "agentic"
-  }
+    name:"Lurch", code:"lurch", status:"designed", stage:7,
+    role:"Ingests RFI / Infosec questionnaire; references MAP template; creates Mutual Action Plan and helps rep complete tasks.",
+    saves:"~3 hr per closing deal",
+    impact: null, mentions: 0, bookings: 0,
+    topFeedback:"Not yet built."
+  },
+  /* Third-party */
+  gong: {
+    name:"Gong AI", code:"gong", status:"thirdparty", stage:4,
+    role:"Calls intelligence, summaries, and next-step suggestions baked into the outreach flow. Third-party product, not a custom Glean agent.",
+    saves:"~20 min per call reviewed",
+    impact: null, mentions: 0, bookings: 0,
+    topFeedback:"Third-party (Gong)."
+  },
+  /* Sub-IDs that map to single agent for tooltip purposes */
+  "reginald-intro": null,
+  "reginald-disco": null
 };
+// alias the sub-IDs
+AGENTS["reginald-intro"] = { ...AGENTS.reginald, name:"Reginald (Intro Call)", role:"Chat to learn specifics for the Intro Call; plan the 4-part script (State · Vision · Stakeholders · Next Steps)." };
+AGENTS["reginald-disco"] = { ...AGENTS.reginald, name:"Reginald (Disco Call)", role:"Same agent, reused: learn specifics for the discovery workshop and plan the call." };
 
 const GLEAN = {
-  "csa-rag": {
-    rank: 1, impact: "high",
-    title: "CSA technical &amp; security RAG",
-    where: "Stage 6 Qualify deeply · Technical lane (CSA workstream)",
-    saves: "2–4 hr per POC and per security review",
-    body: `<p>The CSA workstream in Opp Qualification today has <strong>no AI</strong>: conceptual solution design, integration requirements, data/message flow, security &amp; compliance, implementation approach, risk assessment.</p>
-           <ul><li>Glean answers from product docs, runbooks, prior RFP responses, security library, and similar customer architectures with citations.</li>
-               <li>Pairs with Jeeves to back competitive claims with technical evidence.</li>
-               <li>Closes the biggest agentic gap in the chart.</li></ul>`
-  },
-  "opp-auto": {
-    rank: 2, impact: "high",
-    title: "Opp Creation auto-brief (the yellow sticky)",
-    where: "Stage 5 Open the opp · Systems lane · the author's own &quot;place for automation&quot; marker",
-    saves: "~30 min per opp, no manual handoff drift",
-    body: `<p>Right after "Generate Gong Brief &amp; share with AM" and before "Notify Account owner" — the chart itself flags an automation gap.</p>
-           <ul><li>Glean assembles the Account brief from Gong notes, MEDDPICC fields, and SFDC history and posts it to the AM automatically.</li>
-               <li>Removes a manual SDR→AE handoff step and prevents context loss between Pre-Acceptance and Acceptance.</li></ul>`
-  },
-  account360: {
-    rank: 3, impact: "high",
-    title: "Account 360 / pre-call brief",
-    where: "Stage 3 Build the play → Stage 4 First conversations · augments Jarvis",
-    saves: "~30 min before every call",
-    body: `<p>Stitches CRM history, prior email threads, Slack mentions, Gong calls, support tickets and exec news into a single brief.</p>
-           <ul><li>Jarvis builds the hypothesis; Glean supplies the lived institutional memory.</li>
-               <li>Closes a gap that Enzo used to (partially) cover in v1.</li></ul>`
-  },
-  battlecards: {
-    rank: 4, impact: "high",
-    title: "Live competitive battle-cards",
-    where: "Stage 6 Qualify deeply · augments Jeeves",
-    saves: "Stops stale-intel losses",
-    body: `<p>Pulls current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</p>
-           <ul><li>Keeps Jeeves grounded in the latest field intelligence, not last quarter's deck.</li></ul>`
-  },
-  rfi: {
-    rank: 5, impact: "medium",
-    title: "RFI / Infosec questionnaire auto-fill",
-    where: "Stage 7 Win the bake-off · augments Lurch",
-    saves: "~4 hr per RFI/security questionnaire",
-    body: `<p>Lurch already ingests RFI and Infosec docs. Glean pre-fills the answers from the security library, prior responses, and product docs with citations — the rep just reviews.</p>
-           <ul><li>Compounding value: every answered RFI grows the corpus for the next one.</li></ul>`
-  },
-  painpattern: {
-    rank: 6, impact: "medium",
-    title: "Similar-customer pain-pattern search",
-    where: "Stage 5 Open the opp → Stage 6 Qualify deeply · augments Reginald",
-    saves: "~1 hr per discovery",
-    body: `<p>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</p>
-           <ul><li>Feeds Reginald better analogues so the pain→solution translation is grounded in real prior deals.</li></ul>`
-  },
-  content: {
-    rank: 7, impact: "medium",
-    title: "Content &amp; talk-track retrieval",
-    where: "Stage 4 First conversations · Commercial lane",
-    saves: "~20 min per outreach",
-    body: `<p>Surfaces the right one-pager, customer story, or analyst quote for a given persona/industry/pain — alongside Gong AI's call intelligence.</p>`
-  },
-  handoff: {
-    rank: 8, impact: "medium",
-    title: "Post-sale handoff brief generator",
-    where: "Stage 8 Close &amp; sign → Stage 9 Hand off · Commercial lane",
-    saves: "~1.5 hr per closed deal",
-    body: `<p>Assembles a handoff doc from the deal record: pains, success criteria, technical sign-off notes, stakeholders, MAP, ramp plan.</p>
-           <ul><li>Reduces dropped context between AE/SE and CS/onboarding teams.</li></ul>`
-  },
-  routing: {
-    rank: 9, impact: "gap",
-    title: "Routing rules &amp; territory lookup",
-    where: "Stage 2 Route to seller · Technology lane",
-    saves: "Removes routing friction for SDRs &amp; ops",
-    body: `<p>Today: <strong>no AI in this stage</strong>. Glean answers "who owns this account / what's the ROE here?" from LeanData rules, territory docs, and SFDC.</p>`
-  },
-  onboarding: {
-    rank: 10, impact: "gap",
-    title: "Onboarding playbook &amp; ramp-plan agent",
-    where: "Stage 9 Hand off to launch · Technology lane",
-    saves: "Faster time-to-value for new customers",
-    body: `<p>Today: <strong>no AI in this stage</strong>. Glean surfaces the right onboarding playbook, prior ramp plans, and similar-customer launch timelines.</p>
-           <ul><li>Closes the last-mile gap after Lurch's MAP execution.</li></ul>`
-  }
+  "csa-rag": { rank:1, impact:"high", title:"CSA technical &amp; security RAG",
+    where:"Stage 6 Qualify deeply · Technical lane",
+    saves:"2–4 hr per POC", lane:"technical",
+    body:`<p>The CSA workstream has no AI today: conceptual design, integration, data flow, security &amp; compliance, implementation, risk assessment.</p>
+          <ul><li>Glean answers from product docs, runbooks, prior RFP responses, security library, and similar customer architectures with citations.</li>
+              <li>Pairs with Jeeves (when built) to back competitive claims with technical evidence.</li></ul>` },
+  "opp-auto": { rank:2, impact:"high", title:"Opp Creation auto-brief (yellow sticky)",
+    where:"Stage 5 Open the opp · the author's &quot;place for automation&quot; marker",
+    saves:"~30 min per opp", lane:"systems",
+    body:`<p>The chart itself flags this gap between "Generate Gong Brief &amp; share with AM" and "Notify Account owner".</p>
+          <ul><li>Glean assembles the Account brief from Gong + MEDDPICC + SFDC and posts it to the AM automatically.</li></ul>` },
+  account360: { rank:3, impact:"high", title:"Account 360 / pre-call brief",
+    where:"Stage 3 → 4 · augments Jarvis &amp; Enzo",
+    saves:"~30 min before every call", lane:"commercial",
+    body:`<p>Stitches CRM history, email threads, Slack mentions, Gong calls, support tickets, exec news into one brief.</p>` },
+  battlecards: { rank:4, impact:"high", title:"Live competitive battle-cards",
+    where:"Stage 6 · augments Jeeves",
+    saves:"Stops stale-intel losses", lane:"commercial",
+    body:`<p>Current battle cards, win/loss notes, recent compete intel from Slack and CI tools.</p>` },
+  rfi: { rank:5, impact:"medium", title:"RFI / Infosec questionnaire auto-fill",
+    where:"Stage 7 · augments Lurch",
+    saves:"~4 hr per questionnaire", lane:"agentic",
+    body:`<p>Lurch already ingests these. Glean pre-fills answers from security library, prior responses, and product docs with citations.</p>` },
+  painpattern: { rank:6, impact:"medium", title:"Similar-customer pain-pattern search",
+    where:"Stage 5 → 6 · augments Reginald",
+    saves:"~1 hr per discovery", lane:"agentic",
+    body:`<p>"Find 5 closed-won accounts with this pain + industry + size" across Gong, CRM notes, case studies.</p>` },
+  content: { rank:7, impact:"medium", title:"Content &amp; talk-track retrieval",
+    where:"Stage 4 First conversations", saves:"~20 min per outreach", lane:"commercial",
+    body:`<p>Surface the right one-pager, customer story, or analyst quote for a persona/industry/pain.</p>` },
+  handoff: { rank:8, impact:"medium", title:"Post-sale handoff brief generator",
+    where:"Stage 8 → 9", saves:"~1.5 hr per closed deal", lane:"commercial",
+    body:`<p>Auto-assemble handoff doc: pains, success criteria, tech sign-off, stakeholders, MAP, ramp plan.</p>` },
+  routing: { rank:9, impact:"gap", title:"Routing rules &amp; territory lookup",
+    where:"Stage 2 · Technology lane",
+    saves:"Routing friction for SDRs &amp; ops", lane:"technology",
+    body:`<p>No AI here today. Glean answers "who owns this account / what's the ROE?" from LeanData rules, territory docs, and SFDC.</p>` },
+  onboarding: { rank:10, impact:"gap", title:"Onboarding playbook &amp; ramp-plan agent",
+    where:"Stage 9 · Technology lane",
+    saves:"Faster time-to-value", lane:"technology",
+    body:`<p>No AI here today. Glean surfaces the right onboarding playbook, prior ramp plans, similar-customer launch timelines.</p>` }
 };
 
-const LANES = ["customer", "commercial", "technical", "operations", "agentic", "technology", "systems"];
+const LANES = ["customer","commercial","technical","operations","agentic","technology","systems"];
 
-/* swimlane content per (stage, lane) — captures the revised chart */
 const SWIMLANE = {
   1: {
     commercial: [{t:"a", txt:"ABX Campaign Planning"}],
@@ -793,70 +897,198 @@ const SWIMLANE = {
     commercial: [{t:"a", txt:"Find self-sourced account"}, {t:"a", txt:"Select account"}],
     agentic:    [{t:"g", id:"routing"}],
     technology: [{t:"a", txt:"6sense matching algorithm"}, {t:"a", txt:"Check territory dashboard"}, {t:"d", txt:"Prioritized accounts assigned?"}],
-    systems:    [{t:"a", txt:"Is account in SFDC?"}, {t:"a", txt:"Create / reference SFDC record"}, {t:"a", txt:"LeanData territory mapping"}, {t:"a", txt:"SFDC calculates priority"}]
+    systems:    [{t:"a", txt:"Is account in SFDC?"}, {t:"a", txt:"Create / reference SFDC record"}, {t:"a", txt:"LeanData territory mapping"}]
   },
   3: {
     commercial: [{t:"d", txt:"Targets already in system?"}],
-    agentic:    [{t:"ai", id:"jarvis"}, {t:"d", txt:"Safe to engage?"}, {t:"d", txt:"Good fit for Vonage?"}, {t:"a", txt:"Ask follow-up questions"}, {t:"a", txt:"Export the output"}, {t:"g", id:"account360"}],
-    technology: [{t:"a", txt:"LI Sales Nav · Lead IQ · ZoomInfo sourcing"}],
+    agentic:    [{t:"ai", id:"jarvis"}, {t:"ai", id:"enzo"}, {t:"ai", id:"wadsworth"}, {t:"d", txt:"Safe to engage?"}, {t:"d", txt:"Good fit for Vonage?"}, {t:"g", id:"account360"}],
+    technology: [{t:"a", txt:"LI Sales Nav · Lead IQ · ZoomInfo"}],
     systems:    [{t:"a", txt:"Change ABM Account Status to Working"}, {t:"a", txt:"Upload doc into SFDC Notes"}]
   },
   4: {
-    customer:   [{t:"d", txt:"Did they answer?"}, {t:"d", txt:"Reply negatively / opt out?"}, {t:"d", txt:"Agree to move forward?"}],
-    commercial: [{t:"a", txt:"Voicemail / dial out / elevator pitch"}, {t:"a", txt:"Follow up within 24 hrs"}, {t:"a", txt:"Engage aligned to the 3 P's"}],
+    customer:   [{t:"d", txt:"Did they answer?"}, {t:"d", txt:"Agree to move forward?"}],
+    commercial: [{t:"a", txt:"Voicemail / dial / pitch"}, {t:"a", txt:"Follow up within 24 hrs"}, {t:"a", txt:"Engage aligned to the 3 P's"}],
     operations: [{t:"a", txt:"Opt-out management"}],
     agentic:    [{t:"ai", id:"gong"}, {t:"g", id:"content"}],
-    technology: [{t:"a", txt:"Navigate to Gong, locate prospect"}, {t:"a", txt:"Add to Company flow"}, {t:"a", txt:"Customize outreach"}],
+    technology: [{t:"a", txt:"Navigate to Gong, locate prospect"}, {t:"a", txt:"Customize outreach"}],
     systems:    [{t:"a", txt:"Nurture"}]
   },
   5: {
     customer:   [{t:"d", txt:"NDA needed?"}],
-    commercial: [{t:"a", txt:"Schedule + prep + run Intro Call"}, {t:"a", txt:"4-part script: State · Vision · Stakeholders · Next Steps"}, {t:"d", txt:"Deal right for Vonage now?"}, {t:"d", txt:"Meets criteria to pass to AM?"}, {t:"d", txt:"AM accepts?"}],
+    commercial: [{t:"a", txt:"Schedule + prep + run Intro Call"}, {t:"a", txt:"4-part script: State · Vision · Stakeholders · Next Steps"}, {t:"d", txt:"Deal right for Vonage?"}, {t:"d", txt:"AM accepts?"}],
     operations: [{t:"a", txt:"Evisort process (NDA)"}],
-    agentic:    [{t:"ai", id:"reginald-intro"}, {t:"g", id:"painpattern"}],
-    technology: [{t:"d", txt:"Pscores ≥ Opp creation threshold?"}, {t:"a", txt:"Gong Brief"}, {t:"a", txt:"Convert lead/contact to Account &amp; Opp"}, {t:"a", txt:"Review AI MEDDPICC notes"}, {t:"a", txt:"Fill Stage Exit Criteria"}, {t:"a", txt:"Generate Gong Brief &amp; share with AM"}, {t:"auto", id:"opp-auto"}, {t:"a", txt:"Notify Account owner"}],
-    systems:    [{t:"a", txt:"SFDC Contact object · Opp Creation form"}, {t:"a", txt:"Data pushed to SFDC"}, {t:"exit", txt:"Closed Lost"}, {t:"a", txt:"Timestamp on Sales Acceptance"}]
+    agentic:    [{t:"ai", id:"reginald-intro"}, {t:"ai", id:"jax"}, {t:"g", id:"painpattern"}],
+    technology: [{t:"d", txt:"Pscores ≥ Opp threshold?"}, {t:"a", txt:"Gong Brief"}, {t:"a", txt:"Convert lead/contact to Account &amp; Opp"}, {t:"a", txt:"Fill Stage Exit Criteria"}, {t:"a", txt:"Generate Gong Brief &amp; share with AM"}, {t:"auto", id:"opp-auto"}, {t:"a", txt:"Notify Account owner"}],
+    systems:    [{t:"a", txt:"SFDC Contact · Opp Creation form"}, {t:"exit", txt:"Closed Lost"}]
   },
   6: {
-    customer:   [{t:"d", txt:"Alignment on shared vision?"}, {t:"d", txt:"Disqualified on budget?"}, {t:"d", txt:"Has technical resources?"}, {t:"d", txt:"Demo / POC required?"}, {t:"d", txt:"Sees value vs cost?"}, {t:"a", txt:"Champion reinforces urgency internally"}],
-    commercial: [{t:"a", txt:"Discovery workshops; document Cost of Inaction"}, {t:"a", txt:"Map Vonage to pain points; frame business case"}, {t:"a", txt:"Identify + test champion"}, {t:"a", txt:"Map buying committee + decision process"}, {t:"a", txt:"Enable champion; prepare to pitch to buyer"}],
-    technical:  [{t:"a", txt:"Invite CSA"}, {t:"a", txt:"CSA evaluates Vonage fit"}, {t:"d", txt:"Worth pursuing?"}, {t:"a", txt:"Conduct demo / POC"}, {t:"a", txt:"Gather technical requirements"}, {t:"a", txt:"Conceptual solution design"}, {t:"a", txt:"Integration · data flow · security &amp; compliance"}, {t:"a", txt:"Implementation approach &amp; timeline"}, {t:"a", txt:"Risk assessment"}],
+    customer:   [{t:"d", txt:"Alignment on shared vision?"}, {t:"d", txt:"Disqualified on budget?"}, {t:"d", txt:"Demo / POC required?"}],
+    commercial: [{t:"a", txt:"Discovery workshops; Cost of Inaction"}, {t:"a", txt:"Map Vonage to pain points; business case"}, {t:"a", txt:"Champion + buying committee + decision process"}],
+    technical:  [{t:"a", txt:"Invite CSA; CSA evaluates fit"}, {t:"a", txt:"Conduct demo / POC"}, {t:"a", txt:"Conceptual solution design"}, {t:"a", txt:"Integration · data · security &amp; compliance"}, {t:"a", txt:"Risk assessment"}],
     operations: [{t:"a", txt:"CSA / AM matrix"}],
-    agentic:    [{t:"ai", id:"reginald-disco"}, {t:"ai", id:"jeeves"}, {t:"g", id:"csa-rag"}, {t:"g", id:"battlecards"}],
-    technology: [{t:"a", txt:"Advance Opp to Interest Stage"}, {t:"a", txt:"Manual: CSA added to Opp team"}, {t:"a", txt:"Advance Opp to Qualified Stage"}],
-    systems:    [{t:"a", txt:"Add Product to Opp"}, {t:"a", txt:"Estimate ARR"}, {t:"exit", txt:"Closed / Lost"}]
+    agentic:    [{t:"ai", id:"reginald-disco"}, {t:"ai-d", id:"jeeves"}, {t:"g", id:"csa-rag"}, {t:"g", id:"battlecards"}],
+    technology: [{t:"a", txt:"Advance Opp to Qualified Stage"}],
+    systems:    [{t:"a", txt:"Add Product · Estimate ARR"}, {t:"exit", txt:"Closed / Lost"}]
   },
   7: {
-    customer:   [{t:"d", txt:"Is Vonage the top option?"}, {t:"a", txt:"Sign up via Customer Dashboard"}],
-    commercial: [{t:"a", txt:"Assess Vonage position vs buying criteria"}, {t:"a", txt:"Pitch strategy; sell to strengths"}, {t:"a", txt:"Approval flow + execution method"}, {t:"a", txt:"Confirm pricing model · ARR &amp; ramp"}, {t:"a", txt:"Mutual Action Plan; task owners"}],
+    customer:   [{t:"d", txt:"Is Vonage the top option?"}],
+    commercial: [{t:"a", txt:"Pitch strategy; sell to strengths"}, {t:"a", txt:"Confirm pricing · ARR &amp; ramp"}, {t:"a", txt:"Mutual Action Plan; task owners"}],
     technical:  [{t:"a", txt:"Conduct demo aligned to decision criteria"}],
-    operations: [{t:"d", txt:"Contract exceptions?"}, {t:"a", txt:"JIRA exception ticket; negotiate revised terms"}, {t:"a", txt:"Get internal approval; communicate resolution"}],
-    agentic:    [{t:"ai", id:"lurch"}, {t:"g", id:"rfi"}],
+    operations: [{t:"d", txt:"Contract exceptions?"}, {t:"a", txt:"JIRA exception ticket"}, {t:"a", txt:"Negotiate · approve · resolve"}],
+    agentic:    [{t:"ai-d", id:"lurch"}, {t:"g", id:"rfi"}],
     technology: [{t:"a", txt:"JIRA: segmentation &amp; API key"}],
     systems:    [{t:"a", txt:"Add API key in SFDC"}, {t:"exit", txt:"Closed / Lost"}]
   },
   8: {
-    customer:   [{t:"d", txt:"Is Vonage selected?"}, {t:"a", txt:"Vendor selection confirmation"}, {t:"a", txt:"PO creation / delivery"}],
-    commercial: [{t:"a", txt:"Verbal agreement on commercial terms"}, {t:"a", txt:"Monitor progress; cadence"}, {t:"a", txt:"Escalate / resolve roadblocks"}, {t:"a", txt:"Draft &amp; confirm ramp plan"}],
-    technical:  [{t:"a", txt:"Final solution design review"}, {t:"a", txt:"Security &amp; compliance checks"}, {t:"a", txt:"Performance / integration test"}, {t:"a", txt:"Internal technical sign-off"}],
-    operations: [{t:"a", txt:"MSA + Terms templates"}, {t:"a", txt:"Legal redlines · approve internally"}, {t:"a", txt:"Execute contract (DocuSign)"}, {t:"a", txt:"Upload contract in system"}],
+    customer:   [{t:"d", txt:"Is Vonage selected?"}, {t:"a", txt:"Vendor confirmation; PO"}],
+    commercial: [{t:"a", txt:"Verbal agreement on terms"}, {t:"a", txt:"Monitor; escalate; ramp plan"}],
+    technical:  [{t:"a", txt:"Final design review"}, {t:"a", txt:"Security &amp; compliance"}, {t:"a", txt:"Integration test &amp; sign-off"}],
+    operations: [{t:"a", txt:"MSA + Terms templates"}, {t:"a", txt:"Legal redlines · approve"}, {t:"a", txt:"Execute contract (DocuSign)"}],
     agentic:    [{t:"g", id:"handoff"}],
     systems:    [{t:"a", txt:"Advance SFDC stage to &quot;Agreement&quot;"}, {t:"exit", txt:"Closed / Lost"}, {t:"a", txt:"Closed-Won Booking"}]
   },
   9: {
     customer:   [{t:"a", txt:"Begins implementation"}],
-    commercial: [{t:"a", txt:"Confirm &amp; communicate close readiness"}],
+    commercial: [{t:"a", txt:"Confirm close readiness"}],
     operations: [{t:"a", txt:"Handoff to CS / onboarding"}],
     agentic:    [{t:"g", id:"onboarding"}],
     technology: [{t:"a", txt:"Closed-Won booking"}]
   }
 };
 
-/* ----------------------- STATE ----------------------- */
+/* 9 field-submitted ideas + 5 live + 2 designed = 16 cards in the kanban */
+const IDEAS = [
+  /* SUBMITTED — newest from the field */
+  { col:"submitted", id:"jarvis-to-outreach", title:"Jarvis → Outreach strategy",
+    requestor:"Jared Walter", date:"2026-05-07", priority:"high",
+    extends:"Jarvis", stage:4,
+    problem:"Take the Jarvis output and turn it into an outreach strategy — which Gong flow to use and how to personalize.",
+    why:"Closes the loop from prospecting hypothesis to first conversation.",
+    process:"Take Jarvis output → recommend flow + personalization tokens." },
+  { col:"submitted", id:"quick-disqual", title:"Quick disqualification agent",
+    requestor:"Edwin Euceda", date:"2026-05-07", priority:"high",
+    extends:null, stage:6,
+    problem:"Reps have a difficult time understanding how to quickly disqualify deals.",
+    why:"Operationalize process vs spreadsheets/calculators.",
+    process:"Edwin creating materials. Pair with stage requirements + MEDDPICC knowledge." },
+  { col:"submitted", id:"gong-flow-drafter", title:"Gong flow drafting agent",
+    requestor:"Lucy Koleva / Kelsey Wehner", date:"2026-03-05", priority:"high",
+    extends:null, stage:4,
+    problem:"Writing Gong flows takes time, time away from sellers to sell.",
+    why:"Integrate data, best practice, marketing intelligence efficiently. Use feedback humans don't today.",
+    process:"Use Wadsworth newsletters + Gong flow performance + Slack + branding/privacy guidelines + Enablement insights to draft flows for Content Committee review." },
+  { col:"submitted", id:"single-customer-view", title:"Single customer revenue view",
+    requestor:"Bobby Maeda", date:"2026-04-21", priority:"high",
+    extends:null, stage:9,
+    problem:"No single report shows what a customer does with us — need to piece together 5 reports.",
+    why:"Combine revenue, DM, support, new/existing into one view.",
+    process:"Consolidate reports into one customer 360." },
+  { col:"submitted", id:"closed-won-analyzer", title:"Closed-won pattern analyzer",
+    requestor:"Robert Liverpool", date:"2026-03-13", priority:"medium",
+    extends:null, stage:null,
+    problem:"Provide sales with better content or better training scenarios.",
+    why:"Mine closed-won transcripts for winning patterns.",
+    process:"Extract value narratives, discovery patterns, objection handling tied to revenue. Identify objections, loss drivers, competitor patterns, friction." },
+  { col:"submitted", id:"path-to-quota", title:"Path to Quota agent",
+    requestor:"Bobby Maeda", date:"2026-04-21", priority:"medium",
+    extends:null, stage:null,
+    problem:"Need to consolidate reports used to understand rep performance.",
+    why:"Calculate quota attained + gap math + action recommendations.",
+    process:"Single rep-perf view with where-to-spend-time advice." },
+
+  /* TRIAGED — sized but not started; the two clearest manager asks */
+  { col:"triaged", id:"account-oppty-download", title:"Account / Opportunity download agent",
+    requestor:"Bobby Maeda", date:"2026-04-24", priority:"high",
+    extends:null, stage:6,
+    problem:"Managers need to grasp what's happening in an account or opp without sifting through hundreds of emails.",
+    why:"Help managers manage without manually reading every thread.",
+    process:"Pull from Glean (transcripts) + SFDC (opp + emails) + BI (revenue, traffic spikes) + support tickets. Featured request in the May 14 feedback wall." },
+  { col:"triaged", id:"subregion-rep-perf", title:"Sub-region rep performance",
+    requestor:"Josh Fjeseth", date:"2026-03-19", priority:"high",
+    extends:null, stage:null,
+    problem:"Need visibility into sub-region perspectives on rep performance — pipeline, bookings, slowdowns.",
+    why:"Getting and analyzing the data takes time; it's repeatable.",
+    process:"Pair with Gong behavior + coaching data → recommend how to help rep improve." },
+  { col:"triaged", id:"agent-ops-impact", title:"Agent Ops impact reporter",
+    requestor:"Jared Walter", date:"2026-04-24", priority:"high",
+    extends:null, stage:null,
+    problem:"Need to understand the business impact of Agent Ops itself.",
+    why:"Combines SFDC activity, pipeline, revenue, and agent user data.",
+    process:"Emails leaders weekly: are agents being used? as expected? having impact? if no impact yet, are leading indicators good? Correlate e.g. accounts reached/week jumps with meetings booked." },
+
+  /* BUILDING — the two designed but not yet deployed */
+  { col:"building", id:"jeeves", title:"Jeeves · competitor counter-intel",
+    requestor:"Process design", date:"2026-04", priority:"high",
+    extends:null, stage:6, mode:"designed",
+    problem:"Buyers compare. Reps need real-time competitive intel grounded in field signal.",
+    why:"In Lucid v2 Agentic lane but not deployed.",
+    process:"Competitor counter-intelligence; map Vonage strengths to buyer's evaluation criteria; frame the differentiation story." },
+  { col:"building", id:"lurch", title:"Lurch · MAP builder",
+    requestor:"Process design", date:"2026-04", priority:"high",
+    extends:null, stage:7, mode:"designed",
+    problem:"MAP creation is manual and inconsistent.",
+    why:"In Lucid v2 Agentic lane but not deployed.",
+    process:"Ingest customer doc (RFI, Infosec questionnaire); reference MAP template; create the MAP; help rep complete tasks." },
+
+  /* LIVE */
+  { col:"live", id:"jarvis", title:"Jarvis", requestor:"Pilot Feb 2026", date:"Live", priority:"high", extends:null, stage:3, mode:"live",
+    problem:"Prospecting hypothesis", why:"5 agents live · impact 4.7 / 6", process:"Chat to decide safe to engage and good fit." },
+  { col:"live", id:"reginald", title:"Reginald", requestor:"Live Apr 2026", date:"Live", priority:"high", extends:null, stage:5, mode:"live",
+    problem:"Intro &amp; Disco call prep", why:"Impact 4.6 / 6", process:"Pain-to-solution; 4-part call script." },
+  { col:"live", id:"wadsworth", title:"Wadsworth", requestor:"Live Mar 2026", date:"Live", priority:"high", extends:null, stage:3, mode:"live",
+    problem:"Sales Intelligence Brief for KAMs", why:"Impact 4.4 / 6", process:"Automated account brief, Gong-powered." },
+  { col:"live", id:"enzo", title:"Enzo", requestor:"Live Apr 2026", date:"Live", priority:"medium", extends:null, stage:3, mode:"live",
+    problem:"Account intelligence", why:"Impact 3.5 / 6", process:"Pull from SFDC and account context." },
+  { col:"live", id:"jax", title:"Jax", requestor:"Live Apr 2026", date:"Live", priority:"medium", extends:null, stage:5, mode:"live",
+    problem:"Pricing / account lookup", why:"Impact 3.5 / 6", process:"Pricing data on demand." }
+];
+
+const PRINCIPLES = [
+  { t:"Embed in the workflow",
+    d:"Sellers won't open a new tool. The agent has to show up where work already happens — SFDC, Gong, Slack, Outreach — or it gets abandoned." },
+  { t:"Stitch institutional knowledge",
+    d:"Glean's edge is reading across CRM + Slack + email + Gong + docs. If the answer needed just one source, regular search would do." },
+  { t:"Cite or you're not trusted",
+    d:"Every claim links to the source doc, call, or message. Sellers verify before they pitch, especially for customer-facing output." },
+  { t:"Start from the seller's pain",
+    d:"Best ideas come from the field. \"What task takes 30+ minutes and is repeated every week?\" beats \"What could AI do?\" every time." },
+  { t:"Permissioned by default",
+    d:"Respect existing ACLs. No agent should expose data a user can't see directly. Trust is earned slowly, lost instantly." },
+  { t:"Measure adoption AND outcome",
+    d:"Usage is a leading indicator. Pipeline / win rate / cycle time is the actual signal. If no outcome lift after 60 days, kill or rebuild." },
+  { t:"Compounding corpus",
+    d:"Every RFI answered, MAP built, brief generated should grow the corpus so the next interaction is faster. Build the feedback loop on day one." },
+  { t:"Human-in-the-loop on high stakes",
+    d:"Anything customer-facing or revenue-impacting gets reviewed before it ships. The agent drafts, the human approves." }
+];
+
+const PLAYBOOK = [
+  { t:"Capture the pain", time:"1 week",
+    d:"Talk to 3–5 sellers in the target role. Write a one-paragraph problem statement.",
+    items:["Quantify the time-cost (mins per week per rep)","List the data sources the agent would need to read","Get the rep to articulate the dream output"] },
+  { t:"Score against the prioritization framework", time:"2 days",
+    d:"Use the existing scorecard: Seller Friction Reduction · Capacity · Strategic Fit · Financial Impact.",
+    items:["Composite ≥ 4.0/6 to clear triage","Map to a pipeline stage on the funnel","Identify if it extends an existing agent or is a new one"] },
+  { t:"Lock a sponsor + 3–5 pilot users", time:"1 week",
+    d:"Sponsor unblocks data access. Pilots co-design and give weekly feedback.",
+    items:["Sponsor = VP-level minimum","Pilots = mix of regions/roles","Set a 4-week pilot end-date upfront"] },
+  { t:"Build the MVP", time:"2–3 weeks",
+    d:"Smallest version that proves the value hypothesis. Connect required data sources. Instrument from day one.",
+    items:["One workflow, one persona, one output","Log every invocation + outcome","Pre-write the kill criteria"] },
+  { t:"Pilot for 4 weeks", time:"4 weeks",
+    d:"Weekly check-ins in #glean-agent-api-pilots-feedback. Track usage frequency and qualitative wins.",
+    items:["Weekly demo with pilots","Ship one improvement per week","Capture quotes for the wall"] },
+  { t:"Decide — scale, iterate, or kill", time:"1 week",
+    d:"Read the data honestly. Don't sunk-cost the build.",
+    items:["Scale: impact ≥4/6 AND adoption ≥70% of cohort","Iterate: high impact, low adoption (UX problem)","Kill: low impact regardless of adoption"] },
+  { t:"Enable broadly", time:"Ongoing",
+    d:"Roll out is a job, not a launch.",
+    items:["eLearning module on Thrive","Live training by region","Office hours for first 30 days","Add to new-joiner onboarding"] }
+];
+
+/* ============================================================ STATE + RENDER ============================================================ */
 
 const state = { activeStage: 6, filter: "all", tab: "funnel" };
-
-/* ----------------------- RENDER: FUNNEL ----------------------- */
 
 function renderFunnel() {
   const root = document.getElementById("funnel");
@@ -864,6 +1096,7 @@ function renderFunnel() {
     const aiCount    = s.aiAgents.length;
     const gleanCount = s.gleanOpps.length;
     const hasAuto    = (SWIMLANE[s.num] && Object.values(SWIMLANE[s.num]).some(arr => arr.some(c => c.t === "auto")));
+    const hasDesigned = s.aiAgents.some(id => AGENTS[id] && AGENTS[id].status === "designed");
     return `
       <button class="stage ${s.num === state.activeStage ? "active" : ""}" data-stage="${s.num}">
         <div class="num">${s.num}</div>
@@ -876,12 +1109,12 @@ function renderFunnel() {
         <div class="meta">
           ${aiCount ? `<span class="pill ai"><span class="dot"></span>${aiCount} AI</span>` : `<span class="pill gap"><span class="dot"></span>No AI</span>`}
           ${gleanCount ? `<span class="pill glean"><span class="dot"></span>${gleanCount} Glean</span>` : ``}
-          ${hasAuto ? `<span class="pill auto"><span class="dot"></span>Auto opp</span>` : ``}
+          ${hasAuto ? `<span class="pill auto"><span class="dot"></span>Auto</span>` : ``}
+          ${hasDesigned ? `<span class="pill designed"><span class="dot"></span>Designed</span>` : ``}
         </div>
       </button>
     `;
   }).join("");
-
   root.querySelectorAll(".stage").forEach(el => {
     el.addEventListener("click", () => {
       state.activeStage = Number(el.dataset.stage);
@@ -894,21 +1127,20 @@ function renderFunnel() {
 function renderDetail() {
   const s = STAGES.find(x => x.num === state.activeStage);
   const root = document.getElementById("detail");
-
   const aiHtml = s.aiAgents.length
     ? s.aiAgents.map(id => {
-        const a = AGENTS[id];
-        return `<div class="agent-row">
-          <div class="name">${a.name}</div>
+        const a = AGENTS[id]; if (!a) return "";
+        const cls = a.status === "designed" ? "designed" : "";
+        return `<div class="agent-row ${cls}">
+          <div class="name">${a.name} <span style="font-size:9px; padding:1px 5px; border-radius:4px; background:${a.status === "live" ? "rgba(34,197,94,0.18)" : a.status === "designed" ? "rgba(251,191,36,0.18)" : "rgba(148,163,184,0.18)"}; color:${a.status === "live" ? "#86efac" : a.status === "designed" ? "#fcd34d" : "#cbd5e1"}; margin-left: 4px; text-transform:uppercase; letter-spacing:0.05em; font-weight:700;">${a.status}</span></div>
           <div class="role">${a.role}</div>
           <span class="saves">Saves ${a.saves}</span>
         </div>`;
       }).join("")
     : `<div class="empty">No agent in the Agentic lane today — coverage gap.</div>`;
-
   const gleanHtml = s.gleanOpps.length
     ? s.gleanOpps.map(id => {
-        const g = GLEAN[id];
+        const g = GLEAN[id]; if (!g) return "";
         return `<div class="agent-row glean">
           <div class="name">${g.title}</div>
           <div class="role">${stripHtml(g.body)}</div>
@@ -916,7 +1148,6 @@ function renderDetail() {
         </div>`;
       }).join("")
     : `<div class="empty">No Glean opportunity flagged here.</div>`;
-
   root.innerHTML = `
     <div class="head">
       <div class="num">${s.num}</div>
@@ -927,10 +1158,9 @@ function renderDetail() {
       <div class="stats">
         <span class="pill">${s.volume}</span>
         <span class="pill">${s.days}</span>
-        <span class="pill">${s.convPct}% of top-of-funnel</span>
+        <span class="pill">${s.convPct}% of TOF</span>
       </div>
     </div>
-
     <div class="col">
       <h4>What the customer is doing</h4>
       ${s.customer.length ? `<ul>${s.customer.map(x => `<li>${x}</li>`).join("")}</ul>` : `<p>—</p>`}
@@ -939,12 +1169,10 @@ function renderDetail() {
       <h4 style="margin-top:14px;">Systems involved</h4>
       <p>${s.systems.join(" · ")}</p>
     </div>
-
     <div class="col">
-      <h4>AI agents today</h4>
+      <h4>AI agents at this stage</h4>
       <div class="agent-list">${aiHtml}</div>
     </div>
-
     <div class="col">
       <h4>Where Glean would help</h4>
       <div class="agent-list">${gleanHtml}</div>
@@ -958,18 +1186,14 @@ function stripHtml(html) {
   return tmp.textContent.replace(/\s+/g, " ").trim();
 }
 
-/* ----------------------- RENDER: SWIMLANE ----------------------- */
-
 function renderSwimlane() {
   const root = document.getElementById("pipeline");
-
   const head = [`<div class="col-head first"></div>`]
     .concat(STAGES.map(s => `
       <div class="col-head" data-stage="${s.num}">
         <span class="stage-num">${s.num}</span>${s.salesName}
       </div>`))
     .join("");
-
   const rows = LANES.map(lane => {
     const cells = STAGES.map(s => {
       const chips = (SWIMLANE[s.num] && SWIMLANE[s.num][lane]) || [];
@@ -979,11 +1203,16 @@ function renderSwimlane() {
         if (c.t === "d") return `<span class="chip diamond">${c.txt}</span>`;
         if (c.t === "exit") return `<span class="chip exit">${c.txt}</span>`;
         if (c.t === "ai") {
-          const a = AGENTS[c.id];
-          return `<span class="chip agent" data-tip-type="ai" data-tip-id="${c.id}">${a.name}</span>`;
+          const a = AGENTS[c.id]; if (!a) return "";
+          const cls = a.status === "thirdparty" ? "thirdparty" : "";
+          return `<span class="chip agent ${cls}" data-tip-type="ai" data-tip-id="${c.id}">${a.name}</span>`;
+        }
+        if (c.t === "ai-d") {
+          const a = AGENTS[c.id]; if (!a) return "";
+          return `<span class="chip agent designed" data-tip-type="ai" data-tip-id="${c.id}">${a.name}</span>`;
         }
         if (c.t === "g") {
-          const g = GLEAN[c.id];
+          const g = GLEAN[c.id]; if (!g) return "";
           return `<span class="chip glean" data-tip-type="glean" data-tip-id="${c.id}">${g.title}</span>`;
         }
         if (c.t === "auto") {
@@ -996,50 +1225,125 @@ function renderSwimlane() {
     }).join("");
     return `<div class="row-head ${lane === "agentic" ? "agentic" : ""}">${lane}</div>${cells}`;
   }).join("");
-
   root.innerHTML = `<div class="grid">${head}${rows}</div>`;
-
   root.querySelectorAll("[data-tip-type]").forEach(el => {
     el.addEventListener("mouseenter", e => showTip(e, el));
     el.addEventListener("mousemove",  e => moveTip(e));
     el.addEventListener("mouseleave", hideTip);
   });
-
   root.querySelectorAll(".col-head[data-stage]").forEach(el => {
     el.addEventListener("click", () => {
       state.activeStage = Number(el.dataset.stage);
       switchTab("funnel");
     });
   });
-
   applyFilter();
 }
 
-/* ----------------------- RENDER: GLEAN ROADMAP ----------------------- */
-
-function renderGleanRoadmap() {
-  const root = document.getElementById("opps");
-  const ordered = Object.values(GLEAN).sort((a,b) => a.rank - b.rank);
-  root.innerHTML = ordered.map((g, i) => `
-    <div class="opp ${g.impact} collapsed" data-id="${g.rank}">
-      <h3><span class="rank">${i+1}</span>${g.title}<span class="impact">${g.impact === "gap" ? "Coverage gap" : g.impact}</span></h3>
-      <div class="where">${g.where}</div>
-      <div class="saves">Saves ${g.saves}</div>
-      <div class="body">${g.body}</div>
-      <span class="expand">Show details ▾</span>
+function agentCardHtml(a, id) {
+  const impactPct = a.impact ? (a.impact / 6 * 100) : 0;
+  const code = a.code || id.charAt(0);
+  const stageName = STAGES.find(s => s.num === a.stage)?.salesName || "—";
+  return `
+    <div class="agent-card ${code === "j" || code === "r" || code === "w" || code === "e" || code === "x" ? code : ""} ${a.status === "designed" ? "designed" : ""}">
+      <div class="row1">
+        <div class="avatar">${a.name.charAt(0)}</div>
+        <div>
+          <div class="name">${a.name}</div>
+          <div class="role-tag">Stage ${a.stage} · ${stageName}</div>
+        </div>
+        <div class="status-tag">${a.status}</div>
+      </div>
+      <div class="stage-tag"><span class="n">${a.stage || "—"}</span> ${stageName}</div>
+      <div class="desc">${a.role}</div>
+      ${a.status !== "designed" ? `
+      <div class="metrics">
+        <div class="metric"><div class="v">${a.impact ? a.impact.toFixed(1) : "—"}</div><div class="l">Impact /6</div></div>
+        <div class="metric"><div class="v">${a.mentions}</div><div class="l">Mentions</div></div>
+        <div class="metric"><div class="v">$${a.bookings ? (a.bookings / 1000000).toFixed(1) + "M" : "—"}</div><div class="l">Est. bookings</div></div>
+      </div>
+      <div class="impact-bar"><span style="width:${impactPct}%; background:${impactPct >= 70 ? "#22c55e" : impactPct >= 50 ? "#fbbf24" : "#94a3b8"};"></span></div>
+      ` : ``}
+      <div class="feedback">
+        <span class="lbl">${a.status === "designed" ? "Designed for" : "Top feedback themes"}</span>
+        ${a.topFeedback}
+      </div>
     </div>
-  `).join("");
+  `;
+}
 
-  root.querySelectorAll(".opp").forEach(el => {
-    el.addEventListener("click", () => {
-      const c = el.classList.toggle("collapsed");
-      el.querySelector(".expand").textContent = c ? "Show details ▾" : "Hide details ▴";
-    });
+function renderAgentsTab() {
+  const live = ["jarvis","reginald","wadsworth","enzo","jax"];
+  const designed = ["jeeves","lurch"];
+  document.getElementById("agents-live").innerHTML    = live.map(id => agentCardHtml(AGENTS[id], id)).join("");
+  document.getElementById("agents-designed").innerHTML = designed.map(id => agentCardHtml(AGENTS[id], id)).join("");
+}
+
+function renderKanban() {
+  const cols = [
+    { key:"submitted", name:"Submitted",         sub:"From the field" },
+    { key:"triaged",   name:"Triaged",           sub:"Scored, awaiting sponsor" },
+    { key:"building",  name:"Building / designed", sub:"In dev or design" },
+    { key:"live",      name:"Live",              sub:"Deployed to sellers" }
+  ];
+  const root = document.getElementById("kanban");
+  root.innerHTML = cols.map(c => {
+    const cards = IDEAS.filter(i => i.col === c.key);
+    return `
+      <div class="col" data-col="${c.key}">
+        <div class="col-head-k">
+          <span class="dot"></span>
+          <span class="name">${c.name}</span>
+          <span class="count">${cards.length}</span>
+        </div>
+        ${cards.map(i => `
+          <div class="card ${i.mode || ""}" data-id="${i.id}">
+            <div class="title">${i.title}</div>
+            <div class="meta">
+              <span class="req">${i.requestor}</span>
+              <span>${i.date}</span>
+            </div>
+            <div class="desc">${i.problem}</div>
+            <div class="tags">
+              ${i.priority ? `<span class="tag priority-${i.priority}">${i.priority}</span>` : ``}
+              ${i.stage ? `<span class="tag stage">Stage ${i.stage}</span>` : ``}
+              ${i.extends ? `<span class="tag extends">extends ${i.extends}</span>` : ``}
+            </div>
+            <div class="body">
+              <h5>Why a Glean agent</h5><p>${i.why}</p>
+              <h5>Suggested process</h5><p>${i.process}</p>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }).join("");
+  root.querySelectorAll(".card").forEach(el => {
+    el.addEventListener("click", () => el.classList.toggle("expanded"));
   });
 }
 
-/* ----------------------- TOOLTIP ----------------------- */
+function renderPrinciples() {
+  document.getElementById("principles").innerHTML = PRINCIPLES.map((p, i) => `
+    <div class="principle">
+      <div class="n">${i+1}</div>
+      <div><div class="t">${p.t}</div><div class="d">${p.d}</div></div>
+    </div>
+  `).join("");
+  document.getElementById("steps").innerHTML = PLAYBOOK.map((s, i) => `
+    <div class="step">
+      <div class="head">
+        <div class="n">${i+1}</div>
+        <div class="t">${s.t}</div>
+        <div class="time">${s.time}</div>
+      </div>
+      <div class="d">${s.d}</div>
+      <ul>${s.items.map(it => `<li>${it}</li>`).join("")}</ul>
+    </div>
+  `).join("");
+}
 
+/* tooltip */
 const tip = document.getElementById("tip");
 function showTip(e, el) {
   const type = el.dataset.tipType;
@@ -1066,16 +1370,13 @@ function moveTip(e) {
 }
 function hideTip() { tip.classList.remove("show"); }
 
-/* ----------------------- TABS ----------------------- */
-
+/* tabs + filters */
 function switchTab(name) {
   state.tab = name;
   document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
   document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.dataset.panel === name));
 }
 document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchTab(t.dataset.tab)));
-
-/* ----------------------- FILTERS ----------------------- */
 
 function applyFilter() {
   const grid = document.querySelector("#pipeline .grid");
@@ -1094,12 +1395,13 @@ document.querySelectorAll("#laneFilter button").forEach(b => {
   });
 });
 
-/* ----------------------- INIT ----------------------- */
-
+/* init */
 renderFunnel();
 renderDetail();
 renderSwimlane();
-renderGleanRoadmap();
+renderAgentsTab();
+renderKanban();
+renderPrinciples();
 </script>
 
 </body>
