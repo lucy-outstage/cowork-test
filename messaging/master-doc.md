@@ -43,13 +43,11 @@ So the timing is exact: the methodology is centuries old, the means to deliver i
 ## 3. The Big Idea
 *P1 · Internal / founder · ~150 words · 🟡*
 
-There is a better way to work, and it's the same whether you're one person or a hundred thousand. It isn't to do more. It is: **name what you're trying to achieve, find the one thing actually blocking it — the decision no one will make, the hand-off where work goes cold — and put your energy there.**
+There is a better way to work, and it's the same whether you're one person or a whole company. It isn't to do more. It is: **get clear on what you're trying to achieve, find the one thing blocking it, and put your energy there.**
 
-Task trackers assume the job is to finish every task. Strategy is deciding what *not* to do.
+Most tools just hold your tasks and assume the goal is to finish all of them. Plansom starts a step earlier. You tell it what you want to achieve, and it builds a structured action plan — objectives, sub-objectives and tasks — drawn from plans that have worked before. It ranks that work by impact and effort, flags the bottlenecks slowing you down, and coaches you through the next move with reminders and quick wins. Progress tracks in real time, from a single task up to the whole company's goal.
 
-Plansom turns that discipline into a system. You set a goal — or drop in an OKR you already have — and it flags the bottleneck holding everything back, then ranks the work, yours and your agents', by what moves the goal instead of what merely feels urgent. Your progress comes back as a single figure: the Plansom Score.
-
-We pair AI's reach with human direction, so the results you were always capable of finally have a system to deliver them.
+Strategy is deciding what *not* to do. Plansom turns that discipline into something you can open every morning.
 
 ---
 
