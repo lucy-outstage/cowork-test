@@ -26,7 +26,7 @@ So Plansom started as a gentler idea than "work harder." It's the belief that th
 ## 2. Why Now
 *P1 · Internal / founder · ~500 words · 🟡*
 
-The problem Plansom solves is not new. For thousands of years, the hard part of any endeavour has been the same three things: knowing what you're actually trying to achieve, being honest about what's blocking you, and choosing what to do next when everything feels urgent. Generals wrestled with it. Every company that ever hit a ceiling wrestled with it. What's new is that, for the first time, it can actually be solved at scale — and that the cost of *not* solving it is about to explode.
+The problem Plansom solves is not new. For thousands of years, the hard part of any endeavour has been the same three things: knowing what you're trying to achieve, being honest about what's blocking you, and choosing what to do next when everything feels urgent. Generals wrestled with it. Every company that ever hit a ceiling wrestled with it. What's new is that, for the first time, it can actually be solved at scale — and that the cost of *not* solving it is about to explode.
 
 Here's why now, and not five years ago. Two things have changed.
 
@@ -49,7 +49,7 @@ Task trackers assume you should complete everything. Strategy is deciding what *
 
 Plansom turns that discipline into a system. You set a goal, it helps you surface the bottleneck, and it prioritises your workload — yours and your agents' — against what matters. Then it gives you one number for how you're doing.
 
-We combine AI's reach with human direction so you can achieve the things you were always capable of, but never had the system to reach.
+We combine AI's reach with human direction, so you can finally achieve the things you were always capable of but never had the system to deliver.
 
 ---
 
@@ -92,7 +92,7 @@ This is the older idea underneath it all: human potential, finally unstrapped. P
 ## 6. Story Bank
 *P1 · Internal / founder · ~3,000 words (3 stories) · 🔴 [OPEN: Anders has not picked a hero archetype yet — these are candidates to react to, not a locked "star"]*
 
-> **Note for Anders:** You said you don't want to commit to a single star yet, and that the best archetypes carry real emotional tension — the Shakespearean "what should I do, and how will I do it." These three are drafts built from examples you actually reach for. Read them as a range; tell me which tension rings true and we'll sharpen one into the hero. A backlog of alternative archetypes (solo operator / yoga studio, the liberated employee, the "aggressively lazy" master) is listed at the end.
+> **Note for Anders:** You said you don't want to commit to a single star yet, and that the best archetypes carry real emotional tension — the Shakespearean "what should I do, and how will I do it." These three are drafts built from examples you actually reach for. Read them as a range; tell me which tension rings true and we'll sharpen one into the hero. A backlog of alternative archetypes (solo operator / yoga studio, the liberated employee, the quiet-efficiency master) is listed at the end.
 
 ### Story A — The CEO whose team is busy and going nowhere
 *Tension: effort vs. progress · ~1,000 words*
@@ -107,7 +107,7 @@ Almost nothing is wrong with them. What's wrong is the system they're working in
 
 First, a lot of the effort is going into things that simply don't matter. Maya would never sign off on that if she could see it plainly — but she can't, because in a task-driven world every completed task looks like progress. The dashboard is green. People are closing tickets. The trouble is that closing tickets is not the same as achieving the goal, and a tracker built to celebrate *completing everything* will happily celebrate a team sprinting in the wrong direction. Strategy is deciding what *not* to do, and nobody in Maya's company has been given permission — or a way — to decide that.
 
-Second, there's a bottleneck, and the organisation is quietly dishonest about it. Not maliciously. It's just human. The information about what's actually stuck *exists* somewhere in the company — someone knows the real reason the big initiative keeps slipping — but it isn't flowing to Maya, and on some level the team is avoiding naming it, because naming a bottleneck feels like admitting fault. So instead of fixing the one constraint that governs everything, the company optimises around it: a nicer website, a tidier process, a faster stand-up. None of it changes the outcome, because the system only ever moves as fast as its tightest constraint, and that constraint is being left untouched precisely because it's uncomfortable.
+Second, there's a bottleneck, and the organisation is quietly dishonest about it. Not maliciously. It's just human. The information about what's actually stuck *exists* somewhere in the company — someone knows the real reason the big initiative keeps slipping — but it isn't flowing to Maya, and on some level the team is avoiding naming it, because naming a bottleneck feels like admitting fault. So instead of fixing the one constraint that governs everything, the company optimises around it: a nicer website, a tidier process, a faster stand-up. None of it changes the outcome, because the system only ever moves as fast as its tightest constraint, and that one is being left untouched precisely because it's uncomfortable.
 
 Here's the moment that turns the story. Maya stops asking "is everyone working hard?" — she already knows they are — and starts asking the only two questions that matter: *what are we actually trying to achieve, and what one thing is blocking it?* The famous version of this is Elon Musk walking onto the factory floor and asking, "What's the biggest problem this week?" and then fixing *that*, and nothing else, until it's no longer the biggest problem. It sounds almost too simple. It works because it's the opposite of what a busy organisation naturally does.
 
@@ -162,14 +162,14 @@ The feeling underneath this story isn't relief, exactly. It's *agency restored*.
 ### Story Bank backlog — alternative archetypes to develop
 - **The solo operator / yoga-studio founder.** One person, no team, no boss — just trying to organise themselves and not lose the goal under daily busywork. Best vehicle for the *individual liberation* and "this is my everything" angle, and for the pure single-player Plansom Score (the "10,000 steps" feel).
 - **The liberated employee.** Inside a big org, uses Plansom to make their own contribution legible and shine in front of peers/managers — the self-promotion / shareable-artifact angle, framed as opportunity rather than surveillance.
-- **The "aggressively lazy" master.** A character study in efficiency for its own sake — never do anything twice, never push hard when you can aim well. Closest to Anders' own voice; good for brand/thought-leadership rather than product.
+- **The quiet-efficiency master.** A character study in directing energy well — spending effort deliberately, aiming rather than pushing. Closest to Anders' own voice; good for brand/thought-leadership rather than product.
 
 ---
 
 ## Appendix A — Voice & vocabulary (for everything derived from this doc)
 
 **Say this (the lexicon):**
-- Goal · Bottleneck · Prioritise / prioritisation · The Plansom Score · Mission control · Acceptance tests · Delegate the *why* · "Strategy is deciding what not to do" · "Work on the right things, not more things" · Aggressively lazy · Make the black box transparent · Independent verification layer
+- Goal · Bottleneck · Prioritise / prioritisation · The Plansom Score · Mission control · Acceptance tests · Delegate the *why* · "Strategy is deciding what not to do" · "Work on the right things, not more things" · Make the black box transparent · Independent verification layer
 
 **The Score, said simply:** it's IQ / NPS / 10,000-steps for getting things done — a single normalised, comparable, shareable number. Don't itemise what's "in" it; people accept IQ and steps without a breakdown. If pressed, a methodology note exists for the few who want it, but it isn't the pitch.
 
