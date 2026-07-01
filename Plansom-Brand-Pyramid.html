@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plansom — Brand Pyramid</title>
+<style>
+  :root{
+    --navy:#0e1a3a; --navy2:#16234d; --ink:#0a1330;
+    --gold:#f4c245; --gold-soft:#fbe9b6; --paper:#f5f7fb;
+    --blue:#5b7cff; --green:#2fae8f; --muted:#8ea0c9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 70% -10%, #1c2c5e 0%, var(--ink) 55%);
+    color:#eaf0ff; padding:48px 20px; line-height:1.45;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+  header{text-align:center;margin-bottom:40px;}
+  .brand{font-size:14px;letter-spacing:.28em;color:var(--gold);font-weight:700;text-transform:uppercase;}
+  h1{font-size:40px;margin:10px 0 6px;font-weight:800;}
+  header p{color:var(--muted);font-size:16px;}
+  .pyramid{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .tier{
+    width:100%;border-radius:16px;padding:22px 28px;position:relative;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.06);
+  }
+  .t1{width:56%;background:linear-gradient(135deg,#f4c245,#e0a417);color:#1a1a1a;text-align:center;}
+  .t2{width:66%;background:var(--navy2);}
+  .t3{width:78%;background:#12224b;}
+  .t4{width:90%;background:#101d40;}
+  .t5{width:100%;background:#0d1836;}
+  .tier .label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-bottom:8px;opacity:.9;}
+  .t1 .label{color:#4a3a00;}
+  .t2 .label,.t3 .label,.t4 .label,.t5 .label{color:var(--gold);}
+  .t1 .big{font-size:24px;font-weight:800;}
+  .t1 .sub{font-size:13px;margin-top:4px;color:#3a2f05;font-weight:600;}
+  .headline{font-size:19px;font-weight:700;margin-bottom:6px;}
+  .desc{color:var(--muted);font-size:14px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
+    padding:6px 12px;border-radius:999px;font-size:13px;}
+  .chip.hero{background:rgba(244,194,69,.16);border-color:rgba(244,194,69,.4);color:var(--gold-soft);font-weight:600;}
+  .chip.proof{background:rgba(47,174,143,.14);border-color:rgba(47,174,143,.4);color:#a7ead9;}
+  .chip.ai{background:rgba(91,124,255,.14);border-color:rgba(91,124,255,.4);color:#c3cfff;}
+  .foot{margin-top:44px;background:#0d1836;border-radius:16px;padding:26px 30px;border:1px solid rgba(255,255,255,.06);}
+  .foot h3{color:var(--gold);font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;}
+  .foot p{font-size:15px;margin-bottom:12px;}
+  .foot .q{border-left:3px solid var(--gold);padding-left:16px;color:#dfe7ff;}
+  .ladder{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .ladder span{flex:1;min-width:120px;text-align:center;background:rgba(255,255,255,.05);
+    border-radius:10px;padding:10px;font-size:13px;}
+  .ladder b{display:block;color:var(--gold);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+  .credit{text-align:center;color:var(--muted);font-size:12px;margin-top:28px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Plansom · Brand Framework</div>
+    <h1>The Brand Pyramid</h1>
+    <p>From concrete proof to the single idea we own — outcome discipline.</p>
+  </header>
+
+  <div class="pyramid">
+    <div class="tier t1">
+      <div class="label">Brand Essence</div>
+      <div class="big">"Put your effort where it pays off most."</div>
+      <div class="sub">Outcome discipline · Promise: More progress. Less wasted effort.</div>
+    </div>
+
+    <div class="tier t2">
+      <div class="label">Personality &amp; Voice</div>
+      <div class="headline">Direct, disciplined and calmly ambitious</div>
+      <div class="chips">
+        <span class="chip">Disciplined</span>
+        <span class="chip">Direct</span>
+        <span class="chip">Intelligent</span>
+        <span class="chip">Calm in command</span>
+        <span class="chip">Modern &amp; forward-moving</span>
+      </div>
+    </div>
+
+    <div class="tier t3">
+      <div class="label">Emotional Benefits — how it feels</div>
+      <div class="desc">North star: <b style="color:#fff">Ahead</b> — moving before the situation overtakes you.</div>
+      <div class="chips">
+        <span class="chip hero">In control of effort</span>
+        <span class="chip hero">Confident handing off</span>
+        <span class="chip hero">Safe directing AI</span>
+        <span class="chip">Free from wasted motion</span>
+        <span class="chip">Disciplined, not overwhelmed</span>
+      </div>
+    </div>
+
+    <div class="tier t4">
+      <div class="label">Functional Benefits — what you get</div>
+      <div class="chips">
+        <span class="chip proof">Clear outcome focus</span>
+        <span class="chip">Highest-payoff prioritisation</span>
+        <span class="chip">Visible progress blockers</span>
+        <span class="chip proof">Delegation-ready workflows</span>
+        <span class="chip proof">Instant plan structure</span>
+        <span class="chip ai">Trusted agent delegation</span>
+      </div>
+      <div class="desc" style="margin-top:10px;">Pillars: Start with the outcome → See what's holding you back → Put effort where it pays off → Keep people &amp; agents aligned.</div>
+    </div>
+
+    <div class="tier t5">
+      <div class="label">Features &amp; Reasons to Believe — the base</div>
+      <div class="chips">
+        <span class="chip">PlansomScore</span>
+        <span class="chip">Instant plan generation</span>
+        <span class="chip">Goal hierarchy</span>
+        <span class="chip">Bottleneck visibility</span>
+        <span class="chip">Best-practice task config</span>
+        <span class="chip ai">Agent alignment &amp; success checks</span>
+        <span class="chip">AI Plan · Manage · Execute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <h3>Strategic ladder — fear to payoff</h3>
+    <div class="ladder">
+      <span><b>Fear</b>Falling behind</span>
+      <span><b>Promise</b>Discipline</span>
+      <span><b>Method</b>Put effort where it pays off</span>
+      <span><b>Payoff</b>More progress, less wasted effort</span>
+    </div>
+    <h3 style="margin-top:22px;">Positioning statement</h3>
+    <p class="q"><b>For</b> high-output teams, operators and managers who feel effort is scattered faster than progress is made, <b>Plansom is</b> the AI-first planning discipline layer for people and AI agents <b>that</b> turns documents, goals and intent into outcome-led plans, <b>because</b> it shows what matters most, structures work for confident handoff, and gives humans and AI clear direction.</p>
+    <p style="color:var(--muted);font-size:14px;">Core tension: <em>"We're working hard — but are we getting ahead?"</em> &nbsp;·&nbsp; Campaign platform: <b style="color:var(--gold)">Discipline That Keeps You Ahead</b> &nbsp;·&nbsp; Bold territory: <b style="color:var(--gold)">Command the Chaos</b></p>
+  </div>
+
+  <div class="credit">Plansom Brand Pyramid · synthesised from Functional POV, Emotional POV, USPs, Messaging Map &amp; Positioning Framework</div>
+</div>
+</body>
+</html>
