@@ -26,7 +26,22 @@ These documents follow the Plansom brand guidelines:
 - **2 combined documents** — the all-pillars *Pillar Overview* and the *Content Operating System*
   companion.
 
-(Google Doc links are listed in the delivery message / the folder.)
+**Drive folder:** https://drive.google.com/drive/folders/1GuQ-7cnUf6kOt3cGbtWoAPKK0MlGghE3
+
+| # | Document | Link |
+|---|----------|------|
+| 01 | Messaging & Brand System | https://docs.google.com/document/d/1W_1ZSjbWxulFBfFJf1PLcb6iYfvKggfX6Dkl-69egQY/edit |
+| 02 | Content System (Content OS) | https://docs.google.com/document/d/1ZK5kkD00sbQE9PmaSJvC5Pa_8jPZpxbsdlJCBhzPAAQ/edit |
+| 03 | Outreach System | https://docs.google.com/document/d/1-ngXwtNzhQLFy5FZ6ksPUTircRRJwLJyX08Tnl_vwho/edit |
+| 04 | Spin Sell System | https://docs.google.com/document/d/1C7QSqWsROrbQLSQlolnR2WhawYEyopiFv5dl6g8ZRtk/edit |
+| 05 | Customer Journey System | https://docs.google.com/document/d/1a_9NWcqAMvwuCYrzt4p3YmTj54dtFNmpVARxcYKyXvI/edit |
+| 06 | Customer Advisory Board | https://docs.google.com/document/d/1bUt1FERjhA3C4-6_UlI6sKzwr7Jp13sF19aPUnzttJM/edit |
+| 07 | Accelerators & Events System | https://docs.google.com/document/d/1kyz7N4sRxty7GdHVHxEDWiWFL-UepVnQj05YPjimvWE/edit |
+| 08 | Partnerships & Directories System | https://docs.google.com/document/d/13nhb10BDB54nMY9GrS7R1r-yF8cbHBz6cGIOO6BIPJA/edit |
+| 09 | Traffic System | https://docs.google.com/document/d/1qQ8q7K_U6rnbtGIWTo9tocdTdTZl0i8oIeQUfEujyVo/edit |
+| 10 | Social Media System | https://docs.google.com/document/d/1mRdZz_gYrotC3MdWtRJC6uBGLjt-HV877cR_O7b1gA8/edit |
+| — | **Combined:** Pillar Overview (all pillars) | https://docs.google.com/document/d/1ovlidforIgUhA-rzif777fI5uKVizt_Ofsj5_OxU0nw/edit |
+| — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/1UY3ZSUEXNKHakPGr7qo5AQohEikEiREb8Cy5v3S8t3U/edit |
 
 ## Source files in this folder
 
