@@ -1,0 +1,637 @@
+<title>Plansom Ideas — What Could You Plan?</title>
+<style>
+  :root{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --radius:16px; --maxw:1280px;
+    --sans:"Gilroy","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:"Berkeley Mono","JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.09);
+    --shadow-lg:0 4px 10px rgba(18,20,40,.07),0 30px 70px rgba(18,20,40,.18);
+    /* category hues — used only on the small icon chip, blue stays the UI accent */
+    --h-lead:#7c5cff; --h-ship:#343ced; --h-grow:#0ea5a5; --h-market:#d97a1e; --h-sell:#e0568c; --h-you:#12a150;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+      --border:#2a3042; --border-2:#3a4157;
+      --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+      --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+      --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 34px 80px rgba(0,0,0,.65);
+      --h-lead:#a08bff; --h-ship:#8a8fff; --h-grow:#3fd3ce; --h-market:#f0a94e; --h-sell:#f584b0; --h-you:#3fd38a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+    --border:#2a3042; --border-2:#3a4157;
+    --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+    --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+    --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 34px 80px rgba(0,0,0,.65);
+    --h-lead:#a08bff; --h-ship:#8a8fff; --h-grow:#3fd3ce; --h-market:#f0a94e; --h-sell:#f584b0; --h-you:#3fd38a;
+  }
+  :root[data-theme="light"]{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.09);
+    --shadow-lg:0 4px 10px rgba(18,20,40,.07),0 30px 70px rgba(18,20,40,.18);
+    --h-lead:#7c5cff; --h-ship:#343ced; --h-grow:#0ea5a5; --h-market:#d97a1e; --h-sell:#e0568c; --h-you:#12a150;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+  header.top{position:sticky;top:0;z-index:40;
+    background:color-mix(in srgb,var(--ground) 85%,transparent);backdrop-filter:saturate(1.4) blur(12px);
+    border-bottom:1px solid var(--border)}
+  .top-in{display:flex;align-items:center;gap:14px;padding:13px 0}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .mark{width:34px;height:34px;border-radius:9px;flex:none;position:relative;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:0 3px 10px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .mark::before{content:"";position:absolute;inset:0;border-radius:9px;
+    background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.9) 0 2.4px,transparent 3px),
+      radial-gradient(circle at 68% 44%,rgba(255,255,255,.65) 0 2px,transparent 2.6px),
+      radial-gradient(circle at 46% 72%,rgba(255,255,255,.8) 0 2.2px,transparent 2.8px)}
+  .brand h1{font-size:1rem;margin:0;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+  .brand .sub{font-size:.7rem;color:var(--faint);font-family:var(--mono);white-space:nowrap}
+  .top-spacer{flex:1}
+  .icon-btn{font-family:var(--sans);font-size:.82rem;font-weight:700;border-radius:10px;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--ink);padding:9px 13px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .icon-btn svg{width:15px;height:15px}
+  .icon-btn.spark{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .icon-btn.spark:hover{background:var(--accent-2);color:var(--accent-ink)}
+  .icon-btn.sq{padding:9px}
+
+  /* hero / intro */
+  .hero{padding:38px 0 22px;text-align:center}
+  .hero .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}
+  .hero h2{font-size:clamp(1.8rem,4.6vw,3rem);line-height:1.04;margin:0 auto 14px;font-weight:800;letter-spacing:-.025em;max-width:16ch;text-wrap:balance}
+  .hero h2 .grad{background:linear-gradient(100deg,var(--accent),var(--h-lead) 60%,var(--h-sell));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{font-size:1.06rem;color:var(--muted);max-width:56ch;margin:0 auto;line-height:1.5}
+
+  .controls{position:sticky;top:60px;z-index:30;background:color-mix(in srgb,var(--ground) 85%,transparent);
+    backdrop-filter:saturate(1.4) blur(10px);padding:14px 0;margin-bottom:8px}
+  .controls-in{display:flex;flex-direction:column;gap:12px}
+  .search{position:relative;max-width:440px;width:100%;margin:0 auto}
+  .search input{width:100%;font-family:var(--sans);font-size:.92rem;color:var(--ink);background:var(--surface);
+    border:1px solid var(--border-2);border-radius:12px;padding:12px 14px 12px 40px;transition:.15s;text-align:left}
+  .search input::placeholder{color:var(--faint)}
+  .search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint)}
+  .filters{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .fchip{font-family:var(--sans);font-size:.82rem;font-weight:650;border:1px solid var(--border-2);background:var(--surface);
+    color:var(--muted);padding:7px 13px;border-radius:999px;cursor:pointer;transition:.14s;display:inline-flex;align-items:center;gap:7px}
+  .fchip:hover{border-color:var(--accent);color:var(--accent)}
+  .fchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+  .fchip .cdot{width:8px;height:8px;border-radius:50%;background:var(--dot,var(--accent))}
+  .fchip .cnt{font-family:var(--mono);font-size:.72rem;opacity:.7}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding:8px 0 70px}
+  @media (max-width:560px){ .grid{grid-template-columns:1fr} }
+  .card{position:relative;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;cursor:pointer;transition:.18s cubic-bezier(.2,.7,.3,1);color:inherit;font-family:inherit;
+    display:flex;flex-direction:column;gap:11px;min-height:190px;overflow:hidden}
+  .card::after{content:"";position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;
+    box-shadow:inset 0 0 0 1.5px transparent;transition:.18s}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--border-2)}
+  .card:hover::after{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--chue) 55%,transparent)}
+  .card .chip{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;
+    background:color-mix(in srgb,var(--chue) 15%,var(--surface));color:var(--chue)}
+  .card .chip svg{width:22px;height:22px}
+  .card .cat{font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--chue);font-weight:700}
+  .card h3{font-size:1.12rem;font-weight:800;letter-spacing:-.015em;margin:0;line-height:1.2;text-wrap:balance}
+  .card .spark{font-size:.92rem;color:var(--muted);margin:0;line-height:1.45;flex:1}
+  .card .who{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
+  .card .who svg{width:12px;height:12px;opacity:.8}
+  .card .go{position:absolute;top:20px;right:20px;color:var(--faint);opacity:0;transform:translateX(-4px);transition:.18s}
+  .card:hover .go{opacity:1;transform:none;color:var(--chue)}
+  .card .go svg{width:18px;height:18px}
+  .empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:50px 10px;font-size:.9rem}
+
+  /* modal */
+  .backdrop{position:fixed;inset:0;z-index:60;background:color-mix(in srgb,#05060c 55%,transparent);
+    backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:5vh 18px 18px;overflow-y:auto}
+  .backdrop.open{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);
+    width:min(660px,100%);position:relative;overflow:hidden;animation:pop .22s cubic-bezier(.2,.8,.3,1)}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .modal{animation:none} }
+  .m-head{position:relative;padding:26px 28px 22px;border-bottom:1px solid var(--border);
+    background:radial-gradient(130% 150% at 100% -20%,color-mix(in srgb,var(--chue) 16%,transparent),transparent 60%),var(--surface)}
+  .m-head .chip{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+    background:color-mix(in srgb,var(--chue) 16%,var(--surface));color:var(--chue);margin-bottom:14px}
+  .m-head .chip svg{width:24px;height:24px}
+  .m-head .cat{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--chue);font-weight:700;margin-bottom:6px}
+  .m-head h3{font-size:clamp(1.35rem,3.4vw,1.7rem);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.12;max-width:22ch;text-wrap:balance}
+  .m-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:9px;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--muted);cursor:pointer;display:grid;place-items:center;transition:.14s}
+  .m-close:hover{border-color:var(--accent);color:var(--accent)}
+  .m-close svg{width:16px;height:16px}
+  .m-body{padding:22px 28px 24px;display:flex;flex-direction:column;gap:22px}
+  @media (max-width:560px){ .m-head{padding:22px 18px 18px} .m-body{padding:18px} }
+  .m-picture{font-size:1.02rem;color:var(--ink);line-height:1.55;margin:0}
+  .m-picture b{font-weight:700}
+  .block .bh{display:flex;align-items:center;gap:9px;font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+  .block .bh .bi{width:22px;height:22px;border-radius:7px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+  .block .bh .bi svg{width:13px;height:13px}
+  ul.how{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  ul.how li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:11px;font-size:.95rem;color:var(--ink);line-height:1.45}
+  ul.how li .tk{margin-top:2px;width:18px;height:18px;border-radius:6px;background:color-mix(in srgb,var(--chue) 16%,var(--surface));color:var(--chue);display:grid;place-items:center;flex:none}
+  ul.how li .tk svg{width:11px;height:11px}
+  .promptbox{border:1px solid var(--border);border-radius:13px;overflow:hidden;background:var(--surface)}
+  .promptbox .ph{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+  .promptbox .ph .lbl{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.03em;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+  .promptbox .ph .lbl svg{width:13px;height:13px}
+  .promptbox .cp{margin-left:auto;font-family:var(--sans);font-size:.74rem;font-weight:700;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--muted);border-radius:8px;padding:5px 10px;cursor:pointer;transition:.14s;display:inline-flex;align-items:center;gap:5px}
+  .promptbox .cp:hover{border-color:var(--accent);color:var(--accent)}
+  .promptbox .cp.done{border-color:var(--h-you);color:var(--h-you)}
+  .promptbox .cp svg{width:12px;height:12px}
+  .promptbox pre{margin:0;padding:14px;overflow-x:auto;font-family:var(--mono);font-size:.83rem;line-height:1.6;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+  .outcome{display:flex;gap:12px;align-items:flex-start;background:color-mix(in srgb,var(--chue) 9%,var(--surface));
+    border:1px solid color-mix(in srgb,var(--chue) 28%,var(--border));border-radius:13px;padding:14px 16px}
+  .outcome .oi{color:var(--chue);flex:none;margin-top:1px}
+  .outcome .oi svg{width:20px;height:20px}
+  .outcome .ot{font-size:.94rem;line-height:1.5}
+  .outcome .ot b{font-weight:700}
+  .m-foot{display:flex;align-items:center;gap:10px;padding:16px 28px 22px;border-top:1px solid var(--border)}
+  @media (max-width:560px){ .m-foot{padding:14px 18px 18px} }
+  .m-foot .nav{display:flex;gap:8px}
+  .m-nav{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-2);background:var(--surface);color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:.14s}
+  .m-nav:hover{border-color:var(--accent);color:var(--accent)}
+  .m-nav svg{width:17px;height:17px}
+  .m-foot .pos{font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+  .m-foot .spark{margin-left:auto}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--ground);
+    font-size:.86rem;font-weight:650;padding:11px 18px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.25s;z-index:80;display:flex;align-items:center;gap:8px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast svg{width:15px;height:15px;color:var(--h-you)}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div style="min-width:0"><h1>Plansom Ideas</h1><div class="sub">a gallery of things to plan</div></div>
+    </div>
+    <div class="top-spacer"></div>
+    <button class="icon-btn spark" id="surpriseBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Surprise me</button>
+    <button class="icon-btn sq" id="themeBtn" aria-label="Toggle theme" title="Toggle light / dark">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Plansom · idea gallery</div>
+    <h2>What could you <span class="grad">plan</span> with Plansom?</h2>
+    <p>Plansom turns any goal — at work or in life — into a plan that assigns itself, tracks itself, and hands the busywork to AI. Here are <b id="ideaCount">20</b> ideas to steal. Open one for the story and a prompt to paste straight in.</p>
+  </section>
+</div>
+
+<div class="controls">
+  <div class="wrap controls-in">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Search ideas: launch, hiring, wedding, OKRs…" autocomplete="off" aria-label="Search ideas">
+    </div>
+    <div class="filters" id="filters"></div>
+  </div>
+</div>
+
+<div class="wrap"><div class="grid" id="grid"></div></div>
+
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-label="Idea detail"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg">Copied</span></div>
+
+<script>
+const I={
+  quarter:'<path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/>',
+  onboard:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 11 2 2 4-4"/>',
+  brainstorm:'<path d="M12 3a6 6 0 0 0-4 10.5c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/><path d="M9 18h6M10 21h4"/>',
+  board:'<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 20h10M8 8l2.5 3L14 7l3 5"/>',
+  launch:'<path d="M5 13c0-5 3-9 7-11 4 2 7 6 7 11a11 11 0 0 1-1.5 5.5L12 22l-5.5-3.5A11 11 0 0 1 5 13z"/><circle cx="12" cy="9" r="2"/><path d="M8 18l-2 3M16 18l2 3"/>',
+  event:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/>',
+  migrate:'<path d="M4 7h11M11 3l4 4-4 4"/><path d="M20 17H9M13 21l-4-4 4-4"/>',
+  sprint:'<path d="M13 2 3 14h7l-1 8 10-12h-7z"/>',
+  gtm:'<path d="M3 3v18h18"/><path d="m7 14 3-3 3 2 5-6"/><path d="M18 7h2v2"/>',
+  fund:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.2a2.5 2 0 0 1 5 .3c0 2.5-5 1.8-5 4.3a2.5 2 0 0 0 5 .3"/>',
+  okr:'<path d="m12 2 2.9 5.9 6.1.9-4.5 4.3 1 6.1L12 16.9 6.5 19.2l1-6.1L3 8.8l6.1-.9z"/>',
+  content:'<path d="M4 4h16v14a2 2 0 0 1-2 2H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  campaign:'<path d="m3 11 15-7v16L3 13z"/><path d="M3 11v4a2 2 0 0 0 2 2h1"/><path d="M18 8a3 3 0 0 1 0 8"/>',
+  outbound:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+  deal:'<path d="M8 11 3 6l3-3 5 5M16 13l5 5-3 3-5-5"/><path d="m9 15 6-6"/><path d="M11 5l3-2 4 4-2 3M13 19l-3 2-4-4 2-3"/>',
+  journey:'<circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a3 3 0 0 1 3 3v3M15 18H9a3 3 0 0 1-3-3V9"/>',
+  race:'<path d="M6 3v18M6 4h11l-2 3 2 3H6"/>',
+  wedding:'<circle cx="8" cy="14" r="4"/><circle cx="16" cy="14" r="4"/><path d="m6 6 2 4 2-4M14 6l2 4 2-4"/>',
+  move:'<path d="M3 21V10l9-6 9 6v11z"/><path d="M9 21v-6h6v6"/>',
+  learn:'<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/>'
+};
+
+const CATS=[
+ {id:"lead",   label:"Lead a team",       hue:"var(--h-lead)"},
+ {id:"ship",   label:"Ship projects",     hue:"var(--h-ship)"},
+ {id:"grow",   label:"Grow the business", hue:"var(--h-grow)"},
+ {id:"market", label:"Marketing",         hue:"var(--h-market)"},
+ {id:"sell",   label:"Sales & customers", hue:"var(--h-sell)"},
+ {id:"you",    label:"Just for you",      hue:"var(--h-you)"}
+];
+const CATMAP=Object.fromEntries(CATS.map(c=>[c.id,c]));
+
+const IDEAS=[
+ {cat:"lead", icon:"quarter", title:"Run quarterly planning that sticks",
+  spark:"Walk out of the offsite with a plan that's still alive in week six.",
+  who:"Team leads · quarterly",
+  picture:"It's planning season. Normally the deck looks great on Friday and is forgotten by the next sprint. This time, every priority becomes a live plan with an owner the moment the meeting ends.",
+  how:["Drop your rough priorities in and let Plansom shape them into goals with clear outcomes","Each goal becomes a plan with owners, dates, and dependencies — instantly","Progress rolls up so you can see the whole quarter at a glance","An agent nudges owners and drafts the monthly review for you"],
+  prompt:`Here are our priorities for next quarter:
+[paste your rough list].
+Turn each into a clear goal with a measurable outcome,
+then draft a plan for each with owners and rough dates.
+Flag the 2–3 that will make or break the quarter.`,
+  outcome:"A quarter of work that's owned, dated, and tracked — not a deck that dies on Monday."},
+
+ {cat:"lead", icon:"onboard", title:"Give a new hire a brilliant first 30 days",
+  spark:"Turn “here's your laptop, good luck” into a plan that makes them productive fast.",
+  who:"Managers · per hire",
+  picture:"Your new teammate starts Monday. Instead of scrambling, you hand them a 30-day plan: who to meet, what to read, a real first project — all sequenced so they feel momentum by day three.",
+  how:["Describe the role and Plansom drafts a 30/60/90 onboarding plan","Tasks get owners across the team — buddy, IT, manager check-ins","The new hire sees exactly what's theirs each week","Nothing falls through: intros, access, and first wins are all tracked"],
+  prompt:`I'm onboarding a new [role] starting [date].
+Draft a 30-day onboarding plan: key people to meet,
+what to learn each week, and a meaningful first project
+they can own by week three. Assign prep tasks to me and
+the team so they're set up before day one.`,
+  outcome:"A new hire who feels welcomed, oriented, and useful — by their first Friday."},
+
+ {cat:"lead", icon:"brainstorm", title:"Turn a messy brainstorm into an owned plan",
+  spark:"That whiteboard of great ideas doesn't have to evaporate by lunch.",
+  who:"Anyone · after a workshop",
+  picture:"The room was buzzing — sticky notes everywhere, real energy. Usually it fizzles. This time you dump the notes into Plansom and watch them become themes, decisions, and next steps with names attached before everyone's left the building.",
+  how:["Paste the raw notes; Plansom clusters them into themes","It separates ideas from decisions from actions","Each action gets a suggested owner and a due date","You leave with a plan, not a photo of a whiteboard"],
+  prompt:`Here are the raw notes from our brainstorm:
+[paste everything, messy is fine].
+Group them into themes, pull out the concrete actions,
+suggest an owner and due date for each, and list any
+open questions we still need to decide.`,
+  outcome:"Momentum captured while it's hot — ideas become owned actions, not a lost photo."},
+
+ {cat:"lead", icon:"board", title:"Prep a board or leadership meeting in an afternoon",
+  spark:"Stop dreading board prep. Let the plan write half the deck.",
+  who:"Founders & execs · monthly",
+  picture:"The board meets Thursday. Because your goals and metrics already live in Plansom, the “what we said, what we did, what's next” practically assembles itself — you spend your time on the story, not chasing numbers.",
+  how:["Plansom pulls progress against goals and OKRs into a summary","It highlights what's on track, at risk, and changed since last time","An agent drafts the narrative sections for you to sharpen","Action items from the meeting become tracked tasks immediately"],
+  prompt:`Help me prep for our board meeting on [date].
+Summarise progress on our goals since last month:
+what shipped, what's at risk, and the key metrics.
+Draft the “priorities for next month” section, and
+turn any decisions we list into owned action items.`,
+  outcome:"A board update that's true, current, and mostly written before you sit down."},
+
+ {cat:"ship", icon:"launch", title:"Launch a product or feature without the chaos",
+  spark:"Every launch has a hundred moving parts. Give them all a home and an owner.",
+  who:"Product & marketing · per launch",
+  picture:"Launch day is three weeks out. Engineering, marketing, sales, and support all have a piece — and normally they collide. This time one plan holds the whole thing, phase by phase, so nothing surprises you on launch morning.",
+  how:["Plansom drafts a phased launch plan: build, prep, launch, follow-up","Cross-team tasks get owners and dependencies so nothing blocks silently","Risks are surfaced early with mitigations built into the plan","An agent keeps every team's status current without a status meeting"],
+  prompt:`We're launching [product/feature] on [date].
+Draft a phased launch plan covering product, marketing,
+sales enablement, and support. Assign owners by function,
+map dependencies between phases, and flag the top risks
+to the date with a mitigation for each.`,
+  outcome:"A launch where every team knows their part — and launch morning is calm."},
+
+ {cat:"ship", icon:"event", title:"Run an event or conference end-to-end",
+  spark:"Venue, speakers, promo, run-of-show — one plan instead of fourteen spreadsheets.",
+  who:"Events & marketing · per event",
+  picture:"You're hosting 200 people in eight weeks. The details are endless and the deadlines are real. Plansom holds the countdown — every task landing with room to spare, every owner clear on their week.",
+  how:["A working-backwards plan from event day, so nothing's last-minute","Owners for venue, speakers, promo, logistics, and follow-up","Reminders fire as each deadline approaches — automatically","Post-event, an agent drafts the recap and the follow-up tasks"],
+  prompt:`I'm running [event] for [audience] on [date].
+Build a plan working backwards from event day: venue,
+speakers, promotion, registration, run-of-show, and
+post-event follow-up. Assign owners and set reminders so
+each piece is ready with buffer, not at the last minute.`,
+  outcome:"An event that runs on rails — and a follow-up plan ready before the room clears."},
+
+ {cat:"ship", icon:"migrate", title:"Migrate to a new tool without breaking things",
+  spark:"Big migrations fail in the gaps. Close them with a plan that maps every step.",
+  who:"Ops & IT · per migration",
+  picture:"You're moving the team off the old system. It's the kind of project where one forgotten step means a bad week. Plansom lays out the sequence — pilot, migrate, verify, cut over — so the risky bits are handled before they bite.",
+  how:["Plansom breaks the migration into safe, sequenced phases","Dependencies are explicit so nothing cuts over before it's ready","A pre-mortem surfaces what's most likely to break, with mitigations","Verification tasks confirm each phase before the next begins"],
+  prompt:`We're migrating from [old tool] to [new tool] by [date].
+Draft a phased migration plan: pilot, data migration,
+verification, and cut-over. Map dependencies, add
+verification checkpoints between phases, and list the
+5 most likely failure points with a mitigation for each.`,
+  outcome:"A migration that goes quietly — because the risky steps were planned, not discovered."},
+
+ {cat:"ship", icon:"sprint", title:"Plan and run a delivery cycle",
+  spark:"Turn a backlog and a deadline into a realistic, owned sprint.",
+  who:"Delivery & PM · every cycle",
+  picture:"New cycle, familiar tension: too much to do, not enough time. You feed Plansom the backlog and the deadline; it tells you honestly what fits, sequences it, and keeps the cycle honest as things shift.",
+  how:["Plansom scopes the cycle against real capacity and flags over-commitment","Work is sequenced by dependency, not just priority","Daily focus surfaces the next right task for each person","When something slips, it re-plans and shows the knock-on effects"],
+  prompt:`Here's our backlog for the next cycle: [paste items].
+Our deadline is [date] and the team is [n] people.
+Tell me honestly what realistically fits, sequence it by
+dependency, and assign owners. Flag anything we should
+cut or defer to make the deadline safe.`,
+  outcome:"A cycle scoped to reality — committed work that actually ships."},
+
+ {cat:"grow", icon:"gtm", title:"Build your go-to-market plan from scratch",
+  spark:"You've got a product and an ambition. Turn it into a plan you can run Monday.",
+  who:"Founders · one-off, then live",
+  picture:"You know who you're for and roughly how you'll reach them — but it's all in your head. Plansom turns that into a real GTM plan: the channels, the first campaigns, the owners, and the metrics that tell you it's working.",
+  how:["Describe your product, buyer, and channels; Plansom drafts the GTM plan","Each channel becomes an initiative with owners and first steps","Metrics and targets are set so you know what “working” looks like","It all rolls up so you can see traction building week over week"],
+  prompt:`I'm taking [product] to market for [target buyer].
+The channels I'm considering are [list].
+Draft a 90-day go-to-market plan: the initiatives per
+channel, the first concrete steps, who should own each,
+and the metrics that would tell us it's working.`,
+  outcome:"A GTM plan out of your head and into motion — with owners and a scoreboard."},
+
+ {cat:"grow", icon:"fund", title:"Run a fundraise like a project",
+  spark:"A raise is a sales pipeline with a deadline. Plan it like one.",
+  who:"Founders · per round",
+  picture:"You're opening a round. It's chaos by default — dozens of investors, follow-ups, data-room asks, all in your inbox. Plansom turns it into a pipeline with stages, next steps, and nothing forgotten while you're busy pitching.",
+  how:["Build a plan: prep, outreach, meetings, diligence, close","Track every investor as they move through the stages","Follow-ups and data-room requests become tasks, not forgotten emails","An agent flags who's gone quiet and drafts the nudge"],
+  prompt:`I'm raising a [round] and want to run it like a pipeline.
+Draft a fundraise plan with stages (prep, outreach,
+meetings, diligence, close), the key tasks in each, and
+a checklist for the data room. Help me track investors
+through the stages and remind me on follow-ups.`,
+  outcome:"A raise you run, instead of one that runs you — no dropped follow-ups."},
+
+ {cat:"grow", icon:"okr", title:"Set company OKRs and cascade them",
+  spark:"Connect the big objectives to the actual day-to-day — no more strategy-in-a-drawer.",
+  who:"Leadership · quarterly",
+  picture:"You set beautiful OKRs last quarter and half the company never saw how their work connected. This time each key result becomes a living plan, so anyone can trace their Tuesday task up to the company objective it serves.",
+  how:["Set objectives and measurable key results in one place","Each key result cascades into a plan with an accountable owner","Daily tasks link up to the objective they serve","Progress on OKRs updates automatically as the plans move"],
+  prompt:`Our company objectives this quarter are:
+[list 2–3 objectives].
+For each, suggest 3–5 measurable key results, then draft
+the plan that would actually move each one — initiatives,
+owners, and first steps. Show how they connect top to
+bottom so the team can see the line to their work.`,
+  outcome:"Strategy and the day-to-day finally the same thing — visible top to bottom."},
+
+ {cat:"market", icon:"content", title:"Build a quarter of content in a day",
+  spark:"Go from blank calendar to a booked, owned content plan in one sitting.",
+  who:"Marketing · quarterly",
+  picture:"The content calendar is empty and the quarter's staring at you. You give Plansom your themes and cadence; it maps out the pieces, the owners, and the deadlines — so the calendar fills itself and every draft has a due date.",
+  how:["Plansom turns your themes into a full calendar of pieces","Each piece becomes a task with a writer, a channel, and a deadline","Dependencies (brief → draft → design → publish) are sequenced","An agent chases drafts and drafts the weekly “what's shipping” note"],
+  prompt:`Plan our content for next quarter.
+Themes: [list]. Cadence: [e.g. 2 posts + 1 newsletter/week].
+Channels: [list]. Map out the calendar of pieces, assign
+a writer and channel to each, sequence brief→draft→design
+→publish, and set realistic deadlines across the quarter.`,
+  outcome:"A full quarter of content, owned and scheduled — no more blank-calendar dread."},
+
+ {cat:"market", icon:"campaign", title:"Launch a campaign end-to-end",
+  spark:"One integrated plan across email, social, ads, and landing pages.",
+  who:"Marketing · per campaign",
+  picture:"You've got a big idea and a launch date. A campaign touches everything — copy, design, ads, email, web — and the pieces have to land together. Plansom keeps them in lockstep so the campaign goes live as one, not in dribs.",
+  how:["A single plan across every channel and asset the campaign needs","Owners and deadlines so design isn't waiting on copy at the last minute","A go-live checklist so nothing ships half-ready","Post-launch, results and follow-up tasks are tracked in one place"],
+  prompt:`We're launching a campaign: [concept] going live [date].
+Draft an integrated plan across email, social, paid, and
+landing page. Assign owners, sequence the asset production
+so nothing blocks, and build a go-live checklist. Add a
+post-launch review task a week after.`,
+  outcome:"A campaign that lands as one coordinated push — on time, nothing half-built."},
+
+ {cat:"sell", icon:"outbound", title:"Stand up an outbound sales motion",
+  spark:"Turn “we should do outbound” into a running, trackable machine.",
+  who:"Founders & sales · ongoing",
+  picture:"You know outbound could work but it's never gotten off the ground. Plansom lays out the motion — list, sequence, send, follow up — assigns it, and keeps the momentum so it becomes a habit, not a good intention.",
+  how:["Plansom builds the outbound plan: target list, sequence, cadence","Daily send-and-follow-up tasks so the motion actually runs","Replies and next steps get tracked, not lost in an inbox","An agent flags who's gone cold and what to send next"],
+  prompt:`Help me stand up an outbound motion targeting [segment].
+Draft the plan: how to build the list, a 4-touch sequence,
+the weekly cadence of sends and follow-ups, and how to
+track replies through to booked calls. Assign it as daily
+tasks so it actually runs.`,
+  outcome:"Outbound that runs every day as a habit — not a project that never starts."},
+
+ {cat:"sell", icon:"deal", title:"Plan a big deal all the way to closed",
+  spark:"Give your most important deal the plan it deserves.",
+  who:"Sales · per key deal",
+  picture:"There's a deal that could make the quarter. Too important to wing. Plansom builds a mutual close plan — every stakeholder, step, and date mapped — so you're driving it, and nothing stalls in a decision-maker's inbox.",
+  how:["Map the buying process: stakeholders, steps, and decision dates","Every next step gets an owner (yours and theirs) and a due date","Risks to the deal are named early, with a plan to de-risk each","An agent reminds you before anything goes quiet"],
+  prompt:`I'm working a key deal with [company].
+Help me build a mutual close plan: the stakeholders and
+their roles, the steps from here to signature, the dates,
+and what each side owns. Flag the biggest risks to closing
+and suggest how to de-risk each.`,
+  outcome:"A deal you actively drive to signature — no silent stalls."},
+
+ {cat:"sell", icon:"journey", title:"Design a customer onboarding journey",
+  spark:"Get every new customer to their first win — the same great way, every time.",
+  who:"Customer success · ongoing",
+  picture:"New customers sign, then some thrive and some quietly churn. The difference is usually the first two weeks. Plansom turns onboarding into a repeatable plan that gets every customer to real value fast, with your team knowing exactly what's next.",
+  how:["Design the onboarding plan once; it runs for every new customer","Kickoff, setup, first-value, and check-in all sequenced with owners","Nothing slips: every customer's onboarding progress is visible","An agent flags accounts stalling before they go dark"],
+  prompt:`Design a repeatable onboarding journey for new customers
+of [product]. The goal is getting them to first value —
+which for us is [define first value]. Lay out the stages
+(kickoff, setup, first win, check-in), the tasks and owners
+in each, and how we'll spot an account that's stalling.`,
+  outcome:"A repeatable path to first value — more customers who stick, fewer quiet churns."},
+
+ {cat:"you", icon:"race", title:"Train for a race or a big fitness goal",
+  spark:"Plansom isn't just for work. Give your body a project plan too.",
+  who:"You · personal, weeks–months",
+  picture:"You signed up for the half marathon. Motivation is high now — but a plan is what gets you to the start line ready. Plansom builds the training block, adapts when life happens, and keeps you honest week to week.",
+  how:["Tell Plansom the race, date, and where you're starting from","It builds a week-by-week training plan that ramps safely","Sessions become scheduled tasks with gentle reminders","Missed a week? It re-plans the block instead of guilt-tripping you"],
+  prompt:`I'm training for [race/goal] on [date].
+Right now I can [current fitness, honestly].
+Build me a week-by-week training plan that ramps up
+safely to race day, with rest and recovery built in.
+If I miss sessions, help me adjust without overdoing it.`,
+  outcome:"A training block you'll actually finish — and a start line you're ready for."},
+
+ {cat:"you", icon:"wedding", title:"Plan a wedding without losing your mind",
+  spark:"The happiest day comes with the longest to-do list. Let Plansom carry it.",
+  who:"You · months out",
+  picture:"There's a date, a budget, and roughly a thousand decisions. Instead of a chaotic shared note and 2am panic, Plansom holds the whole countdown — venue, guests, vendors, timeline — so you can enjoy the run-up instead of drowning in it.",
+  how:["A working-backwards plan from the big day, month by month","Every task — vendors, invites, fittings — with a date and an owner (you or your partner)","Budget and bookings tracked so nothing's double-spent or forgotten","Reminders keep the far-off deadlines from becoming last-minute"],
+  prompt:`We're getting married on [date] with a budget of [amount]
+and about [n] guests. Build a month-by-month plan working
+backwards from the day: venue, vendors, invitations, attire,
+and day-of timeline. Split tasks between me and my partner,
+and remind us before each deadline.`,
+  outcome:"A wedding run-up you actually enjoy — nothing forgotten, nobody overwhelmed."},
+
+ {cat:"you", icon:"move", title:"Move house without forgetting anything",
+  spark:"Every move has that one thing you forget. Not this time.",
+  who:"You · weeks out",
+  picture:"Moving day is in a month. Between packing, utilities, address changes, and logistics, something always slips. Plansom builds the full moving checklist on a timeline so the boring-but-critical stuff is handled before it becomes a crisis.",
+  how:["A countdown plan: declutter, book movers, transfer utilities, pack, clean","Each task lands on the right week so nothing's last-minute","Address-change and admin tasks nothing usually remembers","Reminders as moving day approaches so you stay ahead of it"],
+  prompt:`I'm moving from [A] to [B] on [date].
+Build me a moving plan on a timeline: what to do each week
+leading up to the move — decluttering, booking movers,
+transferring utilities, change-of-address admin, packing,
+and cleaning. Remind me as each week's tasks come due.`,
+  outcome:"A move where the boring-critical stuff is done early — and nothing's forgotten."},
+
+ {cat:"you", icon:"learn", title:"Learn a new skill in 90 days",
+  spark:"“Someday I'll learn that” becomes a plan with a finish line.",
+  who:"You · ~3 months",
+  picture:"You've wanted to learn it for ages — a language, coding, an instrument. Wanting isn't a plan. Plansom turns it into a 90-day path with small daily reps and real milestones, so you can see yourself getting better instead of just meaning to start.",
+  how:["Tell Plansom the skill and how much time you can give it","It builds a 90-day plan with milestones and daily practice","Practice becomes small, scheduled tasks that fit your real life","Milestones let you feel progress — the thing that keeps you going"],
+  prompt:`I want to learn [skill] over the next 90 days.
+I can realistically practise [time] on [which days].
+Build me a 90-day plan with clear milestones and small
+daily practice tasks that fit that schedule. Make the
+milestones motivating so I can feel myself improving.`,
+  outcome:"A skill you actually build — daily reps, real milestones, a finish line in sight."}
+];
+
+/* ---- render ---- */
+document.getElementById('ideaCount').textContent=IDEAS.length;
+const state={q:"", cat:"All"};
+const gridEl=document.getElementById('grid');
+const filtersEl=document.getElementById('filters');
+const qEl=document.getElementById('q');
+const backdrop=document.getElementById('backdrop');
+const modalEl=document.getElementById('modal');
+let lastFocus=null, modalIndex=-1;
+
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function svg(icon){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[icon]}</svg>`;}
+function matches(d){
+  if(state.cat!=="All" && d.cat!==state.cat) return false;
+  if(!state.q) return true;
+  const hay=(d.title+" "+d.spark+" "+d.who+" "+d.picture+" "+CATMAP[d.cat].label+" "+d.how.join(" ")+" "+d.outcome).toLowerCase();
+  return state.q.toLowerCase().split(/\s+/).filter(Boolean).every(t=>hay.includes(t)||hay.includes(t.replace(/s$/,'')));
+}
+function filtered(){return IDEAS.filter(matches);}
+
+function renderFilters(){
+  const counts=Object.fromEntries(CATS.map(c=>[c.id,IDEAS.filter(d=>d.cat===c.id).length]));
+  let html=`<button class="fchip" data-cat="All" aria-pressed="${state.cat==='All'}">All ideas <span class="cnt">${IDEAS.length}</span></button>`;
+  html+=CATS.map(c=>`<button class="fchip" data-cat="${c.id}" aria-pressed="${state.cat===c.id}" style="--dot:${c.hue}">
+      <span class="cdot"></span>${esc(c.label)} <span class="cnt">${counts[c.id]}</span></button>`).join('');
+  filtersEl.innerHTML=html;
+  filtersEl.querySelectorAll('.fchip').forEach(b=>b.onclick=()=>{state.cat=b.dataset.cat;render();});
+}
+
+function render(){
+  renderFilters();
+  const items=filtered();
+  if(!items.length){ gridEl.innerHTML=`<div class="empty">No ideas match “${esc(state.q)}”.<br>Try <b>launch</b>, <b>hiring</b>, <b>wedding</b>, or clear the search.</div>`; return; }
+  gridEl.innerHTML=items.map(d=>{
+    const c=CATMAP[d.cat];const gi=IDEAS.indexOf(d);
+    return `<button class="card" data-i="${gi}" style="--chue:${c.hue}">
+      <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      <span class="chip">${svg(d.icon)}</span>
+      <span class="cat">${esc(c.label)}</span>
+      <h3>${esc(d.title)}</h3>
+      <p class="spark">${esc(d.spark)}</p>
+      <span class="who"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${esc(d.who)}</span>
+    </button>`;
+  }).join('');
+  gridEl.querySelectorAll('.card').forEach(b=>b.onclick=()=>openModal(+b.dataset.i));
+}
+
+function openModal(i){
+  const d=IDEAS[i];const c=CATMAP[d.cat];modalIndex=i;
+  lastFocus=document.activeElement;
+  modalEl.style.setProperty('--chue',c.hue);
+  modalEl.innerHTML=`
+    <div class="m-head" style="--chue:${c.hue}">
+      <button class="m-close" id="mClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="chip">${svg(d.icon)}</div>
+      <div class="cat">${esc(c.label)} · ${esc(d.who)}</div>
+      <h3>${esc(d.title)}</h3>
+    </div>
+    <div class="m-body" style="--chue:${c.hue}">
+      <p class="m-picture">${esc(d.picture)}</p>
+      <div class="block">
+        <div class="bh"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6 6 0 0 0 12 3zM9 20h6"/></svg></span>How Plansom runs it</div>
+        <ul class="how">${d.how.map(h=>`<li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>${esc(h)}</span></li>`).join('')}</ul>
+      </div>
+      <div class="promptbox">
+        <div class="ph"><span class="lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3"/><path d="M2 22l4-1 12-12a2.8 2.8 0 0 0-4-4L2 17z"/></svg>Starter prompt — paste into Plansom</span>
+          <button class="cp" id="cpBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button></div>
+        <pre id="promptText">${esc(d.prompt)}</pre>
+      </div>
+      <div class="outcome">
+        <span class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg></span>
+        <div class="ot"><b>You'll end up with:</b> ${esc(d.outcome)}</div>
+      </div>
+    </div>
+    <div class="m-foot">
+      <div class="nav">
+        <button class="m-nav" id="prevBtn" aria-label="Previous idea"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="m-nav" id="nextBtn" aria-label="Next idea"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <span class="pos">idea ${String(i+1).padStart(2,'0')} / ${String(IDEAS.length).padStart(2,'0')}</span>
+      <button class="icon-btn spark" id="surprise2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Surprise me</button>
+    </div>`;
+  backdrop.classList.add('open');document.body.style.overflow='hidden';
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('cpBtn').onclick=e=>copy(d.prompt,e.currentTarget);
+  document.getElementById('prevBtn').onclick=()=>openModal((i-1+IDEAS.length)%IDEAS.length);
+  document.getElementById('nextBtn').onclick=()=>openModal((i+1)%IDEAS.length);
+  document.getElementById('surprise2').onclick=surprise;
+  document.getElementById('mClose').focus();
+}
+function closeModal(){backdrop.classList.remove('open');document.body.style.overflow='';modalIndex=-1;if(lastFocus)lastFocus.focus();}
+backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeModal();});
+
+function surprise(){
+  const pool=filtered().length?filtered():IDEAS;
+  let pick=pool[Math.floor((performance.now()*13)%pool.length)];
+  if(modalIndex>=0 && pool.length>1){ while(IDEAS.indexOf(pick)===modalIndex){ pick=pool[Math.floor((performance.now()*29+7)%pool.length)]; } }
+  openModal(IDEAS.indexOf(pick));
+}
+document.getElementById('surpriseBtn').onclick=surprise;
+
+/* clipboard */
+function copy(text,btn){
+  const done=()=>{ if(btn){btn.classList.add('done');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Copied';
+    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy';},1600);} toast('Copied — paste it into Plansom'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(()=>fb(text,done));}else fb(text,done);
+}
+function fb(text,cb){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
+let tT;function toast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* keyboard */
+qEl.addEventListener('input',e=>{state.q=e.target.value;render();});
+document.addEventListener('keydown',e=>{
+  if(backdrop.classList.contains('open')){
+    if(e.key==='Escape')closeModal();
+    else if(e.key==='ArrowRight')openModal((modalIndex+1)%IDEAS.length);
+    else if(e.key==='ArrowLeft')openModal((modalIndex-1+IDEAS.length)%IDEAS.length);
+    return;
+  }
+  if(e.key==='/'&&document.activeElement!==qEl){e.preventDefault();qEl.focus();}
+});
+
+/* theme */
+const root=document.documentElement;
+function isDark(){const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;}
+function paintTheme(){document.getElementById('themeIcon').innerHTML=isDark()
+  ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
+  : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';}
+document.getElementById('themeBtn').onclick=()=>{root.setAttribute('data-theme',isDark()?'light':'dark');paintTheme();};
+matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',paintTheme);
+
+render();paintTheme();
+</script>
