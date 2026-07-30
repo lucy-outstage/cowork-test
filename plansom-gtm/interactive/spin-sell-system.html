@@ -1,0 +1,741 @@
+<title>Plansom · SPIN Sell System</title>
+<style>
+  :root{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --good:#0f9b6c; --good-soft:#dcf5ec; --warn:#c26a11; --warn-soft:#fbeed9; --bad:#c8324b; --bad-soft:#fbe1e6;
+    --s:#7c5cff; --p:#e0568c; --i:#d97a1e; --n:#0ea5a5;
+    --radius:15px; --maxw:1340px;
+    --sans:"Gilroy","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:"Berkeley Mono","JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.08);
+    --shadow-lg:0 4px 10px rgba(18,20,40,.07),0 26px 62px rgba(18,20,40,.16);
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+    --border:#2a3042; --border-2:#3a4157;
+    --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+    --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+    --good:#3fd39b; --good-soft:#132a22; --warn:#f0a94e; --warn-soft:#2e2415; --bad:#f2647e; --bad-soft:#331a20;
+    --s:#a08bff; --p:#f584b0; --i:#f0a94e; --n:#3fd3ce;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+    --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 30px 74px rgba(0,0,0,.62);
+  }}
+  :root[data-theme="dark"]{
+    --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+    --border:#2a3042; --border-2:#3a4157;
+    --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+    --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+    --good:#3fd39b; --good-soft:#132a22; --warn:#f0a94e; --warn-soft:#2e2415; --bad:#f2647e; --bad-soft:#331a20;
+    --s:#a08bff; --p:#f584b0; --i:#f0a94e; --n:#3fd3ce;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+    --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 30px 74px rgba(0,0,0,.62);
+  }
+  :root[data-theme="light"]{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --good:#0f9b6c; --good-soft:#dcf5ec; --warn:#c26a11; --warn-soft:#fbeed9; --bad:#c8324b; --bad-soft:#fbe1e6;
+    --s:#7c5cff; --p:#e0568c; --i:#d97a1e; --n:#0ea5a5;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.08);
+    --shadow-lg:0 4px 10px rgba(18,20,40,.07),0 26px 62px rgba(18,20,40,.16);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  .mono{font-family:var(--mono)}
+  h2,h3,h4{text-wrap:balance}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 86%,transparent);
+    backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--border)}
+  .top-in{display:flex;align-items:center;gap:14px;padding:13px 0}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .mark{width:34px;height:34px;border-radius:9px;flex:none;position:relative;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:0 3px 10px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .mark::before{content:"";position:absolute;inset:0;border-radius:9px;
+    background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.9) 0 2.4px,transparent 3px),
+      radial-gradient(circle at 68% 44%,rgba(255,255,255,.65) 0 2px,transparent 2.6px),
+      radial-gradient(circle at 46% 72%,rgba(255,255,255,.8) 0 2.2px,transparent 2.8px)}
+  .brand h1{font-size:1rem;margin:0;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+  .brand .sub{font-size:.7rem;color:var(--faint);font-family:var(--mono);white-space:nowrap}
+  .top-spacer{flex:1}
+  .icon-btn{font-family:var(--sans);font-size:.8rem;font-weight:700;border-radius:10px;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--ink);padding:8px 12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .icon-btn svg{width:15px;height:15px}
+  .icon-btn.sq{padding:8px}
+
+  main{display:grid;grid-template-columns:262px minmax(0,1fr);gap:28px;padding:24px 0 70px;align-items:start}
+  main > *{min-width:0}
+  #content{min-width:0}
+  .card{min-width:0}
+  @media (max-width:900px){ main{grid-template-columns:1fr;gap:14px} }
+
+  .rail{position:sticky;top:72px;display:flex;flex-direction:column;gap:4px}
+  @media (max-width:900px){ .rail{position:static;flex-direction:row;flex-wrap:wrap;gap:7px} }
+  .nav{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:transparent;border:1px solid transparent;
+    border-radius:11px;padding:10px 11px;cursor:pointer;transition:.14s;color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:650}
+  .nav:hover{background:var(--surface-2);color:var(--ink)}
+  .nav[aria-current="true"]{background:var(--surface);border-color:var(--border);color:var(--ink);box-shadow:var(--shadow-sm)}
+  .nav[aria-current="true"] .ni{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .nav .ni{width:26px;height:26px;border-radius:8px;border:1px solid var(--border-2);background:var(--surface);
+    display:grid;place-items:center;flex:none;font-family:var(--mono);font-size:.74rem;font-weight:700;color:var(--muted);transition:.14s}
+  .nav .ni svg{width:15px;height:15px}
+  @media (max-width:900px){ .nav{width:auto} .nav .lbl{display:none} .nav{padding:8px} }
+
+  section[data-sec]{display:none;animation:fade .25s ease}
+  section[data-sec].on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){section[data-sec].on{animation:none}}
+
+  .sec-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 8px}
+  .sec-title{font-size:clamp(1.5rem,3.4vw,2.05rem);font-weight:800;letter-spacing:-.022em;margin:0 0 10px;line-height:1.08}
+  .sec-lede{font-size:1.03rem;color:var(--muted);max-width:66ch;margin:0 0 24px;line-height:1.5}
+  .sec-lede b{color:var(--ink)}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:22px;margin-bottom:16px}
+  .card > h3{font-size:.8rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin:0 0 4px;display:flex;align-items:center;gap:9px}
+  .card > h3 .hi{width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+  .card > h3 .hi svg{width:14px;height:14px}
+  .card .csub{color:var(--faint);font-size:.85rem;margin:0 0 16px}
+  @media (max-width:560px){ .card{padding:17px} }
+
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+
+  /* funnel */
+  .funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:640px){ .funnel{grid-template-columns:repeat(2,1fr)} }
+  .fstep{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative}
+  .fstep .fn{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .fstep .fv{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-top:3px}
+  .fstep .fl{font-size:.82rem;color:var(--muted);margin-top:2px;font-weight:600}
+  .fstep .conv{position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:2;font-family:var(--mono);font-size:.64rem;
+    background:var(--accent);color:var(--accent-ink);border-radius:99px;padding:2px 7px;font-weight:700;white-space:nowrap}
+  @media (max-width:640px){ .fstep .conv{display:none} }
+
+  /* gate chips */
+  .gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px}
+  .gate{border:1px solid var(--border);border-radius:12px;padding:13px 14px;background:var(--surface)}
+  .gate .gk{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem}
+  .gate .gk .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+  .gate p{margin:7px 0 0;font-size:.86rem;color:var(--muted);line-height:1.45}
+
+  /* SPIN stage blocks */
+  .spin{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+  .spinb{border:1px solid var(--border);border-left:4px solid var(--sc);border-radius:12px;padding:15px;background:var(--surface)}
+  .spinb .st{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--sc);font-weight:700}
+  .spinb h4{margin:3px 0 7px;font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+  .spinb p{margin:0;font-size:.88rem;color:var(--muted);line-height:1.45}
+
+  /* tables */
+  .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:440px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);font-weight:600;background:var(--surface-2);position:sticky;top:0}
+  tr:last-child td{border-bottom:none}
+  td b{font-weight:700}
+  td .tag{font-family:var(--mono);font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+  .raci b.r{color:var(--accent)} .raci .cell{font-family:var(--mono);font-size:.78rem;font-weight:700}
+  .cA{color:var(--bad)} .cR{color:var(--accent)} .cC{color:var(--warn)} .cI{color:var(--faint)}
+
+  /* timeline (flow / follow-up) */
+  .flow{display:flex;flex-direction:column}
+  .flow .row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;position:relative;padding-bottom:18px}
+  .flow .row:last-child{padding-bottom:0}
+  .flow .when{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--accent);padding-top:9px;text-align:right}
+  .flow .when small{display:block;color:var(--faint);font-weight:400;font-size:.7rem;margin-top:2px}
+  .flow .node{position:relative;border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--surface)}
+  .flow .node::before{content:"";position:absolute;left:-16px;top:18px;width:11px;height:11px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);box-shadow:0 0 0 2px var(--accent-soft)}
+  .flow .row::after{content:"";position:absolute;left:calc(96px + 16px + 5px);top:26px;bottom:-2px;width:2px;background:var(--border-2);z-index:0}
+  .flow .row:last-child::after{display:none}
+  .flow .node h4{margin:0 0 4px;font-size:1rem;font-weight:750;letter-spacing:-.01em}
+  .flow .node .goal{font-size:.88rem;color:var(--muted);margin:0 0 4px}
+  .flow .node .metaline{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .pill{font-family:var(--mono);font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+  .pill.acc{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+  @media (max-width:560px){ .flow .row{grid-template-columns:1fr;gap:6px} .flow .when{text-align:left;padding-top:0} .flow .row::after,.flow .node::before{display:none} }
+
+  /* copy templates */
+  .tpl{border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-top:11px;background:var(--surface)}
+  .tpl-h{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+  .tpl-h .lbl{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.02em;color:var(--muted)}
+  .tpl-h .cp{margin-left:auto;font-family:var(--sans);font-size:.72rem;font-weight:700;border:1px solid var(--border-2);background:var(--surface);color:var(--muted);border-radius:8px;padding:4px 9px;cursor:pointer;transition:.14s;display:inline-flex;align-items:center;gap:5px}
+  .tpl-h .cp:hover{border-color:var(--accent);color:var(--accent)}
+  .tpl-h .cp.done{border-color:var(--good);color:var(--good)}
+  .tpl-h .cp svg{width:12px;height:12px}
+  .tpl pre{margin:0;padding:12px 13px;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.55;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+
+  /* collateral cards */
+  .coll{border:1px solid var(--border);border-radius:12px;padding:15px;background:var(--surface);display:flex;flex-direction:column;gap:9px}
+  .coll .ci{width:38px;height:38px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+  .coll .ci svg{width:20px;height:20px}
+  .coll h4{margin:0;font-size:1rem;font-weight:750;letter-spacing:-.01em}
+  .coll p{margin:0;font-size:.87rem;color:var(--muted);line-height:1.45;flex:1}
+  .coll .cmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .coll .stg{font-family:var(--mono);font-size:.64rem;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+  .coll .src{font-family:var(--mono);font-size:.64rem;color:var(--faint)}
+
+  /* ownership tree */
+  .treewrap{overflow-x:auto;padding:6px 2px 4px}
+  .tree{min-width:640px}
+  .tier{display:flex;justify-content:center;gap:14px;flex-wrap:nowrap}
+  .tier.roles{margin-top:26px;position:relative}
+  .tier.roles::before{content:"";position:absolute;top:-14px;left:12%;right:12%;height:2px;background:var(--border-2)}
+  .tnode{border:1px solid var(--border);border-radius:13px;background:var(--surface);padding:14px;width:200px;flex:none;position:relative;box-shadow:var(--shadow-sm)}
+  .tier.roles .tnode::before{content:"";position:absolute;top:-14px;left:50%;width:2px;height:14px;background:var(--border-2)}
+  .tnode.dri{width:280px;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),var(--shadow-sm)}
+  .tnode .role{font-weight:800;font-size:.98rem;letter-spacing:-.01em}
+  .tnode .who{font-family:var(--mono);font-size:.66rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+  .tnode ul{margin:9px 0 0;padding-left:16px;font-size:.83rem;color:var(--muted);line-height:1.4}
+  .tnode ul li{margin-bottom:3px}
+  .tnode .owns{font-family:var(--mono);font-size:.64rem;color:var(--faint);margin-top:9px;border-top:1px dashed var(--border-2);padding-top:8px}
+  .handoff{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.72rem;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:6px 12px;margin:4px 6px 0 0}
+  .handoff svg{width:13px;height:13px;color:var(--accent)}
+
+  /* capacity calculator */
+  .calc{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
+  @media (max-width:820px){ .calc{grid-template-columns:1fr} }
+  .inputs{display:flex;flex-direction:column;gap:2px}
+  .inrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+  .inrow:last-child{border-bottom:none}
+  .inrow label{font-size:.86rem;color:var(--ink);font-weight:600;min-width:0}
+  .inrow label small{display:block;color:var(--faint);font-weight:400;font-size:.72rem;font-family:var(--mono)}
+  .inrow .ig{display:inline-flex;align-items:center;gap:4px;flex:none}
+  .inrow input{width:82px;font-family:var(--mono);font-size:.92rem;font-weight:700;text-align:right;color:var(--ink);
+    background:var(--surface);border:1px solid var(--border-2);border-radius:9px;padding:7px 9px;transition:.14s}
+  .inrow input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .inrow .unit{font-family:var(--mono);font-size:.72rem;color:var(--faint);width:34px}
+  .resetbtn{margin-top:12px;align-self:flex-start}
+
+  .flowtree{display:flex;flex-direction:column;gap:12px}
+  .ftnode{border:1px solid var(--border);border-radius:13px;padding:15px 16px;background:var(--surface);position:relative}
+  .ftnode.branch{background:var(--surface-2)}
+  .ftgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{border:1px solid var(--border);border-radius:12px;padding:14px;background:var(--surface)}
+  .stat .sl{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .stat .sv{font-family:var(--mono);font-size:1.6rem;font-weight:700;letter-spacing:-.02em;margin-top:4px;color:var(--ink)}
+  .stat .sv.accent{color:var(--accent)}
+  .stat .sd{font-size:.8rem;color:var(--muted);margin-top:3px;line-height:1.35}
+  .arrow{color:var(--border-2)}
+  .arrow svg{width:22px;height:22px}
+  .banner{border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;line-height:1.45;margin-top:4px}
+  .banner .bi{flex:none;margin-top:1px}
+  .banner .bi svg{width:20px;height:20px}
+  .banner.good{background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 34%,var(--border));color:var(--ink)} .banner.good .bi{color:var(--good)}
+  .banner.warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 34%,var(--border));color:var(--ink)} .banner.warn .bi{color:var(--warn)}
+  .banner.bad{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 34%,var(--border));color:var(--ink)} .banner.bad .bi{color:var(--bad)}
+  .banner b{font-weight:750}
+
+  .callout{display:flex;gap:12px;align-items:flex-start;background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-top:4px}
+  .callout .ci2{color:var(--accent);flex:none;margin-top:1px} .callout .ci2 svg{width:19px;height:19px}
+  .callout p{margin:0;font-size:.92rem;line-height:1.45} .callout b{font-weight:750}
+  .note{color:var(--faint);font-size:.78rem;line-height:1.5;margin-top:14px}
+  .note b{color:var(--muted)}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--ground);
+    font-size:.86rem;font-weight:650;padding:11px 18px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.25s;z-index:80;display:flex;align-items:center;gap:8px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast svg{width:15px;height:15px;color:var(--good)}
+  @media print{ header.top,.rail{display:none} main{display:block} section[data-sec]{display:block!important} .card{break-inside:avoid} body{background:#fff} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand"><div class="mark" aria-hidden="true"></div>
+      <div style="min-width:0"><h1>SPIN Sell System</h1><div class="sub">pillar 04 · qualify readiness live</div></div></div>
+    <div class="top-spacer"></div>
+    <button class="icon-btn" id="printBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>
+    <button class="icon-btn sq" id="themeBtn" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <main>
+    <aside class="rail" id="rail"></aside>
+    <div id="content">
+
+    <!-- OVERVIEW -->
+    <section data-sec="overview" class="on">
+      <p class="sec-eyebrow">Pillar 04 · the human selling motion</p>
+      <h2 class="sec-title">Where “are they ready?” gets answered — live</h2>
+      <p class="sec-lede">SPIN — Situation, Problem, Implication, Need-payoff — is a <b>diagnostic</b> method. It surfaces the prospect's real situation and pain, quantifies the cost of not solving it, and lets them articulate the value themselves. It converts the meetings Outreach books into activated trials, and disqualifies the not-ready quickly so effort lands where readiness is real.</p>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></span>The motion, in numbers</h3>
+        <p class="csub">Targets carried over from the GTM model. The whole system exists to hold this conversion.</p>
+        <div class="funnel">
+          <div class="fstep"><div class="fn">supply · from Outreach</div><div class="fv">~250</div><div class="fl">Meetings booked / mo</div><span class="conv">50% →</span></div>
+          <div class="fstep"><div class="fn">SPIN discovery + demo</div><div class="fv">~125</div><div class="fl">Trials activated / mo</div><span class="conv">win →</span></div>
+          <div class="fstep"><div class="fn">trial → win</div><div class="fv">~30%</div><div class="fl">Assumed close rate</div><span class="conv">≈10 seats</span></div>
+          <div class="fstep"><div class="fn">new customers</div><div class="fv">~38</div><div class="fl">Closed-won / mo</div></div>
+        </div>
+        <p class="note"><b>Note.</b> 250 meetings/mo and 50% meeting→trial are from the GTM model; the 30% trial→win and ~10 seats are working assumptions — tune them in <b>Resource &amp; capacity</b>.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>The readiness bar</h3>
+        <p class="csub">A prospect is “ready” only when all four are true. This is the qualify / disqualify line.</p>
+        <div class="gates">
+          <div class="gate"><div class="gk"><span class="dot"></span>Trigger</div><p>An observable event is forcing the issue now — funding, a new leader, tool sprawl, missed goals.</p></div>
+          <div class="gate"><div class="gk"><span class="dot"></span>Pain owner</div><p>The person on the call feels the coordination / goal pain themselves.</p></div>
+          <div class="gate"><div class="gk"><span class="dot"></span>Authority / path</div><p>They can buy, or bring the buyer — roughly a 10-seat team decision.</p></div>
+          <div class="gate"><div class="gk"><span class="dot"></span>Timing</div><p>Willing to start a trial and invite a team within two weeks.</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>What's in this system</h3>
+        <p class="csub">Five components your team builds and runs. Jump to any of them from the left.</p>
+        <div class="grid2" id="mapCards"></div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section data-sec="process">
+      <p class="sec-eyebrow">Component 01</p>
+      <h2 class="sec-title">SPIN sell process documentation</h2>
+      <p class="sec-lede">The playbook every rep runs: the discovery framework, the qualification gates, the question bank, the 30-minute call shape, and the responses to the objections you'll hear most. <b>Purpose — diagnose whether the prospect is genuinely ready and capture the “why” in their own words, then convert to an activated trial.</b></p>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6 6 0 0 0 12 3zM9 20h6"/></svg></span>The SPIN method</h3>
+        <p class="csub">Four stages, in order. Each one earns the right to the next — you don't demo until you've reached need-payoff.</p>
+        <div class="spin">
+          <div class="spinb" style="--sc:var(--s)"><div class="st">S · Situation</div><h4>Map the lay of the land</h4><p>How they plan and track goals today, team size, tools, whether they're in Microsoft Teams. Keep it short — buyers hate feeling interrogated.</p></div>
+          <div class="spinb" style="--sc:var(--p)"><div class="st">P · Problem</div><h4>Surface the friction</h4><p>Where it breaks down: planning, prioritisation, status updates, delegation. Let them name the pain in their words.</p></div>
+          <div class="spinb" style="--sc:var(--i)"><div class="st">I · Implication</div><h4>Make the cost real</h4><p>What a missed or slipped goal actually costs. What a manager hour on admin vs outcomes is worth. This is where urgency is created.</p></div>
+          <div class="spinb" style="--sc:var(--n)"><div class="st">N · Need-payoff</div><h4>Let them sell themselves</h4><p>“If a goal turned into a ready-to-share plan and agents handled some tasks — what would that free up?” They describe the win; you take notes.</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>SPIN question bank</h3>
+        <p class="csub">Adapt per segment; don't read robotically. Answers save to the deal record (HubSpot properties).</p>
+        <div class="twrap"><table>
+          <thead><tr><th style="width:120px">Stage</th><th>Questions</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag" style="background:color-mix(in srgb,var(--s) 16%,var(--surface));color:var(--s)">Situation</span></td><td>How does your team set and track goals today? Which tools? · How big is the team, and are you in Microsoft Teams?</td></tr>
+            <tr><td><span class="tag" style="background:color-mix(in srgb,var(--p) 16%,var(--surface));color:var(--p)">Problem</span></td><td>Where does it break down — planning, prioritisation, status updates, delegation? · How much time goes on status-chasing each week?</td></tr>
+            <tr><td><span class="tag" style="background:color-mix(in srgb,var(--i) 16%,var(--surface));color:var(--i)">Implication</span></td><td>What does a missed or slipped goal actually cost you? · What happens to focus when priorities aren't clear? · What's a manager hour worth on admin vs outcomes?</td></tr>
+            <tr><td><span class="tag" style="background:color-mix(in srgb,var(--n) 16%,var(--surface));color:var(--n)">Need-payoff</span></td><td>If a goal turned into a ready-to-share plan automatically and AI agents handled some of the tasks, what would that free up? · What's hitting goals “on repeat” worth to the team?</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tpl"><div class="tpl-h"><span class="lbl">Copy the full question bank</span><button class="cp">Copy</button></div><pre>SPIN DISCOVERY — QUESTION BANK
+
+SITUATION
+• How does your team set and track goals today? Which tools?
+• How big is the team, and are you in Microsoft Teams?
+
+PROBLEM
+• Where does it break down — planning, prioritisation, status, delegation?
+• How much time goes on status-chasing each week?
+
+IMPLICATION
+• What does a missed or slipped goal actually cost you?
+• What happens to focus when priorities aren't clear?
+• What's a manager hour worth on admin vs outcomes?
+
+NEED-PAYOFF
+• If a goal turned into a ready-to-share plan automatically, and AI
+  agents handled some of the tasks — what would that free up?
+• What's hitting goals "on repeat" worth to the team?</pre></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Discovery → demo flow · 30 minutes</h3>
+        <p class="csub">The standard first meeting. Don't skip to the demo before need-payoff.</p>
+        <div class="flow">
+          <div class="row"><div class="when">0–5<small>frame</small></div><div class="node"><h4>Frame &amp; confirm</h4><p class="goal">Set the agenda, confirm the trigger, and check who's in the room.</p></div></div>
+          <div class="row"><div class="when">5–15<small>diagnose</small></div><div class="node"><h4>SPIN discovery</h4><p class="goal">Surface the pain and its implication. Most of the value of the call is here.</p></div></div>
+          <div class="row"><div class="when">15–25<small>show</small></div><div class="node"><h4>Tailored demo</h4><p class="goal">Their goal → a shared plan → an agent doing a real task. Only what they named — nothing else.</p></div></div>
+          <div class="row"><div class="when">25–30<small>commit</small></div><div class="node"><h4>Need-payoff → start trial</h4><p class="goal">Confirm the payoff in their words, start the trial, agree activation + team invite.</p></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>Stage gates &amp; required data</h3>
+        <p class="csub">HubSpot deal stages from “Meeting booked” onward. A deal can't advance until the gate's fields are filled — this is how the forecast stays honest.</p>
+        <div class="twrap"><table>
+          <thead><tr><th>Stage</th><th>Exit criteria — advance only when…</th><th>Required field</th></tr></thead>
+          <tbody>
+            <tr><td><b>Meeting booked</b></td><td>Prep done; deck + battlecard attached; trigger confirmed.</td><td><span class="tag">Trigger</span></td></tr>
+            <tr><td><b>Discovery</b></td><td>SPIN run; pain owner + authority confirmed; implication quantified.</td><td><span class="tag">Pain owner / authority</span></td></tr>
+            <tr><td><b>Demo / evaluation</b></td><td>Tailored demo delivered; need-payoff captured in their words.</td><td><span class="tag">Metrics (implication)</span></td></tr>
+            <tr><td><b>Trial</b></td><td>Trial activated; first goal set; team invited within 2 weeks.</td><td><span class="tag">Timeline</span> <span class="tag">Champion</span></td></tr>
+            <tr><td><b>Proposal / quote</b></td><td>Quote generated (seats × price); buyer engaged.</td><td><span class="tag">Champion</span></td></tr>
+            <tr><td><b>Closed</b></td><td>Won → handoff to CS · Lost → win/loss reason logged.</td><td><span class="tag">Win/loss reason</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout" style="margin-top:14px"><span class="ci2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></span><p><b>Disqualification rule.</b> No trigger, or no pain-owner with a path to authority → disqualify now and log the reason. Fast “no” protects capacity for real readiness.</p></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Objection handling</h3>
+        <p class="csub">The six you'll hear most, with the response. Tag objections on the deal so they feed the FAQ + battlecards.</p>
+        <div class="twrap"><table>
+          <thead><tr><th style="width:40%">Objection</th><th>Response</th></tr></thead>
+          <tbody>
+            <tr><td>“We already use Asana / Jira / Monday.”</td><td>Plansom isn't another board to maintain — it turns a goal into the plan <i>for</i> you and adds AI agents that do work. It sits alongside and integrates with what you have.</td></tr>
+            <tr><td>“Is our data safe with AI?”</td><td>Azure-hosted and encrypted, SOC 2 (Type II), GDPR + CCPA, and never used to train LLMs.</td></tr>
+            <tr><td>“We're too busy to set it up.”</td><td>That's the point — you start from a goal and the plan is built for you in minutes. Templates get you moving.</td></tr>
+            <tr><td>“What's the ROI / price?”</td><td>Walk the ROI calculator: time saved on planning + status, faster delegation, goals actually hit. Sized to a ~10-seat team.</td></tr>
+            <tr><td>“Will the AI agents really help?”</td><td>They do real tasks and show outcomes, not just chat. Start with one agent on one workflow and expand.</td></tr>
+            <tr><td>“We're not in Microsoft Teams.”</td><td>Plansom works standalone and connects to your stack; Teams is a bonus, not a requirement.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- COLLATERAL -->
+    <section data-sec="collateral">
+      <p class="sec-eyebrow">Component 02</p>
+      <h2 class="sec-title">Collateral — the stage-mapped kit</h2>
+      <p class="sec-lede">Every asset a rep needs, mapped to the moment it's used. <b>Assets are authored in the Content OS; this pillar owns using the right one at the right stage</b> and keeping the kit in sync with Content OS versions.</p>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg></span>The kit</h3>
+        <p class="csub">Link each item to its live Content OS source on the deal record. Status shown is a placeholder — swap in real links.</p>
+        <div class="grid2" id="collCards"></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>Which asset, when</h3>
+        <p class="csub">The kit against the call flow and the follow-up cadence.</p>
+        <div class="twrap"><table>
+          <thead><tr><th>Stage / moment</th><th>Lead with</th><th>Backup</th></tr></thead>
+          <tbody>
+            <tr><td><b>Pre-meeting prep</b></td><td>Battlecard (segment) · one-pager</td><td>Trigger research</td></tr>
+            <tr><td><b>Discovery</b></td><td>Question bank (no asset — listen)</td><td>Objection sheet on standby</td></tr>
+            <tr><td><b>Demo</b></td><td>Story deck · live product</td><td>Demo script</td></tr>
+            <tr><td><b>Need-payoff / trial start</b></td><td>ROI calculator</td><td>Trial activation guide</td></tr>
+            <tr><td><b>Day 5 follow-up</b></td><td>Case study (matched segment)</td><td>One-pager</td></tr>
+            <tr><td><b>Proposal / evaluation</b></td><td>Quote from template (seats × price)</td><td>Security one-pager</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- FOLLOW-UP -->
+    <section data-sec="followup">
+      <p class="sec-eyebrow">Component 03</p>
+      <h2 class="sec-title">Follow-up sequence</h2>
+      <p class="sec-lede">What happens after the meeting decides whether the trial converts. <b>Speed-to-follow-up is the single biggest conversion lever after the meeting</b> — templatise it, automate it, and trigger it the moment a meeting ends.</p>
+
+      <div class="callout"><span class="ci2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span><p><b>The rule:</b> the Day-0 recap goes out <b>within the hour</b>, while the conversation is still warm. Everything below is a HubSpot sequence that fires on meeting-end; an agent drafts each touch for the rep to approve.</p></div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span>The 14-day cadence</h3>
+        <p class="csub">Owner: the AE, assisted by agents. Every touch has one job and one clear next step.</p>
+        <div class="flow" id="followFlow"></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span>Multi-threading &amp; activation</h3>
+        <p class="csub">Two things that quietly win or lose the deal.</p>
+        <div class="grid2">
+          <div class="gate"><div class="gk"><span class="dot"></span>Multi-thread the account</div><p>A single champion is a single point of failure. By Day 9, get a second contact in — ideally the buyer. Log every contact and their role on the deal.</p></div>
+          <div class="gate"><div class="gk"><span class="dot"></span>Trial-activation nudges</div><p>A trial that isn't activated in week one rarely converts. Nudge toward the first real action: set a goal, invite the team, turn on one agent.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OWNERSHIP -->
+    <section data-sec="ownership">
+      <p class="sec-eyebrow">Component 04</p>
+      <h2 class="sec-title">Ownership tree</h2>
+      <p class="sec-lede">Who owns the SPIN motion, and who owns each part of it. One DRI is accountable for the whole; each role owns a clear slice. <b>This is a standard starting structure — rename the roles to your actual team.</b></p>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M12 8v4M6 21v-2a6 6 0 0 1 12 0v2"/></svg></span>Roles &amp; responsibilities</h3>
+        <p class="csub">Top: the single directly-responsible individual. Below: the roles that run the motion.</p>
+        <div class="treewrap"><div class="tree">
+          <div class="tier"><div class="tnode dri">
+            <div class="role">Sales lead / DRI</div><div class="who">Accountable for the motion</div>
+            <ul><li>Owns the meeting→trial→win number</li><li>Coaching, forecast, deal reviews</li><li>Keeps meeting supply matched to capacity</li></ul>
+            <div class="owns">OWNS · the whole funnel &amp; the forecast</div>
+          </div></div>
+          <div class="tier roles">
+            <div class="tnode"><div class="role">Account Executive</div><div class="who">Runs the deal</div><ul><li>SPIN discovery + tailored demo</li><li>Trial activation &amp; follow-up</li><li>Proposal &amp; close</li></ul><div class="owns">OWNS · discovery → close</div></div>
+            <div class="tnode"><div class="role">Sales Engineer</div><div class="who">Makes it real</div><ul><li>Technical demo &amp; trial setup</li><li>Security / integration answers</li><li>Agent configuration with the customer</li></ul><div class="owns">OWNS · the demo &amp; trial tech</div></div>
+            <div class="tnode"><div class="role">RevOps</div><div class="who">Runs the machine</div><ul><li>HubSpot: stages, properties, workflows</li><li>Forecast &amp; win/loss dashboards</li><li>Sequence &amp; agent automation</li></ul><div class="owns">OWNS · CRM, data &amp; forecast</div></div>
+            <div class="tnode"><div class="role">Customer Success</div><div class="who">Takes the baton</div><ul><li>Receives won deals at handoff</li><li>Onboarding from the trial's first goal</li><li>Feeds expansion signals back</li></ul><div class="owns">OWNS · post-win onboarding</div></div>
+          </div>
+        </div></div>
+        <div style="margin-top:16px">
+          <span class="handoff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Handoff IN · Outreach → AE, at “Meeting booked”</span>
+          <span class="handoff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Handoff OUT · AE → CS, at “Closed-won”</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></span>RACI across the stages</h3>
+        <p class="csub"><b class="cR">R</b> responsible · <b class="cA">A</b> accountable · <b class="cC">C</b> consulted · <b class="cI">I</b> informed</p>
+        <div class="twrap"><table class="raci">
+          <thead><tr><th>Stage</th><th>Sales lead</th><th>AE</th><th>Sales Eng</th><th>RevOps</th><th>CS</th></tr></thead>
+          <tbody>
+            <tr><td><b>Discovery</b></td><td><span class="cell cA">A</span></td><td><span class="cell cR">R</span></td><td><span class="cell cI">I</span></td><td><span class="cell cI">I</span></td><td><span class="cell">–</span></td></tr>
+            <tr><td><b>Demo</b></td><td><span class="cell cA">A</span></td><td><span class="cell cR">R</span></td><td><span class="cell cR">R</span></td><td><span class="cell cI">I</span></td><td><span class="cell">–</span></td></tr>
+            <tr><td><b>Trial</b></td><td><span class="cell cA">A</span></td><td><span class="cell cR">R</span></td><td><span class="cell cC">C</span></td><td><span class="cell cI">I</span></td><td><span class="cell cI">I</span></td></tr>
+            <tr><td><b>Proposal</b></td><td><span class="cell cA">A</span></td><td><span class="cell cR">R</span></td><td><span class="cell cI">I</span></td><td><span class="cell cC">C</span></td><td><span class="cell">–</span></td></tr>
+            <tr><td><b>Close &amp; handoff</b></td><td><span class="cell cA">A</span></td><td><span class="cell cR">R</span></td><td><span class="cell">–</span></td><td><span class="cell cI">I</span></td><td><span class="cell cR">R</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- CAPACITY -->
+    <section data-sec="capacity">
+      <p class="sec-eyebrow">Component 05</p>
+      <h2 class="sec-title">Resource &amp; capacity tree</h2>
+      <p class="sec-lede">The model that keeps meeting <b>supply</b> matched to selling <b>capacity</b>. If Outreach books more meetings than the team can run well, trials leak. Change the assumptions and the whole tree recomputes.</p>
+
+      <div class="card">
+        <h3><span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M6 21a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3M8 9V6M16 9V6"/></svg></span>Assumptions <span style="margin-left:auto;font-weight:600;text-transform:none;letter-spacing:0;font-size:.72rem;color:var(--faint);font-family:var(--mono)">editable</span></h3>
+        <div class="calc">
+          <div class="inputs" id="inputs"></div>
+          <div>
+            <div class="flowtree" id="tree"></div>
+            <div id="verdict"></div>
+          </div>
+        </div>
+        <p class="note"><b>Reading it.</b> The tree flows supply → capacity check → trials → wins → revenue. The verdict compares the meetings your current AEs can run against the meetings booked; a shortfall is leaked trials. All figures are illustrative until you set your real numbers.</p>
+      </div>
+    </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg">Copied</span></div>
+
+<script>
+/* ---------- nav ---------- */
+const SECTIONS=[
+ {id:"overview", label:"Overview", icon:'<path d="M3 12l9-9 9 9M5 10v10h14V10"/>'},
+ {id:"process", n:"1", label:"Process documentation"},
+ {id:"collateral", n:"2", label:"Collateral"},
+ {id:"followup", n:"3", label:"Follow-up sequence"},
+ {id:"ownership", n:"4", label:"Ownership tree"},
+ {id:"capacity", n:"5", label:"Resource & capacity"}
+];
+const rail=document.getElementById('rail');
+rail.innerHTML=SECTIONS.map(s=>`<button class="nav" data-go="${s.id}" aria-current="${s.id==='overview'}">
+  <span class="ni">${s.n?s.n:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>`}</span>
+  <span class="lbl">${s.label}</span></button>`).join('');
+function go(id){
+  document.querySelectorAll('section[data-sec]').forEach(s=>s.classList.toggle('on',s.dataset.sec===id));
+  document.querySelectorAll('.nav').forEach(n=>n.setAttribute('aria-current',n.dataset.go===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+rail.querySelectorAll('.nav').forEach(b=>b.onclick=()=>go(b.dataset.go));
+
+/* overview map + collateral cards */
+const MAP=[
+ {n:"01",t:"Process documentation",d:"SPIN framework, qualification gates, question bank, call flow, objection handling.",go:"process"},
+ {n:"02",t:"Collateral",d:"The stage-mapped kit — deck, one-pagers, ROI calculator, battlecards, case studies.",go:"collateral"},
+ {n:"03",t:"Follow-up sequence",d:"The Day 0→14 cadence, templatised and automated on meeting-end.",go:"followup"},
+ {n:"04",t:"Ownership tree",d:"The DRI, the roles, and the RACI across every stage.",go:"ownership"},
+ {n:"05",t:"Resource & capacity tree",d:"Live model matching meeting supply to selling capacity.",go:"capacity"}
+];
+document.getElementById('mapCards').innerHTML=MAP.map(m=>`<button class="gate" style="cursor:pointer;text-align:left" data-go="${m.go}">
+  <div class="gk"><span class="dot"></span><span class="mono" style="font-size:.72rem;color:var(--faint)">${m.n}</span> ${m.t}</div><p>${m.d}</p></button>`).join('');
+document.querySelectorAll('#mapCards [data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+
+const COLL=[
+ {icon:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',t:"Story deck",d:"The narrative demo backbone: problem → Plansom → agents doing work. Not a feature tour.",stage:"Demo",src:"Content OS"},
+ {icon:'<path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/>',t:"One-pagers",d:"Leave-behind on the product and on security. Skimmable, buyer-ready.",stage:"Prep · Proposal",src:"Content OS"},
+ {icon:'<path d="M9 7h6M9 11h6M9 15h4"/><rect x="4" y="3" width="16" height="18" rx="2"/>',t:"ROI calculator",d:"Time saved on planning + status, faster delegation, goals hit. Sized to ~10 seats.",stage:"Need-payoff · Day 9",src:"Content OS"},
+ {icon:'<path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/>',t:"Battlecards",d:"Per-competitor and per-segment: positioning, traps, proof. Used in prep and live.",stage:"Prep · Discovery",src:"Content OS"},
+ {icon:'<path d="M4 4h16v14a2 2 0 0 1-2 2H4z"/><path d="M8 8h8M8 12h6"/>',t:"Case studies",d:"Matched to the prospect's segment. The Day-5 follow-up centrepiece.",stage:"Day 5",src:"Content OS"},
+ {icon:'<path d="M20 6 9 17l-5-5"/>',t:"Objection-handling sheet",d:"The six responses, plus tagged objections feeding back into the FAQ.",stage:"Discovery · Demo",src:"This pillar"},
+ {icon:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',t:"Demo script",d:"The 15–25 min tailored-demo runbook so any rep can deliver it consistently.",stage:"Demo",src:"This pillar"},
+ {icon:'<path d="M9 7h6M9 11h6M9 15h3"/><rect x="4" y="3" width="16" height="18" rx="2"/>',t:"Proposal / quote template",d:"Auto-generated from seats × price on entering Evaluation.",stage:"Proposal",src:"HubSpot"}
+];
+document.getElementById('collCards').innerHTML=COLL.map(c=>`<div class="coll">
+  <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${c.icon}</svg></span>
+  <h4>${c.t}</h4><p>${c.d}</p>
+  <div class="cmeta"><span class="stg">${c.stage}</span><span class="src">src · ${c.src}</span></div></div>`).join('');
+
+/* follow-up flow */
+const FOLLOW=[
+ {when:"Day 0",sub:"within the hour",h:"Recap + trial link",goal:"Send the recap, the trial link, and one relevant proof point while it's warm.",owner:"AE",auto:"fires on meeting-end",
+  tpl:`Subject: Great speaking, {{first}} — your Plansom trial
+
+Thanks for the time today. Quick recap of what we covered:
+  • Your goal: {{their_goal}}
+  • Where it's costing you now: {{implication_in_their_words}}
+  • What Plansom does about it: turns that goal into a plan and
+    puts an agent on {{the_task_they_named}}
+
+Here's your trial — start with that first goal: {{trial_link}}
+One proof point I mentioned: {{case_study_or_metric}}
+
+I'll check in on activation in a couple of days.`},
+ {when:"Day 2",sub:"activation",h:"Activation nudge",goal:"Push toward the first real action: set a goal / invite the team.",owner:"AE + agent",auto:"if trial not activated",
+  tpl:`Subject: 3 minutes to your first plan
+
+{{first}} — the teams that get value fastest do one thing in
+week one: turn a real goal into a plan and invite a teammate.
+
+Want me to jump on for 10 min and set up your first goal with
+you? Or reply and I'll send a 90-second walkthrough.`},
+ {when:"Day 5",sub:"proof",h:"Case study — matched segment",goal:"Send the case study that mirrors their situation.",owner:"AE",auto:"sequence step",
+  tpl:`Subject: How {{peer_company}} did what you're trying to do
+
+Thought of your {{their_goal}} goal — {{peer_company}} (similar
+team, same {{segment}}) got there with Plansom: {{result}}.
+
+Short read: {{case_study_link}}. Happy to walk through how it
+maps to your setup.`},
+ {when:"Day 9",sub:"quantify",h:"ROI recap + bring the buyer",goal:"Walk the ROI and multi-thread to the decision-maker.",owner:"AE",auto:"sequence step",
+  tpl:`Subject: The ROI on this, for your team
+
+{{first}} — based on what you shared, here's the rough math:
+  • Time back on planning + status: {{hours}}/week
+  • Across {{team_size}} people that's {{value}}/month
+
+Worth getting {{buyer_name}} on a 20-min call to look at it
+together? I'll bring the numbers.`},
+ {when:"Day 14",sub:"decide",h:"Decision + next step",goal:"Ask for the decision and set the dated next step — or a clean close.",owner:"AE",auto:"sequence step",
+  tpl:`Subject: Where should we take this, {{first}}?
+
+We've had a good look — your team set {{n}} goals and {{signal}}.
+To make it real for everyone, the next step is {{proposal/rollout}}.
+
+Are we good to {{next_step}} this week? If the timing's not right,
+tell me when it is and I'll close the loop until then.`}
+];
+document.getElementById('followFlow').innerHTML=FOLLOW.map(f=>`
+  <div class="row"><div class="when">${f.when}<small>${f.sub}</small></div>
+  <div class="node"><h4>${f.h}</h4><p class="goal">${f.goal}</p>
+    <div class="metaline"><span class="pill acc">owner · ${f.owner}</span><span class="pill">auto · ${f.auto}</span></div>
+    <div class="tpl"><div class="tpl-h"><span class="lbl">${f.when} template</span><button class="cp">Copy</button></div><pre>${f.tpl.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</pre></div>
+  </div></div>`).join('');
+
+/* copy (reads adjacent pre) */
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.cp'); if(!btn)return;
+  const pre=btn.closest('.tpl').querySelector('pre'); const text=pre.innerText;
+  const ok=()=>{btn.classList.add('done');btn.textContent='Copied';toast('Copied to clipboard');setTimeout(()=>{btn.classList.remove('done');btn.textContent='Copy';},1500);};
+  if(navigator.clipboard?.writeText){navigator.clipboard.writeText(text).then(ok).catch(()=>fb(text,ok));}else fb(text,ok);
+});
+function fb(t,cb){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity=0;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
+let tT;function toast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),1600);}
+
+/* ---------- capacity calculator ---------- */
+const DEF={meetings:250,days:20,perDay:5,ae:3,m2t:50,t2w:30,seats:10,price:15};
+let cap={...DEF};
+const FIELDS=[
+ {k:"meetings",label:"Meetings booked / month",sub:"supply from Outreach",unit:""},
+ {k:"ae",label:"Account Executives",sub:"current headcount",unit:""},
+ {k:"perDay",label:"Meetings an AE runs / day",sub:"incl. prep + follow-up",unit:"/day"},
+ {k:"days",label:"Selling days / month",sub:"",unit:"days"},
+ {k:"m2t",label:"Meeting → trial",sub:"GTM target: 50%",unit:"%"},
+ {k:"t2w",label:"Trial → win",sub:"assumption",unit:"%"},
+ {k:"seats",label:"Seats per deal",sub:"~10-seat teams",unit:"seats"},
+ {k:"price",label:"Price / seat / month",sub:"your ARPU",unit:"$"}
+];
+document.getElementById('inputs').innerHTML=FIELDS.map(f=>`<div class="inrow">
+  <label>${f.label}<small>${f.sub}</small></label>
+  <span class="ig"><input type="number" min="0" step="1" data-k="${f.k}" value="${DEF[f.k]}"><span class="unit">${f.unit}</span></span>
+</div>`).join('')+`<button class="icon-btn resetbtn" id="resetCalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>Reset defaults</button>`;
+
+function n(x){return Number(x)||0;}
+function fmt(x){return Math.round(x).toLocaleString();}
+function money(x){ if(x>=1e6)return '$'+(x/1e6).toFixed(2)+'M'; if(x>=1e3)return '$'+(x/1e3).toFixed(0)+'k'; return '$'+fmt(x);}
+
+function compute(){
+  const capPerAE=cap.perDay*cap.days;
+  const reqAE=capPerAE>0?cap.meetings/capPerAE:0;
+  const teamCap=cap.ae*capPerAE;
+  const runnable=Math.min(cap.meetings,teamCap);
+  const leak=Math.max(0,cap.meetings-teamCap);
+  const trials=runnable*(cap.m2t/100);
+  const wins=trials*(cap.t2w/100);
+  const newSeats=wins*cap.seats;
+  const newMRR=newSeats*cap.price;
+  const newARR=newMRR*12;
+  const potentialTrials=cap.meetings*(cap.m2t/100);
+  const lostTrials=Math.max(0,(potentialTrials-trials));
+  return {capPerAE,reqAE,teamCap,runnable,leak,trials,wins,newSeats,newMRR,newARR,lostTrials};
+}
+
+function render(){
+  const r=compute();
+  const tree=document.getElementById('tree');
+  tree.innerHTML=`
+    <div class="ftnode branch">
+      <div class="stat" style="border:none;padding:0;background:none">
+        <div class="sl">Supply · meetings booked / month</div>
+        <div class="sv accent">${fmt(cap.meetings)}</div>
+        <div class="sd">from the Outreach pillar</div>
+      </div>
+    </div>
+    <div class="arrow" style="text-align:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+    <div class="ftnode">
+      <div class="ftgrid">
+        <div class="stat"><div class="sl">Capacity / AE / mo</div><div class="sv">${fmt(r.capPerAE)}</div><div class="sd">${cap.perDay}/day × ${cap.days} days</div></div>
+        <div class="stat"><div class="sl">AEs needed for supply</div><div class="sv">${r.reqAE.toFixed(1)}</div><div class="sd">to run all ${fmt(cap.meetings)}</div></div>
+        <div class="stat"><div class="sl">Your team can run</div><div class="sv">${fmt(r.teamCap)}</div><div class="sd">${cap.ae} AE × ${fmt(r.capPerAE)}</div></div>
+      </div>
+    </div>
+    <div class="arrow" style="text-align:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+    <div class="ftnode">
+      <div class="ftgrid">
+        <div class="stat"><div class="sl">Trials activated / mo</div><div class="sv accent">${fmt(r.trials)}</div><div class="sd">${cap.m2t}% of ${fmt(r.runnable)} run</div></div>
+        <div class="stat"><div class="sl">Wins / mo</div><div class="sv accent">${fmt(r.wins)}</div><div class="sd">${cap.t2w}% of trials</div></div>
+        <div class="stat"><div class="sl">New seats / mo</div><div class="sv">${fmt(r.newSeats)}</div><div class="sd">${cap.seats} × wins</div></div>
+      </div>
+    </div>
+    <div class="arrow" style="text-align:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+    <div class="ftnode branch">
+      <div class="ftgrid">
+        <div class="stat"><div class="sl">New MRR / mo</div><div class="sv accent">${money(r.newMRR)}</div><div class="sd">${fmt(r.newSeats)} seats × $${cap.price}</div></div>
+        <div class="stat"><div class="sl">New ARR run-rate / mo</div><div class="sv accent">${money(r.newARR)}</div><div class="sd">added each month</div></div>
+      </div>
+    </div>`;
+
+  const v=document.getElementById('verdict');
+  let cls,ic,msg;
+  if(r.leak<=0.001){
+    cls="good"; ic='<path d="M20 6 9 17l-5-5"/>';
+    const slack=r.teamCap-cap.meetings;
+    msg=`<b>Capacity is healthy.</b> Your ${cap.ae} AEs can run ${fmt(r.teamCap)} meetings — enough for all ${fmt(cap.meetings)} booked${slack>r.capPerAE?`, with room for ~${fmt(slack)} more (about ${(slack/r.capPerAE).toFixed(1)} AE of headroom)`:''}. Supply and capacity are matched.`;
+  } else {
+    const short=r.reqAE-cap.ae;
+    cls = r.leak > cap.meetings*0.2 ? "bad" : "warn";
+    ic='<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>';
+    msg=`<b>Trials are leaking.</b> ${fmt(cap.meetings)} meetings booked but your ${cap.ae} AEs can only run ${fmt(r.teamCap)} — <b>${fmt(r.leak)} meetings/mo go unworked</b>, roughly <b>${fmt(r.lostTrials)} lost trials/mo</b>. You need about <b>${r.reqAE.toFixed(1)} AEs</b> (+${Math.ceil(short)}) to match supply, or slow the meeting rate.`;
+  }
+  v.innerHTML=`<div class="banner ${cls}"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg></span><div>${msg}</div></div>`;
+}
+document.getElementById('inputs').addEventListener('input',e=>{
+  const k=e.target.dataset.k; if(!k)return; cap[k]=Math.max(0,n(e.target.value)); render();
+});
+document.getElementById('resetCalc').onclick=()=>{cap={...DEF};document.querySelectorAll('#inputs input').forEach(i=>i.value=DEF[i.dataset.k]);render();};
+render();
+
+/* theme + print */
+const root=document.documentElement;
+function isDark(){const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;}
+function paintTheme(){document.getElementById('themeIcon').innerHTML=isDark()
+  ?'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
+  :'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';}
+document.getElementById('themeBtn').onclick=()=>{root.setAttribute('data-theme',isDark()?'light':'dark');paintTheme();};
+document.getElementById('printBtn').onclick=()=>window.print();
+matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',paintTheme);
+paintTheme();
+</script>
