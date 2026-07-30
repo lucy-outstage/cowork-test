@@ -1,0 +1,802 @@
+<title>Plansom Quickstart — Get Started Playbooks</title>
+<style>
+  :root{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --start:#0f9b6c; --start-soft:#dcf5ec;
+    --every:#5c6270; --every-soft:#e9ebf1;
+    --power:#c26a11; --power-soft:#fbeed9;
+    --radius:15px; --maxw:1320px;
+    --sans:"Gilroy","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:"Berkeley Mono","JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.08);
+    --shadow-lg:0 2px 6px rgba(18,20,40,.06),0 24px 60px rgba(18,20,40,.14);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+      --border:#2a3042; --border-2:#3a4157;
+      --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+      --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+      --start:#3fd39b; --start-soft:#132a22;
+      --every:#aab0c2; --every-soft:#232838;
+      --power:#f0a94e; --power-soft:#2e2415;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+      --shadow-lg:0 2px 6px rgba(0,0,0,.5),0 28px 70px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0d0f17; --surface:#151824; --surface-2:#1d2130; --surface-3:#262b3d;
+    --border:#2a3042; --border-2:#3a4157;
+    --ink:#e9ebf4; --muted:#9aa0b6; --faint:#6b7188;
+    --accent:#7379ff; --accent-2:#8a8fff; --accent-ink:#0b0d15; --accent-soft:#1e2135;
+    --start:#3fd39b; --start-soft:#132a22;
+    --every:#aab0c2; --every-soft:#232838;
+    --power:#f0a94e; --power-soft:#2e2415;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+    --shadow-lg:0 2px 6px rgba(0,0,0,.5),0 28px 70px rgba(0,0,0,.6);
+  }
+  :root[data-theme="light"]{
+    --ground:#f6f7fc; --surface:#ffffff; --surface-2:#eef0f8; --surface-3:#e6e9f5;
+    --border:#dcdfec; --border-2:#c9cddf;
+    --ink:#171a24; --muted:#565d72; --faint:#878da2;
+    --accent:#343ced; --accent-2:#2a30c4; --accent-ink:#ffffff; --accent-soft:#e7e8ff;
+    --start:#0f9b6c; --start-soft:#dcf5ec;
+    --every:#5c6270; --every-soft:#e9ebf1;
+    --power:#c26a11; --power-soft:#fbeed9;
+    --shadow-sm:0 1px 2px rgba(18,20,40,.05);
+    --shadow:0 1px 2px rgba(18,20,40,.05),0 10px 30px rgba(18,20,40,.08);
+    --shadow-lg:0 2px 6px rgba(18,20,40,.06),0 24px 60px rgba(18,20,40,.14);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  .mono{font-family:var(--mono)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  header.top{position:sticky;top:0;z-index:40;
+    background:color-mix(in srgb,var(--ground) 86%,transparent);
+    backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--border)}
+  .top-in{display:flex;align-items:center;gap:16px;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0}
+  .mark{width:34px;height:34px;border-radius:9px;flex:none;position:relative;
+    background:linear-gradient(150deg,var(--accent),var(--accent-2));
+    box-shadow:0 3px 10px color-mix(in srgb,var(--accent) 40%,transparent)}
+  .mark::before{content:"";position:absolute;inset:0;border-radius:9px;
+    background:
+      radial-gradient(circle at 30% 28%,rgba(255,255,255,.9) 0 2.4px,transparent 3px),
+      radial-gradient(circle at 68% 44%,rgba(255,255,255,.65) 0 2px,transparent 2.6px),
+      radial-gradient(circle at 46% 72%,rgba(255,255,255,.8) 0 2.2px,transparent 2.8px)}
+  .brand h1{font-size:1rem;margin:0;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+  .brand .sub{font-size:.7rem;color:var(--faint);font-family:var(--mono);white-space:nowrap}
+  .top-spacer{flex:1}
+
+  .ring{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .ring svg{width:34px;height:34px;transform:rotate(-90deg);flex:none}
+  .ring .rbg{stroke:var(--surface-3)}
+  .ring .rfg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+  .ring .txt{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+  .ring .txt b{color:var(--ink)}
+
+  .icon-btn{font-family:var(--sans);font-size:.8rem;font-weight:700;border-radius:10px;
+    border:1px solid var(--border-2);background:var(--surface);color:var(--ink);
+    padding:8px 12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .icon-btn svg{width:15px;height:15px}
+
+  main{display:grid;grid-template-columns:346px minmax(0,1fr);gap:26px;padding:24px 0 64px;align-items:start}
+  @media (max-width:940px){ main{grid-template-columns:1fr;gap:16px} }
+
+  .rail{position:sticky;top:74px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 90px)}
+  @media (max-width:940px){ .rail{position:static;max-height:none} }
+  .search{position:relative}
+  .search input{width:100%;font-family:var(--sans);font-size:.9rem;color:var(--ink);
+    background:var(--surface);border:1px solid var(--border-2);border-radius:11px;padding:11px 12px 11px 36px;transition:.15s}
+  .search input::placeholder{color:var(--faint)}
+  .search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--faint)}
+
+  .list{overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:2px;margin:-2px}
+  .list::-webkit-scrollbar{width:9px}
+  .list::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px;border:2px solid var(--ground)}
+  .trackhead{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);padding:12px 4px 3px;font-weight:600}
+  .trackhead .ln{flex:1;height:1px;background:var(--border)}
+
+  .qs{display:grid;grid-template-columns:30px minmax(0,1fr) 20px;gap:11px;align-items:start;text-align:left;width:100%;
+    background:var(--surface);border:1px solid var(--border);border-left:3px solid transparent;
+    border-radius:12px;padding:11px 12px;cursor:pointer;transition:.15s;color:inherit;font-family:inherit}
+  .qs:hover{border-color:var(--border-2);transform:translateX(2px)}
+  .qs[aria-selected="true"]{border-left-color:var(--accent);box-shadow:var(--shadow);transform:none}
+  .qs .step-n{width:30px;height:30px;border-radius:8px;background:var(--surface-2);color:var(--accent);
+    font-family:var(--mono);font-size:.78rem;font-weight:700;display:grid;place-items:center;flex:none;transition:.15s}
+  .qs[aria-selected="true"] .step-n{background:var(--accent);color:var(--accent-ink)}
+  .qs.done .step-n{background:var(--start-soft);color:var(--start)}
+  .qs .qt{font-size:.88rem;font-weight:700;line-height:1.3;margin:2px 0 6px;letter-spacing:-.006em;text-wrap:balance}
+  .qs.done .qt{color:var(--muted)}
+  .qs-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .lvl{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:6px}
+  .lvl.start{background:var(--start-soft);color:var(--start)}
+  .lvl.every{background:var(--every-soft);color:var(--every)}
+  .lvl.power{background:var(--power-soft);color:var(--power)}
+  .time{font-family:var(--mono);font-size:.66rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+  .time svg{width:11px;height:11px;opacity:.7}
+  .qs .chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-2);flex:none;margin-top:5px;
+    display:grid;place-items:center;transition:.15s;color:transparent}
+  .qs.done .chk{background:var(--start);border-color:var(--start);color:#fff}
+  .qs .chk svg{width:12px;height:12px}
+  .empty{padding:26px 10px;text-align:center;color:var(--faint);font-size:.85rem}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);overflow:hidden;min-width:0}
+  .ph{position:relative;padding:26px 30px 22px;
+    background:radial-gradient(120% 140% at 100% -10%,color-mix(in srgb,var(--accent-soft) 60%,transparent),transparent 60%),var(--surface);
+    border-bottom:1px solid var(--border)}
+  .ph-tab{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;color:var(--muted);margin-bottom:14px;font-weight:600}
+  .ph-tab .code{color:var(--accent);font-weight:700}
+  .ph-tab .sep{width:4px;height:4px;border-radius:50%;background:var(--border-2)}
+  .ph h2{font-size:clamp(1.4rem,3.2vw,2rem);line-height:1.1;margin:0 0 10px;font-weight:800;letter-spacing:-.02em;text-wrap:balance;max-width:24ch}
+  .lede{font-size:1.02rem;color:var(--muted);margin:0;max-width:60ch;line-height:1.5}
+  .lede b{color:var(--ink);font-weight:700}
+  .metabar{display:flex;flex-wrap:wrap;gap:0;margin-top:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
+  .metabar .m{flex:1 1 150px;min-width:0;padding:11px 14px;border-right:1px solid var(--border)}
+  .metabar .m:last-child{border-right:none}
+  @media (max-width:560px){ .metabar .m{flex:1 1 50%;border-bottom:1px solid var(--border)} }
+  .m .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .m .v{font-size:.9rem;font-weight:700;margin-top:3px;letter-spacing:-.01em}
+
+  .pbody{padding:6px 30px 8px}
+  @media (max-width:560px){ .ph{padding:22px 18px} .pbody{padding:6px 18px 4px} }
+  section.sec{padding:24px 0;border-bottom:1px solid var(--border)}
+  .sec-h{display:flex;align-items:center;gap:11px;margin:0 0 15px}
+  .sec-h .si{width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+  .sec-h .si svg{width:15px;height:15px}
+  .sec-h h3{font-size:.82rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;margin:0}
+
+  ol.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:flex;flex-direction:column;gap:0}
+  ol.steps li{position:relative;counter-increment:s;padding:0 0 20px 46px}
+  ol.steps li:last-child{padding-bottom:0}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:-2px;font-family:var(--mono);font-size:.82rem;font-weight:700;
+    color:var(--accent);width:30px;height:30px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center}
+  ol.steps li::after{content:"";position:absolute;left:15px;top:31px;bottom:6px;width:2px;background:linear-gradient(var(--border-2),transparent)}
+  ol.steps li:last-child::after{display:none}
+  .st-t{font-size:.98rem;font-weight:700;margin:3px 0 4px;letter-spacing:-.01em}
+  .st-d{font-size:.92rem;color:var(--muted);margin:0}
+  .st-d code{font-family:var(--mono);font-size:.84em;background:var(--surface-2);padding:1px 5px;border-radius:5px;color:var(--ink)}
+
+  .prompt{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;background:var(--surface)}
+  .prompt:last-child{margin-bottom:0}
+  .prompt-h{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+  .prompt-h .kind{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.02em;color:var(--accent)}
+  .prompt-h .kind svg{width:13px;height:13px}
+  .prompt-h .kind.msg{color:var(--muted)}
+  .prompt-h .lbl{font-family:var(--sans);font-size:.8rem;font-weight:600;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .prompt-h .cp{margin-left:auto;flex:none;font-family:var(--sans);font-size:.72rem;font-weight:700;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--muted);border-radius:8px;padding:5px 9px;cursor:pointer;transition:.14s;display:inline-flex;align-items:center;gap:5px}
+  .prompt-h .cp:hover{border-color:var(--accent);color:var(--accent)}
+  .prompt-h .cp.done{border-color:var(--start);color:var(--start)}
+  .prompt-h .cp svg{width:12px;height:12px}
+  .prompt pre{margin:0;padding:13px 14px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.6;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+  .prompt pre::-webkit-scrollbar{height:8px}
+  .prompt pre::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px}
+
+  ul.signals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+  ul.signals li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:11px;font-size:.95rem;color:var(--ink)}
+  ul.signals li .tk{margin-top:2px;width:18px;height:18px;border-radius:50%;background:var(--start-soft);color:var(--start);display:grid;place-items:center;flex:none}
+  ul.signals li .tk svg{width:11px;height:11px}
+
+  ul.tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+  ul.tips li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:11px;font-size:.93rem;color:var(--ink)}
+  ul.tips li .bulb{margin-top:1px;width:18px;height:18px;color:var(--power);flex:none}
+  ul.tips li .bulb svg{width:16px;height:16px}
+
+  .pfoot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:20px 30px 24px}
+  @media (max-width:560px){ .pfoot{padding:18px} }
+  .btn{font-family:var(--sans);font-size:.9rem;font-weight:700;border-radius:11px;border:1px solid var(--border-2);
+    background:var(--surface);color:var(--ink);padding:11px 16px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+  .btn svg{width:16px;height:16px}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.mark[aria-pressed="true"]{background:var(--start-soft);border-color:var(--start);color:var(--start)}
+  .btn.next{margin-left:auto;background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .btn.next:hover{background:var(--accent-2);color:var(--accent-ink)}
+  @media (max-width:560px){ .btn.next{margin-left:0;width:100%;justify-content:center} .pfoot{flex-direction:column;align-items:stretch} }
+
+  .note{padding:0 30px 26px;color:var(--faint);font-size:.78rem;line-height:1.5}
+  @media (max-width:560px){ .note{padding:0 18px 22px} }
+  .note i{color:var(--muted)}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--ground);
+    font-size:.86rem;font-weight:650;padding:11px 18px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;
+    transition:.25s;z-index:80;display:flex;align-items:center;gap:8px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast svg{width:15px;height:15px;color:var(--start)}
+
+  .celebrate{position:fixed;inset:0;pointer-events:none;z-index:90}
+
+  @media print{ header.top,.rail,.toast,.pfoot{display:none!important} main{display:block;padding:0} .panel{box-shadow:none;border:none} body{background:#fff} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div style="min-width:0">
+        <h1>Plansom Quickstart</h1>
+        <div class="sub">get to your first plan-in-motion</div>
+      </div>
+    </div>
+    <div class="top-spacer"></div>
+    <div class="ring" id="ring" title="Your progress (saved on this device)">
+      <svg viewBox="0 0 36 36"><circle class="rbg" cx="18" cy="18" r="15" fill="none" stroke-width="4"/><circle class="rfg" id="rfg" cx="18" cy="18" r="15" fill="none" stroke-width="4" stroke-dasharray="94.2" stroke-dashoffset="94.2"/></svg>
+      <span class="txt"><b id="doneN">0</b>/<span id="totN">10</span> done</span>
+    </div>
+    <button class="icon-btn" id="printBtn" title="Print / save as PDF">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print
+    </button>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle light / dark">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+  <main>
+    <aside class="rail">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Search: OKRs, agents, Teams, weekly…" autocomplete="off" aria-label="Search quickstarts">
+      </div>
+      <div class="list" id="list" role="listbox" aria-label="Quickstart playbooks"></div>
+    </aside>
+    <div class="panel" id="panel"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMsg">Copied</span></div>
+<canvas class="celebrate" id="celebrate"></canvas>
+
+<script>
+const I={
+  goal:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/>',
+  assign:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 11 2 2 4-4"/>',
+  team:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  agent:'<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9" cy="14" r="1.3" fill="currentColor"/><circle cx="15" cy="14" r="1.3" fill="currentColor"/>',
+  review:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/><path d="m9 12 2 2 4-4"/>',
+  okr:'<path d="m12 2 3 6 6 .8-4.5 4.2 1.2 6L12 16l-5.9 3 1.2-6L2.8 8.8 9 8z"/>',
+  project:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/><path d="M6 8h1M12 8h1M18 8h1"/>',
+  solo:'<circle cx="12" cy="8" r="4"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/><path d="M12 12v0"/>',
+  rhythm:'<path d="M17 2v6M7 2v6"/><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M3 11h18"/><path d="m9 16 2 2 4-4"/>',
+  plug:'<path d="M9 2v6M15 2v6"/><path d="M7 8h10v3a5 5 0 0 1-10 0z"/><path d="M12 16v6"/>'
+};
+
+/* ---- content: user-facing quickstart playbooks ---- */
+const PB=[
+ {code:"QS-01", track:"first", icon:"goal", lvl:"start", time:"15 min",
+  title:"Turn your first goal into a real plan",
+  lede:"Give Plansom one goal you actually care about and watch it become a step-by-step plan you can run — this is the single best way to feel what Plansom does.",
+  meta:{Time:"~15 minutes", "Best for":"Everyone, day one", "You'll need":"One real goal in mind", Where:"New plan / “+ Goal”"},
+  steps:[
+   {t:"Pick one goal that matters this quarter", d:"Not your whole roadmap — one outcome. “Launch the new pricing page” or “Hit 20 demos in March.” Specific beats big."},
+   {t:"Type it in plain language", d:"Start a new plan and write the goal the way you'd say it out loud. No need to structure it — that's Plansom's job."},
+   {t:"Let Plansom draft the plan", d:"Ask Plansom to break the goal into steps. You'll get a first draft plan with tasks, sequence, and suggested owners in seconds."},
+   {t:"Edit like a human", d:"Delete what doesn't fit, reorder, add the one thing it missed. A plan you tweaked yourself is one you'll actually follow."},
+   {t:"Set the target date", d:"Give the goal a finish line. Plansom works backwards from it so every task lands with room to spare."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Ask Plansom to draft the plan", body:`Here's my goal: [write your goal in one sentence].
+I want to hit it by [date].
+
+Break this into a clear, ordered plan of 5–8 steps.
+For each step, suggest an owner role and a rough
+due date working backwards from the deadline.
+Flag anything that has to happen first.`},
+   {kind:"prompt", lbl:"Sharpen a fuzzy goal first", body:`I want to achieve [rough idea], but it's still vague.
+Ask me 3 quick questions to make it specific and
+measurable, then restate it as a clear goal I can plan.`}
+  ],
+  signals:[
+   "You're looking at an ordered list of steps, not a blank page.",
+   "Each step has an owner and a due date attached.",
+   "The goal has a target date and Plansom shows the path to it."
+  ],
+  tips:[
+   "One goal now beats five later — you can always add more once you've felt the flow.",
+   "If the draft feels generic, tell Plansom what's specific about your team; the more context, the sharper the plan."
+  ]},
+
+ {code:"QS-02", track:"first", icon:"assign", lvl:"start", time:"10 min",
+  title:"Assign the work so the plan runs itself",
+  lede:"A plan only moves when every task has a name and a date on it. Assign owners once, and Plansom keeps everyone pointed at the right next thing.",
+  meta:{Time:"~10 minutes", "Best for":"Anyone leading a plan", "You'll need":"Your plan from QS-01", Where:"Inside a plan → tasks"},
+  steps:[
+   {t:"Give every task one owner", d:"One task, one clearly accountable person — even if others help. Shared ownership is how tasks quietly stall."},
+   {t:"Add due dates that build toward the goal", d:"Let Plansom suggest dates from the target, then adjust for real life. Dates turn a wish-list into a schedule."},
+   {t:"Mark what's blocking what", d:"Tell Plansom which tasks depend on others. It'll sequence them so nobody's waiting without knowing why."},
+   {t:"Let owners see just their part", d:"Everyone should be able to answer “what's mine, and when?” in one glance. Check each owner's view."},
+   {t:"Confirm the first moves", d:"Make sure the first 2–3 tasks are unblocked and assigned. Momentum in week one is everything."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Ask Plansom to assign and schedule", body:`Take this plan and assign each task to the most
+logical owner from my team: [list names + roles].
+Add due dates that work backwards from [goal date],
+and list any tasks that are blocked until another
+finishes. Show me anything with no clear owner.`},
+   {kind:"msg", lbl:"Kick-off message to the team", body:`Team — our plan for [goal] is live in Plansom and
+your tasks are assigned. Two things to do today:
+  1. Open Plansom and check your tasks + dates
+  2. Flag anything unrealistic now, not later
+First milestone is [date]. Let's get moving.`}
+  ],
+  signals:[
+   "Every task has exactly one owner — no orphans.",
+   "You can see the critical path from today to the goal date.",
+   "Each teammate knows their first task without asking you."
+  ],
+  tips:[
+   "If one person owns half the plan, that's your bottleneck — rebalance before you start.",
+   "Due dates with no dependencies mapped tend to collide; let Plansom sequence them."
+  ]},
+
+ {code:"QS-03", track:"first", icon:"team", lvl:"start", time:"10 min",
+  title:"Bring your team in — right inside Microsoft Teams",
+  lede:"Plansom lives where your team already works. Connect Microsoft Teams so plans, tasks, and updates happen in the flow — not in yet another tab nobody opens.",
+  meta:{Time:"~10 minutes", "Best for":"Team leads", "You'll need":"Teams admin or a channel you own", Where:"Settings → Integrations → Teams"},
+  steps:[
+   {t:"Invite the people on the plan", d:"Add the owners you assigned in QS-02. Start with the plan's team, not the whole company — keep the first week focused."},
+   {t:"Connect Microsoft Teams", d:"Link Plansom to the channel your team lives in. This is where Plansom is at its best — updates and tasks show up where work already happens."},
+   {t:"Pick where updates land", d:"Choose the channel for plan updates and nudges so progress is visible without a status meeting."},
+   {t:"Set light notification rules", d:"Turn on reminders for due-soon and blocked tasks; mute the rest. You want signal, not noise, on day one."},
+   {t:"Do a 60-second tour together", d:"Show the team their task view and how to update a task from Teams. One shared look saves ten “where do I…?” messages."}
+  ],
+  prompts:[
+   {kind:"msg", lbl:"Invite message", body:`Hi [name] — I've set up our plan for [goal] in Plansom
+and added you as an owner on a couple of tasks.
+
+It's connected to our [channel] in Teams, so you can
+see and update your tasks without leaving Teams.
+Take 5 min to look through what's yours — shout if
+anything's unclear.`},
+   {kind:"prompt", lbl:"Ask Plansom to summarise for the channel", body:`Write a short, friendly Teams message announcing that
+our [goal] plan is live. Include: what we're aiming for,
+the first milestone date, and a one-line “here's how to
+see your tasks”. Keep it under 60 words.`}
+  ],
+  signals:[
+   "Your team can open their tasks from inside Microsoft Teams.",
+   "Plan updates post to a channel automatically.",
+   "Nobody has asked you “where do I find my tasks?”"
+  ],
+  tips:[
+   "Connect Teams before you invite people — the first thing they see should already be in their workflow.",
+   "Fewer notifications, chosen well, get read. Start minimal and add if needed."
+  ]},
+
+ {code:"QS-04", track:"first", icon:"agent", lvl:"start", time:"15 min",
+  title:"Put an AI agent on the busywork",
+  lede:"This is the part that feels like magic. Hand the repetitive parts of running a plan — chasing updates, drafting summaries, prepping the next step — to a Plansom AI agent, so your team spends time on the work that matters.",
+  meta:{Time:"~15 minutes", "Best for":"Anyone tired of status-chasing", "You'll need":"An active plan", Where:"Plan → Agents / Automate"},
+  steps:[
+   {t:"Name the busywork you hate most", d:"The thing you do every week that a capable assistant could: chasing status, writing the update, reminding owners. Start with one."},
+   {t:"Turn on an agent for it", d:"Point a Plansom agent at that job — e.g. “collect status on open tasks and draft the weekly update.” Give it the plan as context."},
+   {t:"Set its guardrails", d:"Tell the agent when to act, what it can decide on its own, and when to check with you. Autonomy where it's safe, a human where it matters."},
+   {t:"Review its first run", d:"Let it do the job once and read the output before it goes out. Correct it in plain language — it learns your standard."},
+   {t:"Let it run on a schedule", d:"Once you trust it, set it loose on a cadence. Now the busywork happens whether or not you remember to do it."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Set up a status-chasing agent", body:`Act as an agent for this plan. Each Friday morning:
+  • check every open task for a recent update
+  • message owners of anything stale or blocked
+  • draft a short weekly summary (done / at risk /
+    blocked / next week) for our Teams channel
+Show me the draft before posting. Don't change due
+dates or reassign tasks without asking me.`},
+   {kind:"prompt", lbl:"Agent to prep the next step", body:`When a milestone is marked done, prepare the next
+phase: surface the tasks that unblock, suggest owners,
+and draft a kickoff note for that phase. Bring it to
+me to approve before anything is assigned.`}
+  ],
+  signals:[
+   "A weekly update gets drafted without you writing it.",
+   "Owners get nudged about stale tasks — not by you.",
+   "You reviewed and trusted at least one agent output."
+  ],
+  tips:[
+   "Give an agent one clear job before you give it three — trust is built one task at a time.",
+   "Keep a human in the loop for anything that reassigns work or moves deadlines."
+  ]},
+
+ {code:"QS-05", track:"first", icon:"review", lvl:"start", time:"20 min / week",
+  title:"Run your first weekly check-in",
+  lede:"The habit that makes everything stick. A tight weekly rhythm — what moved, what's stuck, what's next — keeps the plan alive instead of drifting after the kickoff.",
+  meta:{Time:"~20 min weekly", "Best for":"Whoever owns the plan", "You'll need":"A running plan + team", Where:"Plan dashboard / progress"},
+  steps:[
+   {t:"Open with progress, not problems", d:"Start on what got done. Plansom shows progress against the goal — lead with the wins, then dig into the stuck."},
+   {t:"Hit the blocked and at-risk tasks", d:"Filter to anything red or slipping. For each: what's blocking it, who can unblock it, by when. Decide, don't discuss."},
+   {t:"Re-point the week", d:"Confirm the 3–5 tasks that matter most in the next 7 days. Ask Plansom to re-plan if dates slipped."},
+   {t:"Let the agent write it up", d:"Have your QS-04 agent post the summary to Teams so people who missed it stay in the loop."},
+   {t:"Book the next one", d:"Same time next week. The rhythm is the point — a plan reviewed weekly almost never dies quietly."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Ask Plansom for the check-in brief", body:`Prepare my weekly check-in for the [goal] plan:
+  • % complete and whether we're on track for [date]
+  • what got done since last week
+  • what's blocked or at risk, and who owns it
+  • the 3–5 tasks that matter most next week
+Keep it to a one-screen brief I can talk through.`},
+   {kind:"prompt", lbl:"Re-plan when things slip", body:`Some tasks slipped this week: [list them]. Re-sequence
+the remaining plan to still hit [goal date] if possible.
+If it's no longer realistic, tell me the new likely
+date and what would have to change to protect the
+original one.`}
+  ],
+  signals:[
+   "You can say “are we on track?” and answer it in 10 seconds.",
+   "Blocked tasks get owners and dates in the meeting, not after.",
+   "The weekly summary posts to Teams every week without fail."
+  ],
+  tips:[
+   "Twenty focused minutes beats an hour of status theatre — let Plansom's data replace the round-the-room update.",
+   "If nothing's ever blocked, you're not looking hard enough — surface risk early while it's cheap to fix."
+  ]},
+
+ {code:"QS-06", track:"further", icon:"okr", lvl:"every", time:"45 min",
+  title:"Set quarterly OKRs and cascade them into plans",
+  lede:"Turn top-level objectives into plans that actually execute. Set your OKRs in Plansom, then let each key result become a living plan with owners — so strategy and the day-to-day are the same thing.",
+  meta:{Time:"~45 minutes", "Best for":"Founders & team leads", "You'll need":"Draft objectives for the quarter", Where:"Goals → OKRs"},
+  steps:[
+   {t:"Enter 2–3 objectives, no more", d:"Ambitious, qualitative, memorable. If you can't hold them in your head, your team can't either."},
+   {t:"Add measurable key results", d:"3–5 per objective, each a number you can move. Plansom will track progress against these all quarter."},
+   {t:"Turn each key result into a plan", d:"Ask Plansom to draft the plan that would actually move each KR. This is the cascade — objectives become tasks with owners."},
+   {t:"Assign KR owners", d:"Every key result gets one accountable owner who runs its plan (that's QS-01 through QS-05, per KR)."},
+   {t:"Set the review cadence", d:"Weekly plan check-ins (QS-05) roll up into a monthly OKR review. Progress becomes visible top to bottom."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Draft KRs for an objective", body:`My objective this quarter: [objective].
+Suggest 3–5 measurable key results that would prove
+we achieved it — each with a clear metric and a
+sensible target. Avoid vanity metrics; favour ones
+that reflect real outcomes.`},
+   {kind:"prompt", lbl:"Cascade a KR into a plan", body:`Key result: [KR with its target]. Draft the plan that
+would move this metric this quarter: the initiatives,
+the tasks under each, suggested owners, and the order
+to tackle them. Flag the 1–2 that will matter most.`}
+  ],
+  signals:[
+   "Each key result has an owner and a plan behind it.",
+   "You can trace any daily task up to the objective it serves.",
+   "Progress on OKRs updates as the underlying plans move."
+  ],
+  tips:[
+   "Three objectives you finish beat six you abandon — cut ruthlessly.",
+   "A KR with no plan under it is a wish; make the cascade the same day you set the OKR."
+  ]},
+
+ {code:"QS-07", track:"further", icon:"project", lvl:"every", time:"30 min",
+  title:"Run a project from kickoff to done",
+  lede:"Take a defined project — a launch, an event, a migration — and run the whole thing in Plansom: scope, phases, owners, risks, and a clean finish, with the AI keeping it on the rails.",
+  meta:{Time:"~30 min to set up", "Best for":"Project & delivery leads", "You'll need":"A project with a deadline", Where:"New plan → project"},
+  steps:[
+   {t:"State the outcome and the deadline", d:"One sentence on “done looks like ___,” plus the date. Everything downstream hangs off these two."},
+   {t:"Let Plansom phase it", d:"Ask for the plan broken into phases with milestones. Phases keep a big project from feeling like one scary list."},
+   {t:"Assign owners and dependencies", d:"Per QS-02, but at project scale — get the sequence right so phase two isn't waiting on a surprise from phase one."},
+   {t:"Name the risks up front", d:"Ask Plansom what's most likely to slip and pre-plan the mitigation. Cheap insurance."},
+   {t:"Track to a clean close", d:"Run weekly check-ins (QS-05), then close with a short retro Plansom drafts from what actually happened."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Draft the project plan", body:`Project: [name]. Outcome: [what done looks like].
+Deadline: [date]. Draft a phased plan with milestones,
+the tasks under each phase, suggested owners, and the
+dependencies between phases. Call out the critical path.`},
+   {kind:"prompt", lbl:"Pre-mortem the risks", body:`For this project plan, act as a skeptic: what are the
+5 most likely reasons we miss [date]? For each, suggest
+one concrete mitigation I can add to the plan now.`}
+  ],
+  signals:[
+   "The project reads as phases with milestones, not one giant list.",
+   "Dependencies are mapped so no phase is silently blocked.",
+   "Top risks each have a mitigation task in the plan."
+  ],
+  tips:[
+   "Milestones are morale — put a visible win at the end of each phase.",
+   "Ask for the pre-mortem before kickoff; risks are cheapest to fix before work starts."
+  ]},
+
+ {code:"QS-08", track:"further", icon:"solo", lvl:"every", time:"10 min",
+  title:"Plan your own week (just for you)",
+  lede:"Plansom isn't only for teams. Use it as your personal planning brain: dump everything on your plate, let it shape a realistic week, and end each day knowing tomorrow's already handled.",
+  meta:{Time:"~10 min, Monday", "Best for":"Any individual", "You'll need":"Your to-dos & calendar", Where:"Personal plan / My week"},
+  steps:[
+   {t:"Brain-dump everything", d:"Every task, half-thought, and “I should…” — get it out of your head and into Plansom. You can't plan what you can't see."},
+   {t:"Let Plansom shape the week", d:"Ask it to turn the dump into a realistic week, respecting your meetings and energy. It'll flag when you've over-committed."},
+   {t:"Protect the big rock", d:"Pick the one thing that would make the week a win and block real time for it before the small stuff fills up."},
+   {t:"Do a 2-minute daily reset", d:"Each morning, ask Plansom what today's top 3 are. Adjust for reality; don't re-plan from scratch."},
+   {t:"Roll the leftovers", d:"Friday, let unfinished tasks roll forward with a quick reality check — not guilt, just a reset."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Shape my week from a brain-dump", body:`Here's everything on my plate this week:
+[paste your list].
+My fixed commitments: [meetings / blocks].
+Turn this into a realistic weekly plan. Protect time
+for [my one big priority]. Tell me honestly if it
+doesn't all fit and what to cut or move.`},
+   {kind:"prompt", lbl:"Daily top 3", body:`Given my plan and what's still open, what are the 3
+things I should focus on today to stay on track for
+the week? Keep it to 3 — I'll trust you to prioritise.`}
+  ],
+  signals:[
+   "Your whole week lives in one place, not five sticky notes.",
+   "Your top priority has protected time before Monday ends.",
+   "You start each day knowing your three, without deciding from scratch."
+  ],
+  tips:[
+   "If Plansom says it doesn't all fit, believe it — an honest week beats an aspirational one.",
+   "Protect the big rock first; small tasks expand to fill whatever's left."
+  ]},
+
+ {code:"QS-09", track:"further", icon:"rhythm", lvl:"power", time:"40 min",
+  title:"Set your team's operating rhythm as a lead",
+  lede:"Graduate from running one plan to running the team. Stand up a repeatable weekly and monthly cadence in Plansom — planning, check-ins, and reviews — so the team runs on rails whether or not you're in the room.",
+  meta:{Time:"~40 min to design", "Best for":"Managers & team leads", "You'll need":"A team using Plansom", Where:"Team space / recurring"},
+  steps:[
+   {t:"Define the cadence on one page", d:"Weekly: plan + check-in. Monthly: review + reset. Quarterly: OKRs (QS-06). Write it down so it's a system, not your memory."},
+   {t:"Templatise the recurring plans", d:"Save your weekly-planning and review plans as templates so every cycle starts the same, not from scratch."},
+   {t:"Automate the connective tissue", d:"Use agents (QS-04) to prep each meeting's brief, chase pre-reads, and post summaries. The rhythm should mostly run itself."},
+   {t:"Make one dashboard the source of truth", d:"Point the team at a single Plansom view for “how are we doing.” Kill the parallel spreadsheets."},
+   {t:"Coach owners to run their own plans", d:"Your job is the rhythm, not every task. Get each owner running QS-01→05 on their own area."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Design the operating rhythm", body:`Help me design a lightweight operating rhythm for a
+team of [n] using Plansom. I want weekly, monthly and
+quarterly cadences that connect day-to-day tasks up to
+our OKRs without creating meeting overload. Propose the
+meetings, their purpose, length, and what Plansom should
+prepare for each.`},
+   {kind:"prompt", lbl:"Draft a reusable review template", body:`Create a reusable monthly team-review template: the
+sections to cover, the data Plansom should pull in for
+each, and 3 questions that surface risk early. Make it
+run in 45 minutes.`}
+  ],
+  signals:[
+   "Meetings start with a Plansom-prepared brief, every time.",
+   "The team checks one dashboard instead of pinging you.",
+   "The rhythm holds for a week when you're out of office."
+  ],
+  tips:[
+   "A rhythm that depends on you isn't a rhythm — automate and delegate until it survives your absence.",
+   "Fewer, better meetings with real pre-reads beat a full calendar of status calls."
+  ]},
+
+ {code:"QS-10", track:"further", icon:"plug", lvl:"power", time:"25 min",
+  title:"Connect your tools so updates happen on their own",
+  lede:"Stop copy-pasting between apps. Wire Plansom into the tools your work already flows through, so progress updates itself and your plan is always telling the truth.",
+  meta:{Time:"~25 minutes", "Best for":"Power users & admins", "You'll need":"Access to your other tools", Where:"Settings → Integrations"},
+  steps:[
+   {t:"List where work actually happens", d:"Teams, your calendar, your docs, your tracker. You're looking for the places status lives today but never makes it back to the plan."},
+   {t:"Connect the highest-friction one first", d:"Start with the integration that kills the most manual updating — usually Microsoft Teams and your calendar."},
+   {t:"Map what syncs which way", d:"Decide what flows into Plansom (updates, meetings) and what flows out (tasks, reminders). Avoid two tools fighting to own the same field."},
+   {t:"Let an agent watch the seams", d:"Have an agent (QS-04) reconcile updates across tools and flag anything that looks out of sync before it misleads you."},
+   {t:"Verify with one real task", d:"Update something in the connected tool and confirm Plansom reflects it. Trust the automation only after you've seen it work once."}
+  ],
+  prompts:[
+   {kind:"prompt", lbl:"Plan your integration setup", body:`My team works across: [list your tools].
+Help me plan how to connect them to Plansom so status
+updates flow automatically and nothing needs manual
+copying. Recommend the order to set them up and warn me
+about any place two tools might conflict over the same
+data.`},
+   {kind:"prompt", lbl:"Agent to keep tools in sync", body:`Act as a sync-watcher agent: each day, compare task
+status in Plansom against [tool] and flag anything that
+disagrees. Draft me a short “needs attention” list —
+don't overwrite anything automatically.`}
+  ],
+  signals:[
+   "A change in another tool shows up in Plansom without you touching it.",
+   "You've stopped manually copying status between apps.",
+   "Your plan reflects reality closely enough to trust in a meeting."
+  ],
+  tips:[
+   "Connect one tool well before connecting five — a half-synced stack is worse than none.",
+   "Let one tool own each field; two sources of truth means neither is trusted."
+  ]}
+];
+
+const TRACKS=[
+ {id:"first", label:"Your first week · do in order"},
+ {id:"further", label:"Go further"}
+];
+const LVL_LABEL={start:"Start here", every:"Everyday", power:"Power user"};
+
+/* progress */
+const KEY="plansom_qs_done_v1";
+let done=new Set();
+try{const s=localStorage.getItem(KEY);if(s)done=new Set(JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify([...done]));}catch(e){}}
+
+const state={q:"", sel:PB[0].code};
+const listEl=document.getElementById('list');
+const panelEl=document.getElementById('panel');
+const qEl=document.getElementById('q');
+const C=2*Math.PI*15;
+
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function matches(p){ if(!state.q) return true;
+  const hay=(p.title+" "+p.lede+" "+p.code+" "+LVL_LABEL[p.lvl]+" "+p.time+" "+Object.values(p.meta).join(" ")+" "
+    +p.steps.map(s=>s.t+" "+s.d).join(" ")+" "+p.tips.join(" ")+" "+p.signals.join(" ")+" "+p.prompts.map(x=>x.lbl).join(" ")).toLowerCase();
+  const terms=state.q.toLowerCase().split(/\s+/).filter(Boolean);
+  return terms.every(t=>hay.includes(t)||hay.includes(t.replace(/s$/,''))); }
+
+function renderRing(){
+  const n=done.size, tot=PB.length;
+  document.getElementById('doneN').textContent=n;
+  document.getElementById('totN').textContent=tot;
+  document.getElementById('rfg').style.strokeDashoffset = C*(1-n/tot);
+}
+
+function svg(icon){return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[icon]}</svg>`;}
+
+function renderList(){
+  renderRing();
+  const filtered=PB.filter(matches);
+  if(!filtered.length){ listEl.innerHTML=`<div class="empty">Nothing matches “${esc(state.q)}”.<br>Try <b>agents</b>, <b>OKRs</b>, or <b>weekly</b>.</div>`; return; }
+  let html="";
+  TRACKS.forEach(tr=>{
+    const items=filtered.filter(p=>p.track===tr.id);
+    if(!items.length) return;
+    html+=`<div class="trackhead"><span>${esc(tr.label)}</span><span class="ln"></span></div>`;
+    html+=items.map((p,idx)=>{
+      const num = p.track==="first" ? String(idx+1) : "";
+      const numDisp = p.track==="first" ? num : svg(p.icon);
+      return `<button class="qs ${done.has(p.code)?'done':''}" role="option" data-code="${p.code}" aria-selected="${state.sel===p.code}">
+        <span class="step-n">${p.track==="first"?num:`<span style="display:grid;place-items:center;width:16px;height:16px">${svg(p.icon)}</span>`}</span>
+        <span style="min-width:0">
+          <span class="qt">${esc(p.title)}</span>
+          <span class="qs-meta">
+            <span class="lvl ${p.lvl}">${LVL_LABEL[p.lvl]}</span>
+            <span class="time mono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${esc(p.time)}</span>
+          </span>
+        </span>
+        <span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      </button>`;
+    }).join('');
+  });
+  listEl.innerHTML=html;
+  listEl.querySelectorAll('.qs').forEach(b=>b.onclick=(e)=>{
+    if(e.target.closest('.chk')){toggleDone(b.dataset.code);return;}
+    state.sel=b.dataset.code;renderList();renderPanel();
+    if(window.innerWidth<=940) panelEl.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+
+function toggleDone(code, silent){
+  if(done.has(code)) done.delete(code); else { done.add(code); if(!silent) celebrate(); }
+  save();renderList();renderPanel();
+}
+
+function renderPanel(){
+  const p=PB.find(x=>x.code===state.sel)||PB[0];
+  const isDone=done.has(p.code);
+  const idx=PB.findIndex(x=>x.code===p.code);
+  const next=PB[idx+1];
+  panelEl.innerHTML=`
+    <div class="ph">
+      <div class="ph-tab mono">
+        <span class="step-n" style="width:22px;height:22px;border-radius:6px;font-size:.66rem">${p.track==="first"?String(PB.filter(x=>x.track==="first").findIndex(x=>x.code===p.code)+1):`<span style="display:grid;place-items:center;width:13px;height:13px;color:var(--accent)">${svg(p.icon)}</span>`}</span>
+        <span class="code">${p.code}</span><span class="sep"></span><span class="lvl ${p.lvl}">${LVL_LABEL[p.lvl]}</span><span class="sep"></span>${esc(p.time)}
+      </div>
+      <h2>${esc(p.title)}</h2>
+      <p class="lede"><b>What you'll get.</b> ${esc(p.lede)}</p>
+      <div class="metabar">${Object.entries(p.meta).map(([k,v])=>`<div class="m"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('')}</div>
+    </div>
+    <div class="pbody">
+      <section class="sec">
+        <div class="sec-h"><span class="si">${svg('review')}</span><h3>Do this now</h3></div>
+        <ol class="steps">${p.steps.map(s=>`<li><div class="st-t">${esc(s.t)}</div><p class="st-d">${s.d}</p></li>`).join('')}</ol>
+      </section>
+      <section class="sec">
+        <div class="sec-h"><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M5.5 5.5l2 2M3 12h3M18.5 5.5l-2 2M21 12h-3"/><path d="M12 9a4 4 0 0 0-2 7.5V19a2 2 0 0 0 4 0v-2.5A4 4 0 0 0 12 9z"/></svg></span><h3>Say this to Plansom</h3></div>
+        ${p.prompts.map((t,i)=>`
+          <div class="prompt">
+            <div class="prompt-h">
+              <span class="kind ${t.kind==='msg'?'msg':''}">${t.kind==='msg'
+                ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>MESSAGE'
+                : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3"/><path d="M2 22l4-1 12-12a2.8 2.8 0 0 0-4-4L2 17z"/></svg>PROMPT'}</span>
+              <span class="lbl">${esc(t.lbl)}</span>
+              <button class="cp" data-code="${p.code}" data-i="${i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            </div>
+            <pre>${esc(t.body)}</pre>
+          </div>`).join('')}
+      </section>
+      <section class="sec">
+        <div class="sec-h"><span class="si">${svg('goal')}</span><h3>You'll know it worked when</h3></div>
+        <ul class="signals">${p.signals.map(s=>`<li><span class="tk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span>${esc(s)}</span></li>`).join('')}</ul>
+      </section>
+      <section class="sec">
+        <div class="sec-h"><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span><h3>Pro tips</h3></div>
+        <ul class="tips">${p.tips.map(t=>`<li><span class="bulb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span><span>${esc(t)}</span></li>`).join('')}</ul>
+      </section>
+    </div>
+    <div class="pfoot">
+      <button class="btn mark" id="markBtn" aria-pressed="${isDone}">
+        ${isDone
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Done'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>Mark as done'}
+      </button>
+      ${next?`<button class="btn next" id="nextBtn">Next: ${esc(next.code)} &nbsp;<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>`:`<span class="btn next" style="cursor:default;opacity:.7">🎉 That's the set</span>`}
+    </div>
+    <div class="note">${p.track==="first"
+      ? 'This is one of five steps in your first week — do them in order for the smoothest start. '
+      : 'A standalone play — jump in whenever it\'s useful. '}<i>Exact button names in Plansom may differ slightly; the actions are what matter. Prompts are starting points — paste them in and edit the brackets.</i></div>`;
+
+  document.getElementById('markBtn').onclick=()=>{
+    toggleDone(p.code);
+    if(done.has(p.code) && next){ setTimeout(()=>{state.sel=next.code;renderList();renderPanel();},450); }
+  };
+  const nb=document.getElementById('nextBtn');
+  if(nb) nb.onclick=()=>{state.sel=next.code;renderList();renderPanel();panelEl.scrollIntoView({behavior:'smooth',block:'start'});};
+  panelEl.querySelectorAll('.cp').forEach(btn=>btn.onclick=()=>{
+    const pb=PB.find(x=>x.code===btn.dataset.code); copy(pb.prompts[+btn.dataset.i].body, btn);
+  });
+}
+
+/* clipboard */
+function copy(text,btn){
+  const done=()=>{ if(btn){btn.classList.add('done');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Copied';
+    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy';},1600);} toast('Copied — paste it into Plansom'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(()=>fb(text,done));}else fb(text,done);
+}
+function fb(text,cb){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
+let tT;function toast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),1800);}
+
+/* tiny confetti on completion */
+function celebrate(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const cv=document.getElementById('celebrate');const ctx=cv.getContext('2d');
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#343ced','#7379ff','#0f9b6c','#f0a94e','#ffffff'];
+  const ps=Array.from({length:70},(_,i)=>({x:innerWidth/2+(i%2?60:-60),y:innerHeight/3,
+    vx:(i/70-0.5)*9,vy:-Math.cos(i)*7-5,g:0.28,r:3+ (i%4),c:cols[i%cols.length],a:1,rot:i}));
+  let t=0;
+  (function frame(){ t++;ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.a-=0.012;p.rot+=0.2;
+      ctx.save();ctx.globalAlpha=Math.max(0,p.a);ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.c;ctx.fillRect(-p.r,-p.r,p.r*2,p.r*1.4);ctx.restore();});
+    if(t<90) requestAnimationFrame(frame); else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* search + keyboard */
+qEl.addEventListener('input',e=>{state.q=e.target.value;renderList();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement!==qEl){e.preventDefault();qEl.focus();return;}
+  if(document.activeElement===qEl) return;
+  if(['ArrowDown','ArrowUp','j','k'].includes(e.key)){
+    const items=PB.filter(matches);const i=items.findIndex(x=>x.code===state.sel);
+    const dir=(e.key==='ArrowDown'||e.key==='j')?1:-1;
+    const nx=items[(i+dir+items.length)%items.length];
+    if(nx){state.sel=nx.code;renderList();renderPanel();e.preventDefault();}
+  }
+  if(e.key==='x'){toggleDone(state.sel);}
+});
+
+/* theme */
+const root=document.documentElement;
+function isDark(){const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;}
+function paintTheme(){document.getElementById('themeIcon').innerHTML=isDark()
+  ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'
+  : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';}
+document.getElementById('themeBtn').onclick=()=>{root.setAttribute('data-theme',isDark()?'light':'dark');paintTheme();};
+document.getElementById('printBtn').onclick=()=>window.print();
+matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',paintTheme);
+
+renderList();renderPanel();paintTheme();
+</script>
