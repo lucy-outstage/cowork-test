@@ -43,6 +43,7 @@ These documents follow the Plansom brand guidelines:
 | — | **Combined:** Pillar Overview (all pillars) | https://docs.google.com/document/d/1Z3sS5epMyt6SaBQz7rwltRZYrzas0WAcfPCTKs-sxZ0/edit |
 | — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/15kI_uT94nx8GpyUwhxhsScN2WvRlooHhnm6yWy344Xo/edit |
 | ✍ | **Content Page Copy (v1)** — full page-by-page drafts (website pages, 10 use-case stories, 5 landing pages) | https://docs.google.com/document/d/1J7TeJWbTyUy5j66igeNaCgo5Y5W38gwBBh_-6owsgLw/edit |
+| 🛠 | **Outbound CRM System (end-to-end)** — list building → Apollo → sending tools → HubSpot → funnel; first-draft copy, graphical flows, full funnel with conversion % | https://docs.google.com/document/d/1C7g2vY5ts6UwNP8skxhWrFAPWnd-Q7B1WYw6lBO5lgA/edit |
 
 ## Build & Setup (operational layer)
 
