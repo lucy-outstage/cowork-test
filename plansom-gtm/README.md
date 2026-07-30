@@ -31,7 +31,7 @@ These documents follow the Plansom brand guidelines:
 | # | Document | Link |
 |---|----------|------|
 | 01 | Messaging & Brand System (with built-out messaging blueprint + brand guidelines) | https://docs.google.com/document/d/1M8oPnXBe8glBlFSj5onr2D8AB4drhOFYIq_fObcHnbI/edit |
-| 02 | Content System (Content OS) | https://docs.google.com/document/d/1ZK5kkD00sbQE9PmaSJvC5Pa_8jPZpxbsdlJCBhzPAAQ/edit |
+| 02 | Content System (Content OS) | https://docs.google.com/document/d/1lZ9j2WjzmqiCUYsNM0eRA8pEF1Llv2SrFKrIQ8THQuo/edit |
 | 03 | Outreach System | https://docs.google.com/document/d/1WTRffcbkWKkiA8TpW3C2vnCeA3MTmYGbeQjMC9XPeAk/edit |
 | 04 | Spin Sell System | https://docs.google.com/document/d/1OMCkp9RBoabUOu2OfnkaE42n6oosrt-VsSwYJ4wUV5Y/edit |
 | 05 | Customer Journey System | https://docs.google.com/document/d/1dD4ON3X-q9OwWmi6s0qwwR3ABEAI7VLK3Or1PIPKgwo/edit |
@@ -41,7 +41,8 @@ These documents follow the Plansom brand guidelines:
 | 09 | Traffic System | https://docs.google.com/document/d/11UBtCw8nKpBrf8LgaqT7KuMUY4tgwCNrXxsw75H3Q-g/edit |
 | 10 | Social Media System | https://docs.google.com/document/d/14hl9DEM8d0floeybrmVScR4wURyy9LSSYTYYxBgQLlQ/edit |
 | — | **Combined:** Pillar Overview (all pillars) | https://docs.google.com/document/d/1Z3sS5epMyt6SaBQz7rwltRZYrzas0WAcfPCTKs-sxZ0/edit |
-| — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/1UY3ZSUEXNKHakPGr7qo5AQohEikEiREb8Cy5v3S8t3U/edit |
+| — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/15kI_uT94nx8GpyUwhxhsScN2WvRlooHhnm6yWy344Xo/edit |
+| ✍ | **Content Page Copy (v1)** — full page-by-page drafts (website pages, 10 use-case stories, 5 landing pages) | https://docs.google.com/document/d/1J7TeJWbTyUy5j66igeNaCgo5Y5W38gwBBh_-6owsgLw/edit |
 
 ## Source files in this folder
 
@@ -52,8 +53,10 @@ These documents follow the Plansom brand guidelines:
   - `contentos-data.js` — the Content OS (pillar 2) component groups.
   - `msgbrand.js` — the built-out Messaging Blueprint + Brand Guidelines content (Pillar 1).
   - `buildout.js` — the built-out, populated content for Pillars 3–10 (sequences, SPIN bank, onboarding, economics, etc.).
+  - `contentbuild.js` — the populated drafts appended under each Content OS group (Pillar 2).
+  - `pages.js` — the full page-by-page content copy (website pages, use-case stories, landing pages); writes `content-page-copy.html`.
   - `brandhtml.js` — brand-styled HTML renderer (palette, Montserrat, tables) that assembles it all.
-  - `build.js` — writes all 12 HTML files. Run with `node build.js`.
+  - `build.js` — writes the 12 pillar/overview HTML files. Run `node build.js` then `node pages.js`.
 - `Plansom_GTM_Pillar_Overview.docx`, `Plansom_Content_Operating_System.docx` — the earlier
   (pre-brand) Microsoft Word versions, retained as offline copies.
 
