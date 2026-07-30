@@ -4,6 +4,7 @@ const { pillars, contentGroups, coverList } = require("./content.js");
 const { groups: contentOsGroups } = require("./contentos-data.js");
 const MB = require("./msgbrand.js");
 const BO = require("./buildout.js");
+const CB = require("./contentbuild.js");
 
 const BLUE = "#343CED", INK = "#222222", LGREY = "#EAEAEA", ZEBRA = "#F3F3F4";
 const PRODUCT = "Plansom is an AI-powered planning platform that transforms ideas, tasks, and goals into clear, actionable plans.";
@@ -48,6 +49,7 @@ h2.gh{font-size:15pt;font-weight:700;color:#222222;margin:16px 0 3px 0}
 h2.sub{font-size:15pt;font-weight:700;color:#222222;margin:20px 0 6px 0;border-bottom:2px solid #343CED;padding-bottom:4px}
 .lead{color:#222222;font-size:10pt;margin:0 0 8px 0;line-height:1.4}
 .kk{font-weight:700;color:#222222;font-size:9.5pt}
+.cbuild{margin-top:6px}
 .pb{page-break-before:always}
 `;
 
@@ -126,7 +128,7 @@ function contentBody(){
     +thesisBox(contentThesis)+seclabel("How the Content OS feeds every other pillar")+feedsTable()
     +`<p class="note"><span style="color:#222222">Two foundational listening systems — </span><strong>Social listening OS</strong><span style="color:#222222"> and </span><strong>Market scan OS</strong><span style="color:#222222"> — run underneath all of the above, keeping the “who” and “why” continuously up to date.</span></p>`
     +seclabel("The ten component groups");
-  contentOsGroups.forEach(g=>{ if(["3","9"].includes(g.num)) s+=PB; s+=groupHeading(g.num,g.title,g.count,g.purpose)+detailTable(g.rows); });
+  contentOsGroups.forEach(g=>{ s+=PB; s+=groupHeading(g.num,g.title,g.count,g.purpose)+detailTable(g.rows)+CB.section(g.num); });
   return s;
 }
 
