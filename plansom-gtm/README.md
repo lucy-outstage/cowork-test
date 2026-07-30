@@ -44,6 +44,25 @@ These documents follow the Plansom brand guidelines:
 | — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/15kI_uT94nx8GpyUwhxhsScN2WvRlooHhnm6yWy344Xo/edit |
 | ✍ | **Content Page Copy (v1)** — full page-by-page drafts (website pages, 10 use-case stories, 5 landing pages) | https://docs.google.com/document/d/1J7TeJWbTyUy5j66igeNaCgo5Y5W38gwBBh_-6owsgLw/edit |
 
+## Build & Setup (operational layer)
+
+The *how to stand each pillar up* — tools, data model, funnel/lifecycle stages, workflows and setup
+checklists. Pillar 03 is a full from-scratch **HubSpot** build. In the Drive subfolder
+[*Build & Setup*](https://drive.google.com/drive/folders/1Wgj7hF5JvJhldCP48uXuEtrXCm-P9H8V).
+
+| # | Build & Setup doc | Link |
+|---|----------|------|
+| 01 | Messaging & Brand — governance & versioning | https://docs.google.com/document/d/1ud5LJdosx3LuPHfLnPopthTfLjn19J6-cYER7OEQL6w/edit |
+| 02 | Content System — content ops (CMS, workflow, SEO/GEO) | https://docs.google.com/document/d/1ZYFbs-hL4hdlgLrX12iSuXXKvTq1l9CKW9-ORT_aX0U/edit |
+| 03 | **Outreach — full HubSpot journey** (pipeline, properties, workflows) | https://docs.google.com/document/d/1MueoWzlliBqbzsKquFw742BAro4vhds7coYje-UIlEw/edit |
+| 04 | Spin Sell — deal model, SPIN playbook, forecasting | https://docs.google.com/document/d/19_BJMx0uApuan66X33FTl7XS3dlbX1fhtcrZXgNy9mY/edit |
+| 05 | Customer Journey — event tracking, onboarding & health workflows | https://docs.google.com/document/d/1cxJpdRd2OOkVKoov7NBPzN-o0ImhHtGeHjo4yaAHZ3s/edit |
+| 06 | Advisory Board — ops, cadence, insight routing | https://docs.google.com/document/d/1qtMKmlwkRWSWSufG7fRcXIhGocem_4gHNPzB42m7YXA/edit |
+| 07 | Accelerators & Events — campaigns, ABM, capture/follow-up | https://docs.google.com/document/d/19W0LDbe-eztyrkOUYIig7qRllTnNnK7RREQAaGQqU9k/edit |
+| 08 | Partnerships & Directories — PartnerStack↔HubSpot, deal-reg, listings | https://docs.google.com/document/d/1evu-6qBgEOrJMxtCXPH9zbmZYWOsQvBarq75y_d-xd4/edit |
+| 09 | Traffic — tracking plan, audience sync, CAC dashboards | https://docs.google.com/document/d/1lZTTIUIAUOxk6KIYMlwIgbR0864Lciy_H1ECO_CWB4c/edit |
+| 10 | Social — scheduling, UTM tracking, DM-to-CRM | https://docs.google.com/document/d/142PVeUsjv-QrRNgUSPcxyeTdsHEQ0Oty-crgW8F30i8/edit |
+
 ## Source files in this folder
 
 - `google-docs-html/` — the exact HTML uploaded to Google Docs (one file per document). These can
@@ -55,8 +74,10 @@ These documents follow the Plansom brand guidelines:
   - `buildout.js` — the built-out, populated content for Pillars 3–10 (sequences, SPIN bank, onboarding, economics, etc.).
   - `contentbuild.js` — the populated drafts appended under each Content OS group (Pillar 2).
   - `pages.js` — the full page-by-page content copy (website pages, use-case stories, landing pages); writes `content-page-copy.html`.
+  - `buildsetup.js` — the operational Build & Setup doc per pillar (Outreach = full HubSpot journey); writes `build-*.html`.
   - `brandhtml.js` — brand-styled HTML renderer (palette, Montserrat, tables) that assembles it all.
-  - `build.js` — writes the 12 pillar/overview HTML files. Run `node build.js` then `node pages.js`.
+  - `build.js` — writes the 12 pillar/overview HTML files. Run `node build.js`, then `node pages.js`, then `node buildsetup.js`.
+- `build-setup-html/` — the exact HTML uploaded for the 10 Build & Setup docs.
 - `Plansom_GTM_Pillar_Overview.docx`, `Plansom_Content_Operating_System.docx` — the earlier
   (pre-brand) Microsoft Word versions, retained as offline copies.
 
