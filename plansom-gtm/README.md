@@ -32,14 +32,14 @@ These documents follow the Plansom brand guidelines:
 |---|----------|------|
 | 01 | Messaging & Brand System (with built-out messaging blueprint + brand guidelines) | https://docs.google.com/document/d/1M8oPnXBe8glBlFSj5onr2D8AB4drhOFYIq_fObcHnbI/edit |
 | 02 | Content System (Content OS) | https://docs.google.com/document/d/1ZK5kkD00sbQE9PmaSJvC5Pa_8jPZpxbsdlJCBhzPAAQ/edit |
-| 03 | Outreach System | https://docs.google.com/document/d/1-ngXwtNzhQLFy5FZ6ksPUTircRRJwLJyX08Tnl_vwho/edit |
-| 04 | Spin Sell System | https://docs.google.com/document/d/1C7QSqWsROrbQLSQlolnR2WhawYEyopiFv5dl6g8ZRtk/edit |
-| 05 | Customer Journey System | https://docs.google.com/document/d/1a_9NWcqAMvwuCYrzt4p3YmTj54dtFNmpVARxcYKyXvI/edit |
-| 06 | Customer Advisory Board | https://docs.google.com/document/d/1bUt1FERjhA3C4-6_UlI6sKzwr7Jp13sF19aPUnzttJM/edit |
-| 07 | Accelerators & Events System | https://docs.google.com/document/d/1kyz7N4sRxty7GdHVHxEDWiWFL-UepVnQj05YPjimvWE/edit |
-| 08 | Partnerships & Directories System | https://docs.google.com/document/d/13nhb10BDB54nMY9GrS7R1r-yF8cbHBz6cGIOO6BIPJA/edit |
-| 09 | Traffic System | https://docs.google.com/document/d/1qQ8q7K_U6rnbtGIWTo9tocdTdTZl0i8oIeQUfEujyVo/edit |
-| 10 | Social Media System | https://docs.google.com/document/d/1mRdZz_gYrotC3MdWtRJC6uBGLjt-HV877cR_O7b1gA8/edit |
+| 03 | Outreach System | https://docs.google.com/document/d/1WTRffcbkWKkiA8TpW3C2vnCeA3MTmYGbeQjMC9XPeAk/edit |
+| 04 | Spin Sell System | https://docs.google.com/document/d/1OMCkp9RBoabUOu2OfnkaE42n6oosrt-VsSwYJ4wUV5Y/edit |
+| 05 | Customer Journey System | https://docs.google.com/document/d/1dD4ON3X-q9OwWmi6s0qwwR3ABEAI7VLK3Or1PIPKgwo/edit |
+| 06 | Customer Advisory Board | https://docs.google.com/document/d/19eNpRHE21k9p5UIG2DNuib30Zx7PsBOf7vnSfRRiKeU/edit |
+| 07 | Accelerators & Events System | https://docs.google.com/document/d/1yxIySJQIZXqXN_XfXoHGeuBx_QWflebBYh_GNM1KVyc/edit |
+| 08 | Partnerships & Directories System | https://docs.google.com/document/d/18DUQ8iAjLcYrcHwnHirV1riI9t-yYJN9BITIMV-u7sg/edit |
+| 09 | Traffic System | https://docs.google.com/document/d/11UBtCw8nKpBrf8LgaqT7KuMUY4tgwCNrXxsw75H3Q-g/edit |
+| 10 | Social Media System | https://docs.google.com/document/d/14hl9DEM8d0floeybrmVScR4wURyy9LSSYTYYxBgQLlQ/edit |
 | — | **Combined:** Pillar Overview (all pillars) | https://docs.google.com/document/d/1Z3sS5epMyt6SaBQz7rwltRZYrzas0WAcfPCTKs-sxZ0/edit |
 | — | **Combined:** Content Operating System (deep-dive) | https://docs.google.com/document/d/1UY3ZSUEXNKHakPGr7qo5AQohEikEiREb8Cy5v3S8t3U/edit |
 
@@ -50,7 +50,9 @@ These documents follow the Plansom brand guidelines:
 - `generator/` — the scripts that produce the HTML from a single content source:
   - `content.js` — pillar theses + components (source of truth for pillars 1, 3–10).
   - `contentos-data.js` — the Content OS (pillar 2) component groups.
-  - `brandhtml.js` — brand-styled HTML renderer (palette, Montserrat, tables).
+  - `msgbrand.js` — the built-out Messaging Blueprint + Brand Guidelines content (Pillar 1).
+  - `buildout.js` — the built-out, populated content for Pillars 3–10 (sequences, SPIN bank, onboarding, economics, etc.).
+  - `brandhtml.js` — brand-styled HTML renderer (palette, Montserrat, tables) that assembles it all.
   - `build.js` — writes all 12 HTML files. Run with `node build.js`.
 - `Plansom_GTM_Pillar_Overview.docx`, `Plansom_Content_Operating_System.docx` — the earlier
   (pre-brand) Microsoft Word versions, retained as offline copies.
