@@ -2,6 +2,7 @@
 // for reliable HTML -> Google Doc conversion). Montserrat (Gilroy substitute native to GDocs).
 const { pillars, contentGroups, coverList } = require("./content.js");
 const { groups: contentOsGroups } = require("./contentos-data.js");
+const MB = require("./msgbrand.js");
 
 const BLUE = "#343CED", INK = "#222222", LGREY = "#EAEAEA", ZEBRA = "#F3F3F4";
 const PRODUCT = "Plansom is an AI-powered planning platform that transforms ideas, tasks, and goals into clear, actionable plans.";
@@ -43,6 +44,9 @@ h2.gh{font-size:15pt;font-weight:700;color:#222222;margin:16px 0 3px 0}
 .plist-rl{color:#5F5F5F;font-size:9pt;text-align:right}
 .note{color:#5F5F5F;font-size:9pt;margin-top:10px}
 .arrow{color:#343CED;font-style:italic;font-size:9.5pt;margin-top:8px}
+h2.sub{font-size:15pt;font-weight:700;color:#222222;margin:20px 0 6px 0;border-bottom:2px solid #343CED;padding-bottom:4px}
+.lead{color:#222222;font-size:10pt;margin:0 0 8px 0;line-height:1.4}
+.kk{font-weight:700;color:#222222;font-size:9.5pt}
 .pb{page-break-before:always}
 `;
 
@@ -142,7 +146,7 @@ function overviewBody(){
     +`<td${z?` bgcolor="${ZEBRA}"`:''}><span class="plist-rl">${esc(String(o[2]).toUpperCase())}</span></td></tr>`;}).join("");
   s+=`<table class="grid">${rows}</table>`;
   s+=`<p class="note"><strong style="color:#222222">Note on order:</strong> the Content System is the most detailed pillar, so it is placed last here and specified fully in the companion “Content Operating System” document.</p>`;
-  pillars.forEach(p=>{ s+=PB+pillarBody(p); });
+  pillars.forEach(p=>{ s+=PB+pillarBody(p)+(p.n==="01"?MB.compact():""); });
   s+=PB+eyebrow(`PLANSOM · GTM PILLAR 02 · ${contentRole}`)+ptitle("Content System — Content OS")+productLine()
     +thesisBox(contentThesis)+seclabel("Component groups (full detail in the companion document)")
     +(function(){const rows=contentGroups.map((g,i)=>{const z=i%2;return `<tr>${cell(`<strong>${esc(g[0])}</strong>`,z)}${cell(esc(g[1]),z)}</tr>`;}).join("");
@@ -160,7 +164,7 @@ const perPillar=[];
 const ordered=[pillars.find(p=>p.n==="01"), {content:true}, ...["03","04","05","06","07","08","09","10"].map(n=>pillars.find(p=>p.n===n))];
 ordered.forEach(p=>{
   if(p.content) perPillar.push({ n:"02", key:"pillar-02-content-system", title:"Plansom GTM · Pillar 02 — Content System (Content OS)", inner:contentBody() });
-  else perPillar.push({ n:p.n, key:`pillar-${p.n}-${p.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}`, title:`Plansom GTM · Pillar ${p.n} — ${p.title}`, inner:pillarBody(p) });
+  else perPillar.push({ n:p.n, key:`pillar-${p.n}-${p.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}`, title:`Plansom GTM · Pillar ${p.n} — ${p.title}`, inner:pillarBody(p)+(p.n==="01"?MB.full():"") });
 });
 const combined=[
   { key:"combined-gtm-pillar-overview", title:"Plansom GTM — Pillar Overview (all pillars)", inner:overviewBody() },
