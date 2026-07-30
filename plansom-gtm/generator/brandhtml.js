@@ -3,6 +3,7 @@
 const { pillars, contentGroups, coverList } = require("./content.js");
 const { groups: contentOsGroups } = require("./contentos-data.js");
 const MB = require("./msgbrand.js");
+const BO = require("./buildout.js");
 
 const BLUE = "#343CED", INK = "#222222", LGREY = "#EAEAEA", ZEBRA = "#F3F3F4";
 const PRODUCT = "Plansom is an AI-powered planning platform that transforms ideas, tasks, and goals into clear, actionable plans.";
@@ -164,7 +165,7 @@ const perPillar=[];
 const ordered=[pillars.find(p=>p.n==="01"), {content:true}, ...["03","04","05","06","07","08","09","10"].map(n=>pillars.find(p=>p.n===n))];
 ordered.forEach(p=>{
   if(p.content) perPillar.push({ n:"02", key:"pillar-02-content-system", title:"Plansom GTM · Pillar 02 — Content System (Content OS)", inner:contentBody() });
-  else perPillar.push({ n:p.n, key:`pillar-${p.n}-${p.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}`, title:`Plansom GTM · Pillar ${p.n} — ${p.title}`, inner:pillarBody(p)+(p.n==="01"?MB.full():"") });
+  else perPillar.push({ n:p.n, key:`pillar-${p.n}-${p.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}`, title:`Plansom GTM · Pillar ${p.n} — ${p.title}`, inner:pillarBody(p)+(p.n==="01"?MB.full():BO.sections(p.n)) });
 });
 const combined=[
   { key:"combined-gtm-pillar-overview", title:"Plansom GTM — Pillar Overview (all pillars)", inner:overviewBody() },
