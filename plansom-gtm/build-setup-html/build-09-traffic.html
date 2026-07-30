@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{font-family:Montserrat,'Helvetica Neue',Arial,sans-serif;color:#222222;font-size:11pt;line-height:1.35;margin:0}
+h1,h2,p,ul{margin:0}
+.eyebrow{color:#343CED;font-weight:700;font-size:9pt;letter-spacing:1.5px;margin-bottom:4px}
+h1.ptitle{color:#222222;font-weight:700;font-size:26pt;line-height:1.03;margin-bottom:6px;border-bottom:2px solid #343CED;padding-bottom:7px}
+h1.big{color:#222222;font-weight:700;font-size:32pt;line-height:1.02;margin-bottom:4px}
+.prod{color:#5F5F5F;font-size:10.5pt;margin-bottom:12px}
+.subtitle{color:#5F5F5F;font-style:italic;font-size:12pt;border-bottom:3px solid #343CED;padding-bottom:10px;margin-bottom:8px}
+.seclabel{color:#222222;font-weight:700;font-size:10pt;letter-spacing:.5px;margin:16px 0 6px 0}
+table.tbox{border-collapse:collapse;width:100%;margin-bottom:4px}
+td.thesis{padding:12px 15px;border-left:4px solid #343CED}
+.tlabel{color:#343CED;font-weight:700;font-size:9.5pt;letter-spacing:.4px;margin-bottom:6px}
+.tp{color:#222222;font-size:10.5pt;line-height:1.38;margin-bottom:7px}
+.qlabel{color:#343CED;font-weight:700;font-size:9.5pt;margin-bottom:6px}
+.qbig{color:#222222;font-weight:700;font-size:17pt;line-height:1.1;margin-bottom:8px}
+table.grid{border-collapse:collapse;width:100%;margin-bottom:8px}
+table.grid td{border:1px solid #CCCCCC;padding:6px 9px;vertical-align:top;font-size:9.5pt;color:#222222}
+table.grid td.h{color:#FFFFFF;font-weight:700;font-size:9.5pt}
+.comp{font-weight:700;font-size:10pt;color:#222222}
+.tag{color:#5F5F5F;font-style:italic;font-size:8pt;margin-top:2px}
+ul.subs{padding-left:15px}
+ul.subs li{font-size:9.5pt;margin-bottom:2px;color:#222222}
+.brief{font-size:9.5pt;margin-bottom:4px;color:#222222}
+.lbl{color:#343CED;font-weight:700;font-size:8pt}
+h2.gh{font-size:15pt;font-weight:700;color:#222222;margin:16px 0 3px 0}
+.gn{color:#343CED}
+.gc{color:#5F5F5F;font-style:italic;font-size:10pt;font-weight:400}
+.gp{font-size:9.5pt;border-bottom:1px solid #CCCCCC;padding-bottom:6px;margin-bottom:7px;color:#222222}
+.gpl{color:#343CED;font-weight:700}
+.plabel{color:#343CED;font-weight:700}
+.plist-n{color:#343CED;font-weight:700;font-size:10.5pt}
+.plist-nm{color:#222222;font-weight:700;font-size:10.5pt}
+.plist-rl{color:#5F5F5F;font-size:9pt;text-align:right}
+.note{color:#5F5F5F;font-size:9pt;margin-top:10px}
+.arrow{color:#343CED;font-style:italic;font-size:9.5pt;margin-top:8px}
+h2.sub{font-size:15pt;font-weight:700;color:#222222;margin:20px 0 6px 0;border-bottom:2px solid #343CED;padding-bottom:4px}
+.lead{color:#222222;font-size:10pt;margin:0 0 8px 0;line-height:1.4}
+.kk{font-weight:700;color:#222222;font-size:9.5pt}
+.cbuild{margin-top:6px}
+.pb{page-break-before:always}
+</style></head><body><p class="eyebrow">PLANSOM · GTM PILLAR 09 · BUILD &amp; SETUP</p><h1 class="ptitle">Pillar 09 — Traffic System</h1><p class="prod">Tracking-first: GA4 + product analytics + HubSpot + ad platforms + consent.</p><p class="lead">Operational build for paid + organic traffic — the tracking plan comes first, then the automation that turns visits into attributed trials.</p><h2 class="sub">Tooling</h2><ul class="subs"><li>GA4 + Google Tag Manager; product analytics; a consent/cookie tool.</li><li>HubSpot forms + tracking code on all pages/landing pages.</li><li>Ad platforms: LinkedIn, Meta, Google (+ offline-conversion import from HubSpot).</li></ul><h2 class="sub">Tracking plan (build this before scaling spend)</h2><table class="grid"><tr><td class="h" bgcolor="#222222">Element</td><td class="h" bgcolor="#222222">Spec</td></tr><tr><td><span class="kk">UTM governance</span></td><td>Enforced source/medium/campaign/content on every paid + social link</td></tr><tr><td bgcolor="#F3F3F4"><span class="kk">Conversion events</span></td><td bgcolor="#F3F3F4">visit → signup → activation → paid (client + server-side)</td></tr><tr><td><span class="kk">Attribution</span></td><td>First + last touch in HubSpot; self-reported ‘how did you hear’ at signup</td></tr><tr><td bgcolor="#F3F3F4"><span class="kk">Consent</span></td><td bgcolor="#F3F3F4">Banner + regional rules; suppress tracking pre-consent</td></tr></table><h2 class="sub">Workflows</h2><table class="grid"><tr><td class="h" bgcolor="#222222">Workflow</td><td class="h" bgcolor="#222222">Trigger → actions</td></tr><tr><td><span class="kk">Inbound capture</span></td><td>Form fill → contact, set source/UTMs → Lifecycle Lead → score</td></tr><tr><td bgcolor="#F3F3F4"><span class="kk">Inbound MQL</span></td><td bgcolor="#F3F3F4">High-intent page/keyword + form → MQL + owner task</td></tr><tr><td><span class="kk">Audience sync</span></td><td>HubSpot lists → LinkedIn/Meta custom audiences (ABM + retargeting)</td></tr><tr><td bgcolor="#F3F3F4"><span class="kk">Offline conversions</span></td><td bgcolor="#F3F3F4">Trial/paid → import back to ad platforms to optimise bidding</td></tr></table><h2 class="sub">Dashboards</h2><ul class="subs"><li>CAC per channel (LinkedIn ~$480 / Meta ~$233 / Google ~$260) vs target; funnel by source; SEO/GEO traffic + rankings + AI-referrals.</li></ul><h2 class="sub">Setup checklist</h2><ol class="subs" style="padding-left:18px"><li>GTM + GA4 + consent live; verify events.</li><li>HubSpot tracking + forms on all pages.</li><li>UTM template + naming convention.</li><li>Ad pixels + offline-conversion import.</li><li>Audience-sync + inbound workflows.</li><li>Channel CAC dashboard; then scale spend.</li></ol></body></html>
