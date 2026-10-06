@@ -1,0 +1,350 @@
+<title>WPP Path to New Revenue</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+
+<style>
+/* Layout: a single column of panels on the brand's dark surface — who we are,
+   the path, then the plan as it stands in Plansom. Committed to one look
+   rather than following the viewer's theme. */
+:root{
+  --ink:#191919;
+  --raised:#1D1D1D;
+  --surface:#242424;
+  --surface-hi:#2D2D2D;
+  --white:#FFFFFF;
+  --blue:#343CED;
+
+  --fg:#FFFFFF;
+  --fg-mute:rgba(255,255,255,.64);
+  --fg-faint:rgba(255,255,255,.40);
+  --fg-ghost:rgba(255,255,255,.22);
+  --rule:rgba(255,255,255,.10);
+  --rule-soft:rgba(255,255,255,.06);
+
+  --display:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--display);font-weight:400;-webkit-font-smoothing:antialiased}
+.shell{max-width:1080px;margin:0 auto;padding-left:20px;padding-right:20px;padding-block:clamp(44px,6vw,76px)}
+
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(2.1rem,5.6vw,3.3rem);font-weight:300;line-height:1.05}
+h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:400;line-height:1.14}
+h3{font-size:clamp(1rem,1.9vw,1.18rem);font-weight:500;line-height:1.25}
+h4{font-size:.95rem;font-weight:500;line-height:1.3}
+p{margin:0;line-height:1.6}
+
+.eyebrow{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-faint);margin:0 0 18px}
+.lede{font-size:clamp(.98rem,1.5vw,1.1rem);color:var(--fg-mute);line-height:1.62;max-width:64ch;margin-top:18px}
+
+.mast{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;margin-bottom:clamp(40px,6vw,64px)}
+.mark{font-weight:600;font-size:1.22rem;letter-spacing:-.038em;line-height:1}
+.mast .tag{font-size:.95rem;color:var(--fg-mute)}
+
+.band{background:var(--surface);border:1px solid var(--rule);border-radius:20px;padding:clamp(24px,3.2vw,40px);margin-top:clamp(30px,4vw,44px)}
+.band.flat{background:var(--raised)}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,30px);margin-top:28px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,2vw,24px);margin-top:28px}
+.cell{min-width:0;padding-left:20px;border-left:1px solid var(--rule)}
+.cell h4{color:var(--fg)}
+.cell p{font-size:.9rem;color:var(--fg-mute);margin-top:9px}
+.cell .role{font-size:.82rem;color:var(--fg-faint);margin-top:4px}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+.tw{overflow-x:auto;margin-top:26px}
+th{text-align:left;font-weight:500;font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;color:var(--fg-faint);padding:0 clamp(10px,1.4vw,16px) 14px 0;border-bottom:1px solid var(--rule-soft);white-space:nowrap}
+td{padding:15px clamp(10px,1.4vw,16px) 15px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--fg-mute);line-height:1.5}
+tr:last-child td{border-bottom:0}
+th:last-child,td:last-child{padding-right:0}
+.t-main{color:var(--fg);min-width:170px}
+.t-when{white-space:nowrap;color:var(--fg-faint);font-size:.85rem}
+.who{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:.85rem}
+.dot{width:6px;height:6px;border-radius:50%;flex:none}
+.dot.h{background:var(--fg-mute)}
+.dot.a{background:var(--blue)}
+
+/* goal view */
+.goal-top{display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap}
+.goal-title{font-size:clamp(1.08rem,2.2vw,1.38rem);font-weight:500;letter-spacing:-.02em;min-width:0}
+.goal-state{font-size:.86rem;color:var(--fg-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar{height:3px;background:var(--fg-ghost);border-radius:2px;margin-top:16px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--white);border-radius:2px}
+.sub{display:flex;flex-direction:column;gap:8px;margin-top:24px}
+.sub-row{background:var(--surface-hi);border-radius:12px;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.sub-row p{font-size:.93rem;font-weight:500;min-width:0}
+.sub-state{font-size:.83rem;color:var(--fg-mute);white-space:nowrap}
+.legend{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;font-size:.83rem;color:var(--fg-faint)}
+
+/* workstreams */
+.ws{background:var(--raised);border:1px solid var(--rule);border-radius:18px;padding:clamp(22px,2.8vw,32px);margin-top:16px}
+.ws-head{display:flex;gap:clamp(14px,2.4vw,26px);align-items:flex-start;flex-wrap:wrap}
+.ws-id{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-faint);padding-top:4px;width:40px;flex:none}
+.ws-head div{min-width:0;flex:1}
+.ws-head p{font-size:.92rem;color:var(--fg-mute);margin-top:7px}
+
+.gate{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:clamp(14px,2.4vw,30px);padding:16px 0;border-bottom:1px solid var(--rule-soft)}
+.gate:last-child{border-bottom:0}
+.gate p{font-size:.9rem;color:var(--fg-mute)}
+.gate .sig{color:var(--fg)}
+
+.statement{background:var(--blue);border-radius:20px;padding:clamp(32px,5vw,58px);margin-top:clamp(36px,5vw,54px)}
+.statement h2{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:300;line-height:1.12}
+.statement p{color:rgba(255,255,255,.88);font-size:clamp(.98rem,1.5vw,1.1rem);margin-top:20px;max-width:62ch}
+
+.foot{border-top:1px solid var(--rule);padding-top:22px;margin-top:clamp(40px,5vw,64px);font-size:.8rem;color:var(--fg-faint);line-height:1.7}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:3px}
+
+@media (max-width:760px){
+  .grid3,.grid4{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr;gap:6px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell">
+
+  <div class="mast">
+    <span class="mark">Plansom</span>
+    <span class="tag">Simply done.</span>
+  </div>
+
+  <p class="eyebrow">Playbook</p>
+  <h1>WPP path to new revenue.</h1>
+  <p class="lede">WPP Open works inside the company. What does not yet exist is a way to reach the marketers it was built for — people with a brand to protect and no route to agency-grade discipline. This is how we would find out whether they will buy, and where that work would live while it runs.</p>
+
+  <!-- ===== WHO PLANSOM IS ===== -->
+  <div class="band">
+    <p class="eyebrow">Who we are</p>
+    <h2>Four people, and a place for the work to live.</h2>
+    <p class="lede">Plansom is a small company with a product. The product holds a goal, the tasks under it, the people doing them and the agents helping. We run sprints inside it ourselves, which is why the plan for WPP already exists rather than waiting to be written.</p>
+    <div class="grid4">
+      <div class="cell">
+        <h4>Anders Schønberg</h4>
+        <p class="role">Co-founder and CEO</p>
+        <p>Leads the sprint and owns the result. Has built four companies. Former UBS M&amp;A banker.</p>
+      </div>
+      <div class="cell">
+        <h4>Chloe Schønberg</h4>
+        <p class="role">Co-founder</p>
+        <p>People and adoption. Former Head of EMEA Business Partners at Cloudflare.</p>
+      </div>
+      <div class="cell">
+        <h4>Antoine Boris</h4>
+        <p class="role">Head of Microsoft Growth</p>
+        <p>Go-to-market. Former global lead of Microsoft IP co-sell.</p>
+      </div>
+      <div class="cell">
+        <h4>Kaustubh Narkhede</h4>
+        <p class="role">CTO</p>
+        <p>Agents, integrations and data. Fifteen years building workflows that hold at scale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOW PLANSOM WORKS ===== -->
+  <div class="band flat">
+    <p class="eyebrow">How it works</p>
+    <h2>Plan, manage, execute.</h2>
+    <div class="grid3">
+      <div class="cell">
+        <h4>Plan</h4>
+        <p>You say what you want to achieve. Plansom works out the steps and writes the plan — actions, owners, dates, and what done looks like for each one.</p>
+      </div>
+      <div class="cell">
+        <h4>Manage</h4>
+        <p>Standups, progress and bottleneck reports assemble themselves from the work. Nobody is asked for an update.</p>
+      </div>
+      <div class="cell">
+        <h4>Execute</h4>
+        <p>Agents take the repetitive half — drafting notes, coding transcripts, assembling the numbers. Each one has a named human owner.</p>
+      </div>
+    </div>
+    <p class="lede">Human work and agent work sit in the same plan with the same visibility. That is what lets fifteen mostly part-time people run something without a programme office behind them.</p>
+  </div>
+
+  <!-- ===== THE PATH ===== -->
+  <div class="band">
+    <p class="eyebrow">The path</p>
+    <h2>Six stages, from question to answer.</h2>
+    <div class="tw">
+      <table>
+        <tr><th>Stage</th><th>What happens</th><th>What exists afterwards</th></tr>
+        <tr><td class="t-main">Discover</td><td>Interviews, baselines, current AI mapped against the goal</td><td>Candidate goals, with the numbers behind each</td></tr>
+        <tr><td class="t-main">Decide</td><td>One session to name the obstacle and agree the measure</td><td>A signed brief. WPP chooses whether to go on</td></tr>
+        <tr><td class="t-main">Build</td><td>Segment verified, compliance cleared, channels readied</td><td>A plan running, and a task force in it</td></tr>
+        <tr><td class="t-main">Calibrate</td><td>Live at low volume, to measure the real rates</td><td>Actual acceptance, reply and connect rates</td></tr>
+        <tr><td class="t-main">Run</td><td>Full volume, sized by what calibration showed</td><td>Conversations held, recorded and coded</td></tr>
+        <tr><td class="t-main">Review</td><td>The result against the measure</td><td>An answer, with its confidence stated</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== THE GOAL ===== -->
+  <p class="eyebrow" style="margin-top:clamp(44px,6vw,72px)">The plan</p>
+  <h2>As it stands in Plansom today.</h2>
+  <p class="lede">Not a template waiting to be filled in. If the opening sessions point at a different goal, the same structure is rebuilt around that one instead.</p>
+
+  <div class="band">
+    <div class="goal-top">
+      <p class="goal-title">Paying Open Pro customers with no prior WPP relationship</p>
+      <span class="goal-state">Not started</span>
+    </div>
+    <div class="bar"><span style="width:0%"></span></div>
+    <div class="sub">
+      <div class="sub-row"><p>Segment built and verified as net-new</p><span class="sub-state">Build</span></div>
+      <div class="sub-row"><p>Motion live on two channels</p><span class="sub-state">Calibrate and run</span></div>
+      <div class="sub-row"><p>Conversations held, recorded and coded</p><span class="sub-state">Run</span></div>
+      <div class="sub-row"><p>Answer delivered against the measure</p><span class="sub-state">Review</span></div>
+    </div>
+    <div class="legend">
+      <span><span class="dot h" style="display:inline-block"></span> &nbsp;Person</span>
+      <span><span class="dot a" style="display:inline-block"></span> &nbsp;Agent</span>
+      <span>Five workstreams · 42 tasks · each with an owner and an acceptance test</span>
+    </div>
+  </div>
+
+  <!-- ===== WORKSTREAMS ===== -->
+  <div class="ws">
+    <div class="ws-head">
+      <span class="ws-id">W1</span>
+      <div>
+        <h3>Data and compliance</h3>
+        <p>Builds the segment and keeps it lawful. Without a way to check accounts against WPP's own records, the test cannot tell new money from money WPP already has.</p>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <tr><th>Task</th><th>Owner</th><th>Done when</th></tr>
+        <tr><td class="t-main">Source and enrich candidate accounts</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>A direct contact on most of them</td></tr>
+        <tr><td class="t-main">Check each account against WPP's client records</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td>No relationship in three years</td></tr>
+        <tr><td class="t-main">Screen numbers against the preference services</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td>Unscreened numbers cannot be dialled</td></tr>
+        <tr><td class="t-main">Document the lawful basis for processing</td><td><span class="who"><span class="dot h"></span>WPP legal</span></td><td>Signed off before first contact</td></tr>
+        <tr><td class="t-main">Re-screen on the recurring cycle</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>Runs without being remembered</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ws">
+    <div class="ws-head">
+      <span class="ws-id">W2</span>
+      <div>
+        <h3>LinkedIn</h3>
+        <p>WPP people inviting people, from their own profiles, with the note drafted for them the evening before. Sent by hand — it reads better, and it keeps the accounts safe.</p>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <tr><th>Task</th><th>Owner</th><th>Done when</th></tr>
+        <tr><td class="t-main">Warm up profiles before any volume</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td>A fortnight of ordinary activity</td></tr>
+        <tr><td class="t-main">Assign tomorrow's contacts and draft each note</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>Waiting in each list by morning</td></tr>
+        <tr><td class="t-main">Send the day's invitations</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td>Sent by the profile's owner</td></tr>
+        <tr><td class="t-main">Reply to anyone who has written back</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td>Nobody waits more than a day</td></tr>
+        <tr><td class="t-main">Hand qualified replies to a meeting owner</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td>History survives the handover</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ws">
+    <div class="ws-head">
+      <span class="ws-id">W3</span>
+      <div>
+        <h3>Telephone</h3>
+        <p>Two callers working a screened list in focused blocks. It reaches fewer people than LinkedIn and produces better conversations.</p>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <tr><th>Task</th><th>Owner</th><th>Done when</th></tr>
+        <tr><td class="t-main">Assign the list and prepare a brief per contact</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>One screen, specific to that company</td></tr>
+        <tr><td class="t-main">Morning block</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td>Ninety minutes, undisturbed</td></tr>
+        <tr><td class="t-main">Afternoon block</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td>Ninety minutes, undisturbed</td></tr>
+        <tr><td class="t-main">Log what was said, not just the outcome</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td>The reason captured</td></tr>
+        <tr><td class="t-main">Listen back to ten calls together</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td>One thing to change, per caller</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ws">
+    <div class="ws-head">
+      <span class="ws-id">W4</span>
+      <div>
+        <h3>Conversations and trials</h3>
+        <p>The limiting factor, and the richest evidence in the sprint. If more conversations come through than two people can hold well, we slow the top rather than hurry the meetings.</p>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <tr><th>Task</th><th>Owner</th><th>Done when</th></tr>
+        <tr><td class="t-main">Hold the discovery conversation</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td>Half an hour, with time to write up</td></tr>
+        <tr><td class="t-main">Ask the same eight questions every time</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td>All eight, so answers compare</td></tr>
+        <tr><td class="t-main">Record, transcribe and code</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>What decided it, what worried them</td></tr>
+        <tr><td class="t-main">Set the brand up inside Open Pro</td><td><span class="who"><span class="dot h"></span>Onboarding</span></td><td>Live within five working days</td></tr>
+        <tr><td class="t-main">Note anyone asking for bespoke terms</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td>How often it happens is a finding</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ws">
+    <div class="ws-head">
+      <span class="ws-id">W5</span>
+      <div>
+        <h3>Measurement</h3>
+        <p>One reference follows each account from the first list to the invoice. If it breaks at a handover, the sprint produces activity without attribution.</p>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <tr><th>Task</th><th>Owner</th><th>Done when</th></tr>
+        <tr><td class="t-main">Test the measurement chain end to end</td><td><span class="who"><span class="dot h"></span>Plansom ops</span></td><td>A test account survives every handover</td></tr>
+        <tr><td class="t-main">Refresh the view and assemble the standup</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>Nothing for anyone to put together</td></tr>
+        <tr><td class="t-main">Draw the week's conversations together</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>Themes, with the quotes behind them</td></tr>
+        <tr><td class="t-main">Produce the bottleneck report</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td>What is blocking, and who could unblock it</td></tr>
+        <tr><td class="t-main">Deliver the answer</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td>A recommendation with its confidence stated</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== REVIEW ===== -->
+  <div class="band">
+    <p class="eyebrow">The weekly review</p>
+    <h2>What we do when it is not working.</h2>
+    <div style="margin-top:24px">
+      <div class="gate"><p class="sig">Few invitations accepted</p><p>Revisit the segment. The targeting is wrong, not the message.</p></div>
+      <div class="gate"><p class="sig">Accepted, but few replies</p><p>Move to the next version of the message. Volume does not fix a wrong message.</p></div>
+      <div class="gate"><p class="sig">Replies that stall</p><p>Read that week's transcripts before changing anything.</p></div>
+      <div class="gate"><p class="sig">Few people answering the phone</p><p>Re-source the numbers. More dials against poor data changes nothing.</p></div>
+      <div class="gate"><p class="sig">Conversations booked but not held</p><p>Same-day reminders, before drawing any conclusion about demand.</p></div>
+      <div class="gate"><p class="sig">Buyers asking for bespoke terms</p><p>Recommend stopping. The offer needs a person to sell it, which changes the economics.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== BEHIND ===== -->
+  <div class="band flat">
+    <p class="eyebrow">What sits behind this</p>
+    <h2>Everything is written up at length.</h2>
+    <div class="grid3">
+      <div class="cell"><h4>WPP Business Diagnosis</h4><p>Twelve findings with their reasoning, a validation log, the arithmetic behind every calculated figure, and a source register.</p></div>
+      <div class="cell"><h4>The Eighteen Months</h4><p>April 2025 to today in sequence — the results, the leadership change and the quarter-by-quarter turn.</p></div>
+      <div class="cell"><h4>Channel Model</h4><p>The arithmetic behind the two channels, their capacity limits and the compliance obligations in full.</p></div>
+      <div class="cell"><h4>The Scale View</h4><p>What a full programme beyond the sprint would involve, with headcount, cost and payback modelled.</p></div>
+      <div class="cell"><h4>Bottleneck Diagnostic</h4><p>The slides this follows from, with four observations and the evidence behind each.</p></div>
+      <div class="cell"><h4>Sprint Proposal</h4><p>The stages, the task force, what is included and what it costs.</p></div>
+    </div>
+    <p class="lede">Where something has been calculated that WPP does not publish, the working is shown. Where something could not be established from outside, it is listed as unknown.</p>
+  </div>
+
+  <!-- ===== POSITION ===== -->
+  <div class="statement">
+    <h2>The plan does not live in a document. It lives somewhere people can work.</h2>
+    <p>The task force would be invited into one place that already holds the goal, the workstreams, the tasks, the owners, the agents and the weekly review. Nothing to adopt, nothing to configure, nothing to roll out. When it ends, WPP keeps the plan, the method and the evidence.</p>
+  </div>
+
+  <p class="foot">
+    WPP Path to New Revenue · Playbook · 6 October 2026. Task counts and acceptance tests are the plan as it currently stands; names and dates are set in the opening sessions, and the goal itself is WPP's to choose. The goal view shows a not-started state rather than live data.
+  </p>
+
+</div>
