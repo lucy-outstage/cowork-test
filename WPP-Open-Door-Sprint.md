@@ -239,6 +239,8 @@ Two to three named contacts per account — typically Marketing Director, Head o
 
 ---
 
+> ⚠️ **Superseded in part.** Channels are now fixed to outbound calling and LinkedIn. See **The Open Door — Channel Model & Activity Plan** for the revised funnel, KPI tree, volumes, team and 9-week schedule. Sections 6, 7.2, 9 and 10 below are retained for reference; where they conflict, the channel annex wins.
+
 ## 6. What we measure
 
 ### 6.1 The funnel
