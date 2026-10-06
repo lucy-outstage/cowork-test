@@ -1,0 +1,17 @@
+# WPP — Team Brief
+
+**Plansom · 6 October 2026**
+
+---
+
+**What we found.** WPP fell hard and has started to climb back. Two profit warnings in 2025, out of the FTSE 100 in December, worst results since the pandemic, roughly 62% off the share price. But the turn is real and most people have missed it, because the half-year numbers hide it: the rate of decline more than halved between Q1 and Q2 2026 (−6.7% to −2.8%), client retention went from 16% to 43%, margin rose while revenue was still falling, and revenue per employee is up about 3.2%. They rejoined the FTSE 100 on 1 October. New CEO Cindy Rose — ex-Microsoft, and on WPP's own board since 2019 — has diagnosed the problem as complexity, not the market, and is dismantling the holding company into a single operating company. Underneath it all sits one unresolved trap: every benefit WPP publishes for its AI platform, Open, is *time saved*, and WPP bills by time — so the better the platform gets, the faster its own fee base erodes. Rose has named this herself and said the fix, outcome-based pricing, is years away.
+
+**What we're suggesting.** That the fastest way out of that trap isn't repricing the clients WPP already has. It's new revenue from the clients WPP has never been able to serve.
+
+**The hypothesis.** Growth comes from the long tail. Concentrate WPP's best people on the top 100 clients, where half the revenue sits and relationships are the product, and serve everyone else through Open — positioned on **brand control, not creativity**. Creativity is now free and rented from Google and OpenAI; what nobody else can offer is one place where a brand's rules, data, history and agents live together so everything produced is safe to publish. We'd prove it with a nine-week sprint: 2,000 genuinely net-new accounts, LinkedIn and phone only, measuring whether companies that have never bought WPP will buy WPP Open, and at what rate. The economics at full scale look genuinely good — CAC around £1,100–£2,700 with payback under nine months — but three things are unresolved: the UK only holds ~47,000 businesses matching the target profile, the price point isn't fixed, and two critical product capabilities (automated onboarding and the brand governance engine) aren't confirmed as funded.
+
+**What I want us to do.** Six things, in order. **One:** send me the Plansom brand assets — palette, logo, fonts — so we can build the branded version of the pack. **Two:** someone pull the four primary WPP documents directly (2025 Annual Report, Feb 2026 strategy update, August 2026 interims, and the Q3 update) and confirm the headline figures first-hand; it's under two hours and it closes the one gap in our sourcing. **Three:** we hold the pack until **29 October** — Q3 lands that day and the whole recovery thesis rests on two quarters, so we go in with three. **Four:** agree who the buyer is. Our read is Matt McNeany, President of WPP Open, with the Enterprise Solutions leadership as the alternative route — we need a warm introduction, not a cold approach, given what we're proposing. **Five:** cut the four documents down to a short pitch — the story, the one chart that shows Q1 to Q2, the hypothesis, and the nine-week sprint — and keep the full diagnosis as the proof behind it. **Six:** decide our commercials and what we're actually selling: the sprint alone, or the sprint as the front door to running the programme.
+
+---
+
+*Behind this brief: WPP Business Diagnosis · The Eighteen Months · The Open Door sprint design · Channel Model & Activity Plan · The Open Door at Scale.*
