@@ -1,0 +1,578 @@
+<title>WPP Open Door Proposal</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+
+<style>
+/* Layout: full-bleed horizontal bands alternating ink and paper, mirroring the
+   Plansom deck's slide rhythm. Content sits in a centred 1080px measure.
+   Single committed visual world — the brand's own, not the viewer's theme. */
+:root{
+  --ink:#191919;
+  --ink-raised:#1D1D1D;
+  --surface:#242424;
+  --surface-hi:#2D2D2D;
+  --paper:#F5F5F5;
+  --white:#FFFFFF;
+  --blue:#343CED;
+
+  --on-ink:#FFFFFF;
+  --on-ink-mute:rgba(255,255,255,.62);
+  --on-ink-faint:rgba(255,255,255,.38);
+  --on-paper:#191919;
+  --on-paper-mute:rgba(25,25,25,.66);
+  --on-paper-faint:rgba(25,25,25,.42);
+  --rule-paper:rgba(25,25,25,.14);
+  --rule-ink:rgba(255,255,255,.12);
+
+  --display:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--on-ink);
+  font-family:var(--display);
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+
+.band{padding-block:clamp(72px,11vw,132px);padding-left:24px;padding-right:24px}
+.band.ink{background:var(--ink);color:var(--on-ink)}
+.band.paper{background:var(--paper);color:var(--on-paper)}
+.band.blue{background:var(--blue);color:var(--white);padding-block:clamp(96px,16vw,190px)}
+.band.tight{padding-block:clamp(56px,8vw,92px)}
+.wrap{max-width:1080px;margin:0 auto;min-width:0}
+
+/* ---- type ---- */
+.eyebrow{
+  font-size:.72rem;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
+  margin:0 0 clamp(28px,4vw,52px);
+}
+.ink .eyebrow{color:var(--on-ink-mute)}
+.paper .eyebrow{color:var(--on-paper-mute)}
+
+h1{
+  font-size:clamp(2.6rem,8.4vw,5.6rem);font-weight:300;line-height:1.02;
+  letter-spacing:-.025em;margin:0;text-wrap:balance;
+}
+h2{
+  font-size:clamp(1.9rem,4.6vw,3.2rem);font-weight:400;line-height:1.08;
+  letter-spacing:-.02em;margin:0;text-wrap:balance;
+}
+.paper h2{font-weight:500}
+h3{
+  font-size:clamp(1.1rem,2.1vw,1.42rem);font-weight:500;line-height:1.2;
+  letter-spacing:-.01em;margin:0;
+}
+.lede{
+  font-size:clamp(1rem,1.65vw,1.18rem);font-weight:400;line-height:1.6;
+  margin:22px 0 0;max-width:62ch;
+}
+.ink .lede{color:var(--on-ink-mute)}
+.paper .lede{color:var(--on-paper-mute)}
+p{margin:0;line-height:1.62}
+.centred{text-align:center}
+.centred .lede{margin-left:auto;margin-right:auto}
+
+/* ---- wordmark ---- */
+.mark{
+  font-weight:600;font-size:1.32rem;letter-spacing:-.038em;line-height:1;
+  display:inline-block;
+}
+
+/* ---- cover ---- */
+.cover{min-height:min(84vh,620px);display:flex;flex-direction:column;justify-content:space-between;gap:72px}
+.cover-top{display:flex;align-items:baseline;gap:clamp(18px,3vw,42px);flex-wrap:wrap}
+.cover-tag{font-size:1rem;font-weight:400;color:var(--on-ink-mute)}
+.cover-meta{
+  display:flex;gap:clamp(20px,4vw,56px);flex-wrap:wrap;
+  margin-top:40px;padding-top:26px;border-top:1px solid var(--rule-ink);
+  font-size:.86rem;color:var(--on-ink-faint);
+}
+
+/* ---- numbered rows ---- */
+.rows{margin-top:clamp(34px,5vw,56px);border-top:1px solid var(--rule-paper)}
+.ink .rows{border-top-color:var(--rule-ink)}
+.row{
+  display:grid;grid-template-columns:72px 1fr;gap:clamp(14px,3vw,38px);
+  align-items:start;padding:clamp(20px,2.6vw,28px) 0;
+  border-bottom:1px solid var(--rule-paper);
+}
+.ink .row{border-bottom-color:var(--rule-ink)}
+.row.wide{grid-template-columns:72px minmax(0,1.05fr) minmax(0,1.25fr)}
+.num{
+  font-size:1.18rem;font-weight:400;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;
+}
+.paper .num{color:var(--on-paper-faint)}
+.ink .num{color:var(--on-ink-faint)}
+.row p{font-size:.95rem;margin-top:8px}
+.paper .row p{color:var(--on-paper-mute)}
+.ink .row p{color:var(--on-ink-mute)}
+.row-note{font-size:.95rem;line-height:1.62}
+.paper .row-note{color:var(--on-paper-mute)}
+.ink .row-note{color:var(--on-ink-mute)}
+
+/* ---- card trio ---- */
+.trio{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(14px,1.8vw,22px);margin-top:clamp(38px,5vw,62px);
+}
+.card{
+  background:var(--surface);border:1px solid var(--rule-ink);border-radius:16px;
+  padding:clamp(24px,2.6vw,34px);display:flex;flex-direction:column;gap:14px;min-width:0;
+}
+.card .num{margin-bottom:18px}
+.card p{font-size:.95rem;color:var(--on-ink-mute)}
+.card.invert{background:var(--white);border-color:transparent;color:var(--ink)}
+.card.invert p,.card.invert li{color:rgba(25,25,25,.78)}
+.card.invert .card-rule{border-color:var(--rule-paper)}
+
+.cols{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,3vw,44px);margin-top:clamp(38px,5vw,60px);
+}
+.col{min-width:0;padding-left:clamp(16px,2vw,26px);border-left:1px solid var(--rule-paper)}
+.ink .col{border-left-color:var(--rule-ink)}
+.col .num{display:block;margin-bottom:22px}
+.col p{font-size:.93rem;margin-top:10px}
+.paper .col p{color:var(--on-paper-mute)}
+.ink .col p{color:var(--on-ink-mute)}
+
+/* ---- list inside offer cards ---- */
+.card h3{margin-bottom:6px}
+.stack{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.stack li{
+  font-size:.93rem;line-height:1.5;padding:14px 0;color:var(--on-ink-mute);
+  border-bottom:1px solid var(--rule-ink);
+}
+.stack li:last-child{border-bottom:0;padding-bottom:0}
+.card.invert .stack li{border-bottom-color:var(--rule-paper);font-weight:500}
+
+/* ---- chart ---- */
+.chart-shell{
+  min-width:0;margin-top:clamp(34px,5vw,54px);background:var(--ink-raised);
+  border:1px solid var(--rule-ink);border-radius:18px;
+  padding:clamp(22px,3vw,38px);overflow-x:auto;
+}
+.chart-shell svg{display:block;width:100%;height:auto;min-width:330px}
+.chart-cap{
+  margin-top:20px;padding-top:18px;border-top:1px solid var(--rule-ink);
+  font-size:.86rem;color:var(--on-ink-faint);
+}
+
+/* ---- the goal block ---- */
+.gom{margin-top:clamp(38px,5vw,58px);display:flex;flex-direction:column;gap:2px}
+.gom-item{background:var(--surface);border-radius:14px;padding:clamp(24px,2.8vw,34px)}
+.gom-item:first-child{border-radius:16px 16px 14px 14px}
+.gom-item:last-child{border-radius:14px 14px 16px 16px}
+.gom-label{
+  font-size:.72rem;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--on-ink-faint);margin-bottom:16px;
+}
+.gom-item .big{font-size:clamp(1.15rem,2.3vw,1.6rem);font-weight:400;line-height:1.3;letter-spacing:-.012em}
+.gom-item p{font-size:.93rem;color:var(--on-ink-mute);margin-top:14px;max-width:64ch}
+
+/* ---- phases ---- */
+.phases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(26px,5vw,72px);margin-top:clamp(38px,5vw,58px)}
+.phase{min-width:0}
+.phase-head{
+  font-size:1.05rem;font-weight:500;padding-bottom:18px;
+  border-bottom:1px solid var(--rule-paper);letter-spacing:-.01em;
+}
+.week{
+  display:grid;grid-template-columns:86px 1fr;gap:clamp(12px,2vw,24px);
+  padding:20px 0;border-bottom:1px solid var(--rule-paper);align-items:start;
+}
+.week-no{
+  font-size:.72rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--on-paper-faint);padding-top:4px;
+}
+.week h3{font-size:1.06rem}
+.week p{font-size:.92rem;color:var(--on-paper-mute);margin-top:7px}
+
+/* ---- price split ---- */
+.price-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));min-height:min(58vh,480px)}
+.price-half{padding:clamp(40px,6vw,84px) clamp(24px,4vw,64px);display:flex;flex-direction:column;justify-content:center;min-width:0}
+.price-half.light{background:var(--paper);color:var(--on-paper)}
+.price-half.dark{background:var(--ink);color:var(--on-ink)}
+.price-eyebrow{
+  font-size:.72rem;font-weight:500;letter-spacing:.11em;text-transform:uppercase;margin-bottom:clamp(40px,7vw,96px);
+}
+.price-half.light .price-eyebrow{color:var(--on-paper-mute)}
+.price-half.dark .price-eyebrow{color:var(--on-ink-mute)}
+.price-fig{font-size:clamp(2.5rem,6.2vw,4.3rem);font-weight:500;line-height:1.03;letter-spacing:-.035em}
+.price-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:.95rem;line-height:1.5}
+.price-half.light .price-list{color:var(--on-paper-mute)}
+.price-half.dark .price-list{color:var(--on-ink-mute)}
+
+/* ---- blue statement ---- */
+.band.blue h2{font-size:clamp(2.4rem,7.6vw,5rem);font-weight:300;letter-spacing:-.028em;line-height:1.04}
+.band.blue .lede{color:rgba(255,255,255,.84);font-size:clamp(1rem,1.7vw,1.2rem);margin-top:34px}
+
+/* ---- end ---- */
+.end{display:flex;flex-direction:column;align-items:center;gap:clamp(48px,8vw,88px);text-align:center}
+.end .big{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:300;letter-spacing:-.028em;line-height:1}
+
+.foot{
+  border-top:1px solid var(--rule-ink);padding-top:26px;margin-top:clamp(56px,7vw,80px);
+  font-size:.8rem;color:var(--on-ink-faint);line-height:1.7;
+}
+
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:3px}
+
+@media (max-width:860px){
+  .trio,.cols{grid-template-columns:1fr}
+  .phases{grid-template-columns:1fr}
+  .price-split{grid-template-columns:1fr}
+  .row.wide{grid-template-columns:56px 1fr}
+  .row.wide .row-note{grid-column:2}
+}
+@media (max-width:520px){
+  .row{grid-template-columns:48px 1fr;gap:14px}
+  .week{grid-template-columns:70px 1fr;gap:12px}
+  .col{padding-left:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ======================= COVER ======================= -->
+<section class="band ink">
+  <div class="wrap cover">
+    <div>
+      <div class="cover-top">
+        <span class="mark">Plansom</span>
+        <span class="cover-tag">Simply done.</span>
+      </div>
+    </div>
+    <div>
+      <h1>The Open Door.</h1>
+      <p class="lede">An AI Impact Sprint for WPP. One goal: paying Open Pro customers who have never bought anything from WPP.</p>
+      <div class="cover-meta">
+        <span>Prepared for WPP Open</span>
+        <span>6 October 2026</span>
+        <span>Seven weeks · Two phases</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CONTENTS ======================= -->
+<section class="band paper tight">
+  <div class="wrap">
+    <p class="eyebrow">Contents</p>
+    <div class="rows">
+      <div class="row"><span class="num">01</span><h3>Where WPP is</h3></div>
+      <div class="row"><span class="num">02</span><h3>The trap underneath Open</h3></div>
+      <div class="row"><span class="num">03</span><h3>The opportunity</h3></div>
+      <div class="row"><span class="num">04</span><h3>The sprint</h3></div>
+      <div class="row"><span class="num">05</span><h3>The offer</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 01 THE TURN ======================= -->
+<section class="band ink">
+  <div class="wrap">
+    <p class="eyebrow">01 Where WPP is</p>
+    <h2>It already turned. Most people missed it.</h2>
+    <p class="lede">Half-year reporting averages a bad quarter with a much better one. The quarters tell a different story: between January and June 2026 the rate of decline more than halved.</p>
+
+    <div class="chart-shell">
+      <svg viewBox="0 0 620 330" role="img" aria-label="Like-for-like change in revenue less pass-through costs: full year 2025 minus 5.4 percent, Q1 2026 minus 6.7 percent, Q2 2026 minus 2.8 percent.">
+        <!-- zero line -->
+        <line x1="54" y1="50" x2="600" y2="50" stroke="rgba(255,255,255,.26)" stroke-width="1"/>
+        <text x="54" y="40" fill="rgba(255,255,255,.42)" font-family="Poppins,sans-serif" font-size="13" font-weight="400">0%</text>
+
+        <!-- FY2025: 5.4 -> 154.3px -->
+        <rect x="100" y="50" width="104" height="154.3" fill="rgba(255,255,255,.22)"/>
+        <text x="152" y="228" fill="rgba(255,255,255,.62)" font-family="Poppins,sans-serif" font-size="19" font-weight="400" text-anchor="middle">−5.4%</text>
+
+        <!-- Q1 2026: 6.7 -> 191.4px -->
+        <rect x="266" y="50" width="104" height="191.4" fill="rgba(255,255,255,.22)"/>
+        <text x="318" y="265" fill="rgba(255,255,255,.62)" font-family="Poppins,sans-serif" font-size="19" font-weight="400" text-anchor="middle">−6.7%</text>
+
+        <!-- Q2 2026: 2.8 -> 80px — the emphasised endpoint -->
+        <rect x="432" y="50" width="104" height="80" fill="#FFFFFF"/>
+        <text x="484" y="154" fill="#FFFFFF" font-family="Poppins,sans-serif" font-size="19" font-weight="500" text-anchor="middle">−2.8%</text>
+
+        <!-- category labels -->
+        <text x="152" y="312" fill="rgba(255,255,255,.42)" font-family="Poppins,sans-serif" font-size="13" text-anchor="middle">FY 2025</text>
+        <text x="318" y="312" fill="rgba(255,255,255,.42)" font-family="Poppins,sans-serif" font-size="13" text-anchor="middle">Q1 2026</text>
+        <text x="484" y="312" fill="rgba(255,255,255,.72)" font-family="Poppins,sans-serif" font-size="13" font-weight="500" text-anchor="middle">Q2 2026</text>
+      </svg>
+      <p class="chart-cap">Revenue less pass-through costs, like-for-like. WPP preliminary results, February 2026, and interim results, 6 August 2026.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <span class="num">01</span>
+        <h3>Retention recovered.</h3>
+        <p>16% to 43% year on year, with Huawei, Tesco and L'Oréal renewed.</p>
+      </div>
+      <div class="col">
+        <span class="num">02</span>
+        <h3>Margin held.</h3>
+        <p>Up 0.2 points like-for-like while revenue was still falling. Cost reduction running ahead of revenue loss.</p>
+      </div>
+      <div class="col">
+        <span class="num">03</span>
+        <h3>People got more productive.</h3>
+        <p>Revenue per employee up roughly 3.2%. WPP does not publish this. It can be derived.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 02 THE TRAP ======================= -->
+<section class="band paper">
+  <div class="wrap">
+    <p class="eyebrow">02 The trap underneath Open</p>
+    <h2>Every benefit WPP publishes for Open is time saved.</h2>
+    <p class="lede">Fourteen hours a week returned to a team of four. Four weeks of strategy compressed into three hours. Thirty-three times the asset volume. Up to 70% faster production. And WPP bills by time.</p>
+
+    <div class="rows">
+      <div class="row wide">
+        <span class="num">01</span>
+        <div><h3>The better it gets, the smaller the invoice.</h3></div>
+        <p class="row-note">Under a model that bills for time, every hour Open saves is revenue WPP no longer earns. The efficiency goes to the client. WPP's reward for building the platform is a smaller fee.</p>
+      </div>
+      <div class="row wide">
+        <span class="num">02</span>
+        <div><h3>Rose has already named it.</h3></div>
+        <p class="row-note">Her stated reasoning is that time and materials is not sustainable long term, because AI lets the work be done faster with fewer people. The diagnosis is right.</p>
+      </div>
+      <div class="row wide">
+        <span class="num">03</span>
+        <div><h3>The fix is years away.</h3></div>
+        <p class="row-note">Rose has said outcome-based pay will "take a few years", and has described JLR as so far unique in accepting it. In the meantime, a mixed economy of business models.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BLUE STATEMENT ======================= -->
+<section class="band blue">
+  <div class="wrap">
+    <h2>Creativity is free.<br>Control is not.</h2>
+    <p class="lede">Open Pro's generation runs on Google's, OpenAI's and Adobe's models. So does everyone else's. The one thing no general-purpose tool offers is a single place where a brand's rules, data, history and agents live together — so everything produced is safe to publish.</p>
+  </div>
+</section>
+
+<!-- ======================= 03 THE OPPORTUNITY ======================= -->
+<section class="band ink">
+  <div class="wrap">
+    <p class="eyebrow">03 The opportunity</p>
+    <h2>The fastest new revenue is from people who were never going to hire you.</h2>
+    <p class="lede">Repricing existing clients waits on outcome-based contracting. Reaching buyers who never had an agency does not. It is the only route to new revenue that needs no pricing reform at all.</p>
+
+    <div class="trio">
+      <div class="card">
+        <span class="num">01</span>
+        <h3>A cliff, not a slope.</h3>
+        <p>WPP's top ten clients take 21% of revenue. The top hundred take roughly half. A top-ten client is worth about 67 times one in the tail.</p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>The tail is already inside.</h3>
+        <p>Around 1,600 disclosed clients outside the top hundred average £3.2m or less, on contracts commonly cancellable at 90 days.</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>The product already exists.</h3>
+        <p>Open Pro launched in October 2025, built for buyers who cannot afford a full-service integrated agency. Nothing needs to be built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= THE GOAL ======================= -->
+<section class="band ink tight" style="padding-top:0">
+  <div class="wrap">
+    <div class="gom">
+      <div class="gom-item">
+        <p class="gom-label">One goal</p>
+        <p class="big">Acquire paying WPP Open Pro customers who have never bought anything from WPP.</p>
+        <p>A single outcome, measurable inside seven weeks, and the one place where AI has the most commercial leverage in WPP's business right now.</p>
+      </div>
+      <div class="gom-item">
+        <p class="gom-label">One obstacle</p>
+        <p class="big">WPP has no motion for reaching buyers who were never going to retain an agency — and no evidence the demand exists.</p>
+        <p>Rose named complexity as the root cause. This is its commercial consequence: a company organised entirely around large relationships, holding a product built for small ones, with no way to connect the two.</p>
+      </div>
+      <div class="gom-item">
+        <p class="gom-label">One measure</p>
+        <p class="big">Qualified meetings per 100 net-new accounts contacted, and trials started, by the end of week seven.</p>
+        <p>Signed off by the sponsor against a baseline of zero, because this motion does not currently exist. Net-new means no WPP revenue relationship in 36 months, verified before contact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 04 SEVEN WEEKS ======================= -->
+<section class="band paper">
+  <div class="wrap">
+    <p class="eyebrow">04 The sprint</p>
+    <h2>Seven weeks from goal to result.</h2>
+
+    <div class="phases">
+      <div class="phase">
+        <p class="phase-head">Phase 1 · Focus · weeks 1–2</p>
+        <div class="week">
+          <span class="week-no">Week 1</span>
+          <div>
+            <h3>Discover</h3>
+            <p>Interviews, baselines and current AI mapped. Session 1 chooses the goal. Most of this is already done — we hold the diagnosis, the eighteen-month narrative and the hypothesis.</p>
+          </div>
+        </div>
+        <div class="week">
+          <span class="week-no">Week 2</span>
+          <div>
+            <h3>Decide</h3>
+            <p>Session 2 names the obstacle and agrees the measure with the Open Pro sponsor.</p>
+          </div>
+        </div>
+        <div class="week">
+          <span class="week-no">End of 2</span>
+          <div>
+            <h3>Your call</h3>
+            <p>Go on to Phase 2, or walk away with the outputs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <p class="phase-head">Phase 2 · Impact · weeks 3–7</p>
+        <div class="week">
+          <span class="week-no">Week 3</span>
+          <div>
+            <h3>Build</h3>
+            <p>The plan built in Plansom. Segment sourced and verified net-new, CTPS screened, LinkedIn and phone cadences live, attribution connected end to end.</p>
+          </div>
+        </div>
+        <div class="week">
+          <span class="week-no">Weeks 4–6</span>
+          <div>
+            <h3>Run</h3>
+            <p>Weekly reviews, bottlenecks cleared, agents at work — drafting outreach, coding transcripts, generating standups.</p>
+          </div>
+        </div>
+        <div class="week">
+          <span class="week-no">Week 7</span>
+          <div>
+            <h3>Review</h3>
+            <p>The result against the measure, and the next goal chosen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= WHAT IS INCLUDED ======================= -->
+<section class="band ink">
+  <div class="wrap centred">
+    <p class="eyebrow">The offer</p>
+    <h2>What is included.</h2>
+    <p class="lede">Support, seats, set-up and agents are all in the price.</p>
+  </div>
+  <div class="wrap">
+    <div class="trio">
+      <div class="card">
+        <h3>Plansom brings</h3>
+        <ul class="stack">
+          <li>A named sprint lead</li>
+          <li>Facilitation of every session</li>
+          <li>Plan set-up and agent configuration</li>
+          <li>A weekly review and progress report</li>
+          <li>Plansom seats for the sprint team</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>You bring</h3>
+        <ul class="stack">
+          <li>An executive sponsor with authority over Open Pro commercials</li>
+          <li>Three to six leaders for Phase 1</li>
+          <li>A named owner for the goal</li>
+          <li>Client-master access to verify net-new status</li>
+          <li>A fixed, published entry price for the sprint window</li>
+        </ul>
+      </div>
+      <div class="card invert">
+        <h3>You leave with</h3>
+        <ul class="stack">
+          <li>One goal, one obstacle, one measure</li>
+          <li>A plan running in Plansom</li>
+          <li>A measured answer on net-new demand</li>
+          <li>A method to reuse on the next goal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PRICE ======================= -->
+<section class="price-split">
+  <div class="price-half light">
+    <p class="price-eyebrow">Focus · two weeks</p>
+    <p class="price-fig">Phase 1.<br>$5,000</p>
+    <ul class="price-list">
+      <li>One goal, one obstacle, one measure</li>
+      <li>Your current AI mapped against your goals</li>
+      <li>A clear go or stop decision</li>
+    </ul>
+  </div>
+  <div class="price-half dark">
+    <p class="price-eyebrow">Impact · up to five weeks</p>
+    <p class="price-fig">Phase 2.<br>$20,000</p>
+    <ul class="price-list">
+      <li>The plan built and running in Plansom</li>
+      <li>People and agents working the plan</li>
+      <li>The result reported against the measure</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================= WHY ======================= -->
+<section class="band paper">
+  <div class="wrap">
+    <p class="eyebrow">Why Plansom, for this</p>
+    <h2>Three things line up.</h2>
+
+    <div class="cols">
+      <div class="col">
+        <span class="num">01</span>
+        <h3>The Microsoft match.</h3>
+        <p>Cindy Rose came from Microsoft, where she was COO of Global Enterprise and ran the UK and Western Europe. What we are proposing is the Microsoft model — high-touch for the largest accounts, self-serve for everyone else. Antoine Boris is former global lead of Microsoft IP co-sell.</p>
+      </div>
+      <div class="col">
+        <span class="num">02</span>
+        <h3>The homework is done.</h3>
+        <p>Most sprints open on a blank page. This one opens with a validated eighteen-month diagnosis, a tested hypothesis and a channel model already built. Phase 1 starts from evidence.</p>
+      </div>
+      <div class="col">
+        <span class="num">03</span>
+        <h3>The philosophy is the thesis.</h3>
+        <p>WPP's own CEO says complexity caused the underperformance. The UK Government paid £1.5bn for simplification. The long tail is only servable if the motion is radically simple.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= END ======================= -->
+<section class="band ink">
+  <div class="wrap end">
+    <p class="big">Simply done.</p>
+    <span class="mark">Plansom</span>
+  </div>
+  <div class="wrap">
+    <p class="foot">
+      Figures from WPP's 2025 preliminary results (26 February 2026), 2026 interim results (6 August 2026) and Annual Report &amp; Accounts 2025. Retention and new-business values are reported by trade and analyst sources and are not audited. Revenue per employee is calculated, not published by WPP. Next material data point: WPP Q3 2026 trading update, 29 October 2026.
+    </p>
+  </div>
+</section>
