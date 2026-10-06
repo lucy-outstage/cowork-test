@@ -1,13 +1,13 @@
-<title>Open Door Playbook</title>
+<title>Whatever the Bottleneck Is</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
 
 <style>
-/* Layout: the Plansom workspace, opened up. A goal header, five workstream
-   panels of real tasks, then the operating rhythm beneath. Committed to the
-   brand's own dark product surface rather than the viewer's theme. */
+/* Layout: two layers. The method, which holds for any bottleneck, then the
+   worked example standing in Plansom as a goal with five workstreams.
+   Committed to the brand's own dark product surface, not the viewer's theme. */
 :root{
   --ink:#191919;
   --raised:#1D1D1D;
@@ -23,9 +23,6 @@
   --fg-ghost:rgba(255,255,255,.22);
   --rule:rgba(255,255,255,.10);
   --rule-soft:rgba(255,255,255,.06);
-
-  --ok:#6FD39B;
-  --risk:#E8B14C;
 
   --display:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   color-scheme:dark;
@@ -50,98 +47,84 @@ p{margin:0;line-height:1.6}
 }
 .lede{font-size:clamp(.98rem,1.5vw,1.1rem);color:var(--fg-mute);line-height:1.62;max-width:64ch;margin-top:16px}
 
-/* ---- masthead ---- */
 .mast{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;margin-bottom:clamp(40px,6vw,64px)}
 .mark{font-weight:600;font-size:1.22rem;letter-spacing:-.038em;line-height:1}
 .mast .tag{font-size:.95rem;color:var(--fg-mute)}
 
-/* ---- goal header (the product view) ---- */
-.goal{
-  background:var(--surface);border:1px solid var(--rule);border-radius:20px;
-  padding:clamp(24px,3.2vw,38px);margin-top:clamp(32px,4vw,46px);
-}
+/* ---- panels ---- */
+.band{background:var(--surface);border:1px solid var(--rule);border-radius:20px;padding:clamp(24px,3.2vw,38px);margin-top:clamp(32px,4vw,46px)}
+.band.flat{background:var(--raised)}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:26px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);margin-top:26px}
+.cell{min-width:0;padding-left:18px;border-left:1px solid var(--rule)}
+.cell h4{color:var(--fg)}
+.cell p{font-size:.9rem;color:var(--fg-mute);margin-top:9px}
+.step{min-width:0;background:var(--surface-hi);border-radius:14px;padding:22px}
+.step .n{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-faint)}
+.step h4{margin-top:12px;color:var(--fg)}
+.step p{font-size:.88rem;color:var(--fg-mute);margin-top:8px}
+
+/* ---- goal view ---- */
 .goal-top{display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap}
-.goal-title{font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:500;letter-spacing:-.02em;min-width:0}
-.goal-state{font-size:.9rem;color:var(--fg-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.goal-title{font-size:clamp(1.1rem,2.3vw,1.42rem);font-weight:500;letter-spacing:-.02em;min-width:0}
+.goal-state{font-size:.88rem;color:var(--fg-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
 .bar{height:3px;background:var(--fg-ghost);border-radius:2px;margin-top:16px;overflow:hidden}
 .bar span{display:block;height:100%;background:var(--white);border-radius:2px}
 .goal-meta{
   display:flex;gap:clamp(16px,3vw,34px);flex-wrap:wrap;
   margin-top:22px;padding-top:18px;border-top:1px solid var(--rule-soft);
-  font-size:.85rem;color:var(--fg-faint);
+  font-size:.84rem;color:var(--fg-faint);
 }
 .sub{display:flex;flex-direction:column;gap:8px;margin-top:22px}
-.sub-row{background:var(--surface-hi);border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
-.sub-row p{font-size:.95rem;font-weight:500;min-width:0}
-.sub-state{font-size:.84rem;color:var(--fg-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sub-row{background:var(--surface-hi);border-radius:12px;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.sub-row p{font-size:.93rem;font-weight:500;min-width:0}
+.sub-state{font-size:.83rem;color:var(--fg-mute);white-space:nowrap;font-variant-numeric:tabular-nums}
 
-/* ---- workstream panels ---- */
-.streams{display:flex;flex-direction:column;gap:clamp(16px,2vw,22px);margin-top:clamp(32px,4vw,46px)}
+/* ---- workstreams ---- */
+.streams{display:flex;flex-direction:column;gap:clamp(14px,1.8vw,20px);margin-top:clamp(28px,3.4vw,38px)}
 .ws{background:var(--raised);border:1px solid var(--rule);border-radius:18px;overflow:hidden}
-.ws-head{
-  padding:clamp(20px,2.6vw,28px);display:flex;gap:clamp(14px,2.4vw,26px);
-  align-items:flex-start;border-bottom:1px solid var(--rule-soft);flex-wrap:wrap;
-}
-.ws-id{
-  font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--fg-faint);padding-top:4px;width:40px;flex:none;
-}
+.ws-head{padding:clamp(20px,2.6vw,28px);display:flex;gap:clamp(14px,2.4vw,26px);align-items:flex-start;border-bottom:1px solid var(--rule-soft);flex-wrap:wrap}
+.ws-id{font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-faint);padding-top:4px;width:40px;flex:none}
 .ws-head div{min-width:0;flex:1}
-.ws-head p{font-size:.93rem;color:var(--fg-mute);margin-top:7px}
+.ws-head p{font-size:.92rem;color:var(--fg-mute);margin-top:7px}
 .ws-owner{font-size:.82rem;color:var(--fg-faint);white-space:nowrap;padding-top:5px}
 
-table{width:100%;border-collapse:collapse;font-size:.9rem}
+table{width:100%;border-collapse:collapse;font-size:.89rem}
 .tw{overflow-x:auto}
-th{
-  text-align:left;font-weight:500;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--fg-faint);padding:14px clamp(10px,1.4vw,16px);border-bottom:1px solid var(--rule-soft);
-  white-space:nowrap;
-}
+th{text-align:left;font-weight:500;font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;color:var(--fg-faint);padding:14px clamp(10px,1.4vw,16px);border-bottom:1px solid var(--rule-soft);white-space:nowrap}
 td{padding:15px clamp(10px,1.4vw,16px);border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--fg-mute);line-height:1.5}
 tr:last-child td{border-bottom:0}
 td:first-child,th:first-child{padding-left:clamp(20px,2.6vw,28px)}
 td:last-child,th:last-child{padding-right:clamp(20px,2.6vw,28px)}
 .t-task{color:var(--fg);font-weight:400;min-width:200px}
-.t-when{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--fg-faint);font-size:.85rem}
-.who{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:.85rem}
+.t-when{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--fg-faint);font-size:.84rem}
+.who{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:.84rem}
 .dot{width:6px;height:6px;border-radius:50%;flex:none}
 .dot.h{background:var(--fg-mute)}
 .dot.a{background:var(--blue)}
-.accept{font-size:.85rem;color:var(--fg-faint);min-width:180px}
+.accept{font-size:.84rem;color:var(--fg-faint);min-width:180px}
 
-/* ---- rhythm / gates ---- */
-.band{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:clamp(24px,3.2vw,38px);margin-top:clamp(32px,4vw,46px)}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:26px}
-.cell{min-width:0;padding-left:18px;border-left:1px solid var(--rule)}
-.cell h4{color:var(--fg)}
-.cell p{font-size:.9rem;color:var(--fg-mute);margin-top:9px}
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:20px;font-size:.83rem;color:var(--fg-faint)}
 
-.gate{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--rule-soft)}
+/* ---- gates ---- */
+.gate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(14px,2.4vw,30px);padding:16px 0;border-bottom:1px solid var(--rule-soft)}
 .gate:last-child{border-bottom:0}
-.pill{
-  font-size:.72rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
-  padding:5px 11px;border-radius:99px;white-space:nowrap;flex:none;margin-top:1px;
-}
-.pill.red{background:rgba(232,177,76,.14);color:var(--risk);border:1px solid rgba(232,177,76,.3)}
-.gate div{min-width:0}
-.gate p{font-size:.9rem;color:var(--fg-mute);margin-top:6px}
-.gate strong{color:var(--fg);font-weight:500}
+.gate p{font-size:.9rem;color:var(--fg-mute)}
+.gate .sig{color:var(--fg);font-weight:400}
 
-/* ---- closing statement ---- */
-.statement{
-  background:var(--blue);border-radius:20px;padding:clamp(32px,5vw,60px);
-  margin-top:clamp(36px,5vw,56px);
-}
-.statement h2{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:300;line-height:1.1}
+/* ---- statement ---- */
+.statement{background:var(--blue);border-radius:20px;padding:clamp(32px,5vw,60px);margin-top:clamp(36px,5vw,56px)}
+.statement h2{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:300;line-height:1.12}
 .statement p{color:rgba(255,255,255,.88);font-size:clamp(.98rem,1.5vw,1.1rem);margin-top:20px;max-width:62ch}
 
-.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;font-size:.84rem;color:var(--fg-faint)}
 .foot{border-top:1px solid var(--rule);padding-top:22px;margin-top:clamp(40px,5vw,64px);font-size:.8rem;color:var(--fg-faint);line-height:1.7}
 
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:3px}
 
 @media (max-width:760px){
-  .grid3{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr;gap:6px}
   .ws-owner{padding-top:0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -154,155 +137,180 @@ td:last-child,th:last-child{padding-right:clamp(20px,2.6vw,28px)}
     <span class="tag">Simply done.</span>
   </div>
 
-  <p class="eyebrow">The Open Door · Playbook</p>
-  <h1>How the sprint actually runs.</h1>
-  <p class="lede">This is the plan, and it is already built. Not a method we would apply if engaged — the goal tree, the workstreams, the tasks, the owners and the acceptance tests, standing in Plansom and ready for the task force to be invited into.</p>
+  <p class="eyebrow">Playbook</p>
+  <h1>Whatever the bottleneck is.</h1>
+  <p class="lede">A sprint is not really about the bottleneck we happened to find. It is about having one place where a goal, the people, the agents and the evidence sit together — so that whichever constraint turns out to matter most, the way of working through it is already standing. This is that way of working, with WPP's net-new question as the worked example.</p>
 
-  <!-- ===== THE GOAL ===== -->
-  <div class="goal">
+  <!-- ===== WHERE WE ARE ===== -->
+  <div class="band">
+    <p class="eyebrow">Where the conversation has reached</p>
+    <h2>Four observations, and one worth starting with.</h2>
+    <p class="lede">The diagnostic looked at WPP from the outside, using published reporting only. It found a business that has stabilised — the rate of decline more than halved between the first and second quarters of 2026, client retention recovered sharply, and revenue per person is rising. It also found four things sitting between WPP Open's internal success and a commercial return.</p>
+    <div class="grid4">
+      <div class="step"><p class="n">One</p><h4>The gains are real</h4><p>Open's published benefits are expressed in time saved, and most revenue is billed by time. Moving this means changing how work is priced.</p></div>
+      <div class="step"><p class="n">Two</p><h4>Adoption and retention move separately</h4><p>A named Open client moved a significant assignment in the same period. The platform does not by itself hold work in place.</p></div>
+      <div class="step"><p class="n">Three</p><h4>The clearest evidence is in the smallest division</h4><p>Production grew while Media and Creative fell, and it is around five percent of revenue.</p></div>
+      <div class="step"><p class="n">Four</p><h4>There is no route to the buyers Open Pro was built for</h4><p>This one needs no pricing reform and no product work. It is the one a short test can answer honestly.</p></div>
+    </div>
+    <p class="lede">The full reasoning, the arithmetic and the sources are in the <strong style="color:var(--fg);font-weight:500">WPP Business Diagnosis</strong>; the period from April 2025 to today is told in sequence in <strong style="color:var(--fg);font-weight:500">The Eighteen Months</strong>. Both are available now, with nothing attached to them.</p>
+  </div>
+
+  <!-- ===== THE METHOD ===== -->
+  <div class="band flat">
+    <p class="eyebrow">The method</p>
+    <h2>The same six moves, on any bottleneck.</h2>
+    <p class="lede">This does not change with the subject. It is what we would do whether the constraint turns out to be net-new demand, production throughput, or something inside WPP that we cannot see from outside.</p>
+    <div class="grid3">
+      <div class="cell"><h4>One goal</h4><p>Named by the leadership team, not by us. One outcome, not a programme. If it cannot be said in a sentence it is not ready.</p></div>
+      <div class="cell"><h4>One obstacle</h4><p>The honest reason it is not happening already. Usually structural, rarely anybody's fault.</p></div>
+      <div class="cell"><h4>One measure</h4><p>A metric, a target, a date and an owner, agreed before the work begins and not revised afterwards.</p></div>
+      <div class="cell"><h4>A plan that exists</h4><p>Workstreams, tasks, owners and acceptance tests, standing in one place before anyone is asked to join.</p></div>
+      <div class="cell"><h4>Agents on the repetitive half</h4><p>Drafting, coding, assembling, reporting. Each with a named human owner and tested before it is trusted.</p></div>
+      <div class="cell"><h4>A weekly gate with its actions pre-agreed</h4><p>What good and difficult look like, written down in advance, so a hard week produces a decision rather than a debate.</p></div>
+    </div>
+  </div>
+
+  <!-- ===== THE WORKED EXAMPLE ===== -->
+  <p class="eyebrow" style="margin-top:clamp(44px,6vw,72px)">The worked example</p>
+  <h2>What it looks like when the bottleneck is net-new demand.</h2>
+  <p class="lede">Below is the plan as it currently stands in Plansom. It is not a template we would fill in on arrival — it exists, and the task force would be invited into it. If the first two weeks point at a different goal, the same structure is rebuilt around that one instead.</p>
+
+  <div class="band">
     <div class="goal-top">
-      <p class="goal-title">Acquire paying Open Pro customers who have never bought from WPP</p>
+      <p class="goal-title">Paying Open Pro customers with no prior WPP relationship</p>
       <span class="goal-state">Not started · week 0 of 7</span>
     </div>
     <div class="bar"><span style="width:0%"></span></div>
     <div class="goal-meta">
-      <span>Owner: WPP, named in week 1</span>
+      <span>Owner: to be named by WPP in week one</span>
       <span>Sponsor: WPP Open commercial lead</span>
       <span>Sprint lead: Anders Schønberg</span>
-      <span>5 workstreams · 42 tasks · 14 agent tasks</span>
+      <span>5 workstreams · 42 tasks · 14 of them agent work</span>
     </div>
-
     <div class="sub">
-      <div class="sub-row"><p>Segment built and verified net-new</p><span class="sub-state">Week 3 · 0%</span></div>
-      <div class="sub-row"><p>Outreach motion live on two channels</p><span class="sub-state">Weeks 3–6 · 0%</span></div>
-      <div class="sub-row"><p>Meetings held, recorded and coded</p><span class="sub-state">Weeks 4–7 · 0%</span></div>
-      <div class="sub-row"><p>Answer delivered against the measure</p><span class="sub-state">Week 7 · 0%</span></div>
+      <div class="sub-row"><p>Segment built and verified as net-new</p><span class="sub-state">Week 3</span></div>
+      <div class="sub-row"><p>Motion live on two channels</p><span class="sub-state">Weeks 4–6</span></div>
+      <div class="sub-row"><p>Conversations held, recorded and coded</p><span class="sub-state">Weeks 4–7</span></div>
+      <div class="sub-row"><p>Answer delivered against the measure</p><span class="sub-state">Week 7</span></div>
     </div>
-
     <div class="legend">
-      <span><span class="dot h" style="display:inline-block"></span> &nbsp;Human task</span>
-      <span><span class="dot a" style="display:inline-block"></span> &nbsp;Agent task</span>
+      <span><span class="dot h" style="display:inline-block"></span> &nbsp;Person</span>
+      <span><span class="dot a" style="display:inline-block"></span> &nbsp;Agent</span>
       <span>Every task carries an acceptance test — what done looks like.</span>
     </div>
   </div>
 
-  <!-- ===== WORKSTREAMS ===== -->
   <div class="streams">
 
-    <!-- W1 -->
     <div class="ws">
       <div class="ws-head">
         <span class="ws-id">W1</span>
         <div>
           <h3>Data and compliance</h3>
-          <p>Builds the segment and keeps it legal. The hard prerequisite sits here: without client-master access the incrementality test is not valid, and the sprint should not start.</p>
+          <p>Builds the segment and keeps it lawful. The one prerequisite we cannot work around sits here: without a way to check accounts against WPP's own client records, the test cannot tell new money from existing money.</p>
         </div>
-        <span class="ws-owner">WPP data lead · 2 days/week</span>
+        <span class="ws-owner">WPP data lead · 2 days a week</span>
       </div>
       <div class="tw">
       <table>
         <tr><th>Task</th><th>When</th><th>Owner</th><th>Done when</th></tr>
-        <tr><td class="t-task">Source candidate accounts against the ICP</td><td class="t-when">W3 Mon</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">40% over-sourced for attrition</td></tr>
-        <tr><td class="t-task">Enrich 2–3 named contacts per account</td><td class="t-when">W3 Tue</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Verified mobile on ≥70%</td></tr>
-        <tr><td class="t-task">Verify every account against the client master</td><td class="t-when">W3 Wed</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td class="accept">No WPP revenue in 36 months</td></tr>
-        <tr><td class="t-task">CTPS and TPS screening</td><td class="t-when">W3 Wed</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td class="accept">Hard block on unscreened numbers</td></tr>
-        <tr><td class="t-task">Document the legitimate interest assessment</td><td class="t-when">W3 Thu</td><td><span class="who"><span class="dot h"></span>WPP legal</span></td><td class="accept">DPO sign-off recorded</td></tr>
-        <tr><td class="t-task">Re-screen CTPS on the 28-day cycle</td><td class="t-when">Every 4 wks</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Runs without being asked</td></tr>
-        <tr><td class="t-task">Weekly integrity check on a 10% sample</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot h"></span>Sprint analyst</span></td><td class="accept">&lt;5% false positives, or stop</td></tr>
+        <tr><td class="t-task">Source candidate accounts against the profile</td><td class="t-when">W3 Mon</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Over-sourced to allow for attrition</td></tr>
+        <tr><td class="t-task">Enrich two to three named contacts per account</td><td class="t-when">W3 Tue</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">A direct number on most of them</td></tr>
+        <tr><td class="t-task">Check every account against WPP's client records</td><td class="t-when">W3 Wed</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td class="accept">No revenue relationship in three years</td></tr>
+        <tr><td class="t-task">Screen all numbers against the preference services</td><td class="t-when">W3 Wed</td><td><span class="who"><span class="dot h"></span>WPP data</span></td><td class="accept">Unscreened numbers cannot be dialled</td></tr>
+        <tr><td class="t-task">Document the lawful basis for processing</td><td class="t-when">W3 Thu</td><td><span class="who"><span class="dot h"></span>WPP legal</span></td><td class="accept">Recorded and signed off before contact</td></tr>
+        <tr><td class="t-task">Re-screen on the four-week cycle</td><td class="t-when">Recurring</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Runs without being remembered</td></tr>
+        <tr><td class="t-task">Weekly integrity check on a sample</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot h"></span>Sprint analyst</span></td><td class="accept">Verification holding, or we pause</td></tr>
       </table>
       </div>
     </div>
 
-    <!-- W2 -->
     <div class="ws">
       <div class="ws-head">
         <span class="ws-id">W2</span>
         <div>
-          <h3>LinkedIn motion</h3>
-          <p>Ten to twelve WPP people, their own profiles, twenty invitations a day each. No automation — it breaks LinkedIn's terms, risks the whole estate at once, and converts worse than a real person sending a real note.</p>
+          <h3>LinkedIn</h3>
+          <p>Ten to twelve WPP people, each sending around twenty invitations a day from their own profile. Sent by hand rather than by tooling — it reads better to the person receiving it, and it keeps the accounts out of trouble.</p>
         </div>
-        <span class="ws-owner">10–12 voices · 20 min/day</span>
+        <span class="ws-owner">10–12 voices · 20 min a day</span>
       </div>
       <div class="tw">
       <table>
         <tr><th>Task</th><th>When</th><th>Owner</th><th>Done when</th></tr>
-        <tr><td class="t-task">Warm up profiles before any volume</td><td class="t-when">W1–W2</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Two weeks of normal activity</td></tr>
-        <tr><td class="t-task">Assign tomorrow's 20 contacts per voice</td><td class="t-when">Daily 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">In each person's task list by morning</td></tr>
-        <tr><td class="t-task">Draft the personalised note per contact</td><td class="t-when">Daily 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Named, specific, owner-reviewable</td></tr>
-        <tr><td class="t-task">Send 20 invitations</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Sent by the profile owner, by hand</td></tr>
-        <tr><td class="t-task">Handle replies from previous days</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Every reply answered within a day</td></tr>
-        <tr><td class="t-task">Log outcome and hand qualified replies on</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Cohort tag survives the handoff</td></tr>
+        <tr><td class="t-task">Warm up profiles before any volume</td><td class="t-when">W1–W2</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Two weeks of ordinary activity</td></tr>
+        <tr><td class="t-task">Assign tomorrow's twenty contacts to each voice</td><td class="t-when">Daily, 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Waiting in each person's list by morning</td></tr>
+        <tr><td class="t-task">Draft a personal note for each contact</td><td class="t-when">Daily, 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Specific enough that the owner would send it</td></tr>
+        <tr><td class="t-task">Send the day's invitations</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Sent by the profile's owner</td></tr>
+        <tr><td class="t-task">Reply to anyone who has written back</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">Nobody waits more than a day</td></tr>
+        <tr><td class="t-task">Hand qualified replies to a meeting owner</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Each voice</span></td><td class="accept">The account's history survives the handover</td></tr>
       </table>
       </div>
     </div>
 
-    <!-- W3 -->
     <div class="ws">
       <div class="ws-head">
         <span class="ws-id">W3</span>
         <div>
-          <h3>Phone motion</h3>
-          <p>Two callers, 150 dials a day between them, from a CTPS-screened list only. Phone is the depth channel — it reaches roughly 150 unique contacts a week against LinkedIn's thousand.</p>
+          <h3>Telephone</h3>
+          <p>Two people, around a hundred and fifty dials a day between them, in two blocks, from a screened list. It reaches fewer people than LinkedIn and produces better conversations.</p>
         </div>
-        <span class="ws-owner">2 callers · full-time</span>
+        <span class="ws-owner">2 callers · full time</span>
       </div>
       <div class="tw">
       <table>
         <tr><th>Task</th><th>When</th><th>Owner</th><th>Done when</th></tr>
-        <tr><td class="t-task">Assign tomorrow's screened dial list</td><td class="t-when">Daily 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Screened numbers only</td></tr>
-        <tr><td class="t-task">Prepare a call brief per contact</td><td class="t-when">Daily 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">One screen, specific to the company</td></tr>
-        <tr><td class="t-task">Dial block one — 40 dials</td><td class="t-when">Daily 09:00</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">90 minutes, uninterrupted</td></tr>
-        <tr><td class="t-task">Dial block two — 35 dials</td><td class="t-when">Daily 14:00</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">90 minutes, uninterrupted</td></tr>
-        <tr><td class="t-task">Log every connect and outcome</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">Connect reason captured, not just yes/no</td></tr>
-        <tr><td class="t-task">Listen back to ten calls</td><td class="t-when">Weekly</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td class="accept">Coaching note per caller</td></tr>
+        <tr><td class="t-task">Assign tomorrow's screened list</td><td class="t-when">Daily, 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Screened numbers only</td></tr>
+        <tr><td class="t-task">Prepare a short brief for each contact</td><td class="t-when">Daily, 17:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">One screen, specific to that company</td></tr>
+        <tr><td class="t-task">First block, around forty dials</td><td class="t-when">Daily, morning</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">Ninety minutes, undisturbed</td></tr>
+        <tr><td class="t-task">Second block, around thirty-five dials</td><td class="t-when">Daily, afternoon</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">Ninety minutes, undisturbed</td></tr>
+        <tr><td class="t-task">Log every conversation and what was said</td><td class="t-when">Daily</td><td><span class="who"><span class="dot h"></span>Caller</span></td><td class="accept">The reason captured, not just the outcome</td></tr>
+        <tr><td class="t-task">Listen back to ten calls together</td><td class="t-when">Weekly</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td class="accept">One thing to change, per caller</td></tr>
       </table>
       </div>
     </div>
 
-    <!-- W4 -->
     <div class="ws">
       <div class="ws-head">
         <span class="ws-id">W4</span>
         <div>
-          <h3>Meetings and trials</h3>
-          <p>The binding constraint, and the richest source of evidence. Two dedicated people, five discovery calls a day each, fifty a week. If the funnel over-delivers, the top gets throttled — a rushed meeting destroys both the conversion and the transcript.</p>
+          <h3>Conversations and trials</h3>
+          <p>The limiting factor, and the richest evidence in the sprint. Two dedicated people, around five conversations a day each. If more come through than that, we slow the top of the funnel rather than hurry the meetings.</p>
         </div>
-        <span class="ws-owner">2 meeting owners · full-time</span>
+        <span class="ws-owner">2 meeting owners · full time</span>
       </div>
       <div class="tw">
       <table>
         <tr><th>Task</th><th>When</th><th>Owner</th><th>Done when</th></tr>
-        <tr><td class="t-task">Run the discovery call</td><td class="t-when">Daily ×5</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">30 minutes + 15 write-up</td></tr>
-        <tr><td class="t-task">Ask the same eight win/loss questions</td><td class="t-when">Every meeting</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">All eight, every time, no exceptions</td></tr>
-        <tr><td class="t-task">Record and transcribe</td><td class="t-when">Every meeting</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Consent given at the start</td></tr>
-        <tr><td class="t-task">Code the transcript</td><td class="t-when">Same day</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Deciding factor, objection, competitor named</td></tr>
-        <tr><td class="t-task">Set the brand up in Open Pro</td><td class="t-when">Per trial</td><td><span class="who"><span class="dot h"></span>Onboarding</span></td><td class="accept">Brand live in five working days</td></tr>
-        <tr><td class="t-task">Log every support contact and its handling time</td><td class="t-when">Per contact</td><td><span class="who"><span class="dot h"></span>Onboarding</span></td><td class="accept">Cost-to-serve measurable per account</td></tr>
-        <tr><td class="t-task">Log every request for bespoke pricing or scoping</td><td class="t-when">Per instance</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">The rate is itself a finding</td></tr>
+        <tr><td class="t-task">Hold the discovery conversation</td><td class="t-when">Daily ×5</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">Thirty minutes, with time to write up</td></tr>
+        <tr><td class="t-task">Ask the same eight questions every time</td><td class="t-when">Every one</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">All eight, so the answers compare</td></tr>
+        <tr><td class="t-task">Record and transcribe, with consent</td><td class="t-when">Every one</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Consent given at the start of the call</td></tr>
+        <tr><td class="t-task">Code the transcript</td><td class="t-when">Same day</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">What decided it, what worried them, who else they looked at</td></tr>
+        <tr><td class="t-task">Set the brand up inside Open Pro</td><td class="t-when">Per trial</td><td><span class="who"><span class="dot h"></span>Onboarding</span></td><td class="accept">Live within five working days</td></tr>
+        <tr><td class="t-task">Log every support contact and how long it took</td><td class="t-when">Per contact</td><td><span class="who"><span class="dot h"></span>Onboarding</span></td><td class="accept">Cost to serve becomes measurable</td></tr>
+        <tr><td class="t-task">Note anyone asking for bespoke terms</td><td class="t-when">Per instance</td><td><span class="who"><span class="dot h"></span>Meeting owner</span></td><td class="accept">How often this happens is a finding in itself</td></tr>
       </table>
       </div>
     </div>
 
-    <!-- W5 -->
     <div class="ws">
       <div class="ws-head">
         <span class="ws-id">W5</span>
         <div>
-          <h3>Measurement and gates</h3>
-          <p>One cohort tag follows every account from the source list to the invoice. Break it at any handoff and the sprint produces activity data with no attribution — which is the most common way a go-to-market test fails.</p>
+          <h3>Measurement</h3>
+          <p>One reference follows each account from the first list to the invoice. If it breaks at a handover, the sprint produces activity without attribution — which is the most common way a test like this quietly fails.</p>
         </div>
         <span class="ws-owner">Sprint analyst · Plansom</span>
       </div>
       <div class="tw">
       <table>
         <tr><th>Task</th><th>When</th><th>Owner</th><th>Done when</th></tr>
-        <tr><td class="t-task">Test the attribution spine end to end</td><td class="t-when">W3 Fri</td><td><span class="who"><span class="dot h"></span>Plansom ops</span></td><td class="accept">One test account survives every handoff</td></tr>
-        <tr><td class="t-task">Refresh the dashboard</td><td class="t-when">Daily 18:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">One view, no assembly required</td></tr>
-        <tr><td class="t-task">Assemble the standup</td><td class="t-when">Daily 09:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Yesterday, today, blockers — 15 min</td></tr>
-        <tr><td class="t-task">Synthesise the week's transcripts</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Themes, not quotes</td></tr>
-        <tr><td class="t-task">Produce the bottleneck report</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">What is blocking, and who can unblock it</td></tr>
-        <tr><td class="t-task">Run the gate review</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot h"></span>Sprint lead + sponsor</span></td><td class="accept">Every red has an action, not a discussion</td></tr>
-        <tr><td class="t-task">Deliver the week 7 answer</td><td class="t-when">W7</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td class="accept">Scale, pivot or stop — with the evidence</td></tr>
+        <tr><td class="t-task">Test the measurement chain end to end</td><td class="t-when">W3 Fri</td><td><span class="who"><span class="dot h"></span>Plansom ops</span></td><td class="accept">A test account survives every handover</td></tr>
+        <tr><td class="t-task">Refresh the view</td><td class="t-when">Daily, evening</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">One place, nothing to assemble</td></tr>
+        <tr><td class="t-task">Assemble the standup</td><td class="t-when">Daily, 09:00</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Yesterday, today, blockers — fifteen minutes</td></tr>
+        <tr><td class="t-task">Draw the week's conversations together</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">Themes, with the quotes behind them</td></tr>
+        <tr><td class="t-task">Produce the bottleneck report</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot a"></span>Agent</span></td><td class="accept">What is blocking, and who could unblock it</td></tr>
+        <tr><td class="t-task">Hold the weekly review</td><td class="t-when">Fridays</td><td><span class="who"><span class="dot h"></span>Sprint lead and sponsor</span></td><td class="accept">Each signal has an agreed action</td></tr>
+        <tr><td class="t-task">Deliver the answer</td><td class="t-when">Week 7</td><td><span class="who"><span class="dot h"></span>Sprint lead</span></td><td class="accept">A recommendation with its confidence stated</td></tr>
       </table>
       </div>
     </div>
@@ -311,48 +319,54 @@ td:last-child,th:last-child{padding-right:clamp(20px,2.6vw,28px)}
 
   <!-- ===== GATES ===== -->
   <div class="band">
-    <p class="eyebrow">The Friday gate</p>
-    <h2>Red has an action, not a conversation.</h2>
-    <p class="lede">Agreed in writing at week zero, so a bad week produces a decision instead of a debate. Volume never fixes a wrong message.</p>
-    <div style="margin-top:26px">
-      <div class="gate"><span class="pill red">Acceptance &lt;35%</span><div><p><strong>Targeting or profile problem.</strong> Re-check ICP fit and profile credibility before another invitation goes out.</p></div></div>
-      <div class="gate"><span class="pill red">Reply &lt;8%</span><div><p><strong>Message problem.</strong> Switch to the next positioning variant. Do not add volume.</p></div></div>
-      <div class="gate"><span class="pill red">Reply→meeting &lt;20%</span><div><p><strong>The offer is not landing, or qualification is too loose.</strong> Review the week's transcripts before changing anything else.</p></div></div>
-      <div class="gate"><span class="pill red">Connect &lt;6%</span><div><p><strong>Data problem.</strong> Re-source mobile numbers. Dialling more bad numbers changes nothing.</p></div></div>
-      <div class="gate"><span class="pill red">Meetings held &lt;70% of booked</span><div><p><strong>Confirmation is broken.</strong> Add same-day reminders before blaming the funnel.</p></div></div>
-      <div class="gate"><span class="pill red">≥2 LinkedIn restrictions</span><div><p><strong>Pause the channel entirely.</strong> Restart at half volume per seat.</p></div></div>
-      <div class="gate"><span class="pill red">&gt;30% asking for bespoke scoping</span><div><p><strong>The offer cannot be sold simply.</strong> Tail economics fail by definition — this is a stop, and finding it in seven weeks is the win.</p></div></div>
+    <p class="eyebrow">The weekly review</p>
+    <h2>Written down before the work begins.</h2>
+    <p class="lede">Agreed with the sponsor in week two, so that a difficult week produces a decision instead of a discussion. Exact thresholds are set against WPP's own expectations rather than ours.</p>
+    <div style="margin-top:24px">
+      <div class="gate"><p class="sig">Few invitations accepted</p><p>Usually targeting or the profile, rather than the message. We would revisit the segment before sending more.</p></div>
+      <div class="gate"><p class="sig">Accepted, but few replies</p><p>The message. We would move to the next version rather than add volume — volume does not fix a wrong message.</p></div>
+      <div class="gate"><p class="sig">Replies that do not become conversations</p><p>The offer, or how we are qualifying. We would read that week's transcripts before changing anything.</p></div>
+      <div class="gate"><p class="sig">A low connect rate on the phone</p><p>The data. More dials against poor numbers changes nothing, so we would re-source instead.</p></div>
+      <div class="gate"><p class="sig">Booked conversations not happening</p><p>Confirmation rather than demand. Same-day reminders before any other conclusion.</p></div>
+      <div class="gate"><p class="sig">Many buyers asking for bespoke terms</p><p>The offer needs a person to sell it, which changes the economics. We would say so and recommend stopping — and finding that out in seven weeks is a good outcome.</p></div>
     </div>
   </div>
 
   <!-- ===== RHYTHM ===== -->
-  <div class="band">
-    <p class="eyebrow">The operating rhythm</p>
+  <div class="band flat">
+    <p class="eyebrow">The rhythm</p>
     <h2>Fifteen minutes a day for most of the task force.</h2>
     <div class="grid3">
-      <div class="cell">
-        <h4>Every evening</h4>
-        <p>Tomorrow's contacts, notes and call briefs are assigned to each person. Nobody plans their own day.</p>
-      </div>
-      <div class="cell">
-        <h4>Every morning</h4>
-        <p>A fifteen-minute standup, already assembled. Yesterday, today, blockers — no one types a status.</p>
-      </div>
-      <div class="cell">
-        <h4>Every Friday</h4>
-        <p>One hour against the gates, with the bottleneck report already written. Decisions, not updates.</p>
-      </div>
+      <div class="cell"><h4>Each evening</h4><p>Tomorrow's contacts, notes and briefs are assigned. Nobody has to plan their own day.</p></div>
+      <div class="cell"><h4>Each morning</h4><p>A fifteen-minute standup, already assembled. Nobody types a status update.</p></div>
+      <div class="cell"><h4>Each Friday</h4><p>An hour against the measure, with the bottleneck report already written.</p></div>
     </div>
+    <p class="lede">The sponsor is asked for about two hours a week. The ten or twelve LinkedIn voices are asked for twenty minutes a day. Only four people are asked for something closer to their full attention.</p>
   </div>
 
-  <!-- ===== THE POSITION ===== -->
+  <!-- ===== WHAT SITS BEHIND ===== -->
+  <div class="band">
+    <p class="eyebrow">What sits behind this</p>
+    <h2>Everything is written up at length.</h2>
+    <div class="grid3">
+      <div class="cell"><h4>WPP Business Diagnosis</h4><p>Twelve findings with their reasoning, a claim-by-claim validation log, the arithmetic behind every calculated figure, and a source register with confidence ratings.</p></div>
+      <div class="cell"><h4>The Eighteen Months</h4><p>April 2025 to today in sequence — the results, the leadership change, the strategy and the quarter-by-quarter turn.</p></div>
+      <div class="cell"><h4>Channel Model</h4><p>The arithmetic behind the two channels, their capacity limits, and the compliance obligations in full.</p></div>
+      <div class="cell"><h4>The Scale View</h4><p>What a full programme would involve beyond the sprint, with headcount, cost and payback modelled honestly — relevant only if the sprint says continue.</p></div>
+      <div class="cell"><h4>The Bottleneck Diagnostic</h4><p>The slides this playbook follows from, with the four observations and the evidence behind each.</p></div>
+      <div class="cell"><h4>The Sprint Proposal</h4><p>The seven weeks, the task force, what is included and what it costs.</p></div>
+    </div>
+    <p class="lede">Where something has been calculated that WPP does not publish, the working is shown. Where something could not be established from outside, it is listed as unknown rather than estimated.</p>
+  </div>
+
+  <!-- ===== POSITION ===== -->
   <div class="statement">
-    <h2>The plan does not live in a document. It lives somewhere you can work.</h2>
-    <p>Plansom is not only the team that unlocks the value here — it is where the how lives. Ten to twenty WPP people get invited into one controlled, simple environment that already holds the goal, the workstreams, the tasks, the owners, the agents and the gates. Nothing to adopt, nothing to configure, and nothing to roll out. On week seven WPP keeps the plan, the method and the evidence.</p>
+    <h2>The plan does not live in a document. It lives somewhere people can work.</h2>
+    <p>Ten to twenty WPP people would be invited into one place that already holds the goal, the workstreams, the tasks, the owners, the agents and the weekly review. There is nothing to adopt, nothing to configure and nothing to roll out. At the end of week seven WPP keeps the plan, the method and the evidence — and the same structure is there for whatever the next bottleneck turns out to be.</p>
   </div>
 
   <p class="foot">
-    The Open Door · Playbook v1.0 · 6 October 2026. Task counts, owners and acceptance tests are the sprint design as it stands; names and exact dates are set in Phase 1. Percentages shown in the goal view are a not-started state, not live data. Companion to the WPP Bottleneck Diagnostic and the AI Impact Sprint proposal.
+    Whatever the Bottleneck Is · Playbook v2.0 · 6 October 2026. The task counts, owners and acceptance tests are the plan as it currently stands; names and exact dates would be set in the first two weeks, and the goal itself is WPP's to choose. The goal view shows a not-started state rather than live data. Companion to the WPP Bottleneck Diagnostic and the AI Impact Sprint proposal.
   </p>
 
 </div>
