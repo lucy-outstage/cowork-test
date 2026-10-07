@@ -1,0 +1,32 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-06T22:40:00Z" },
+  "lists": "css",
+  "title": "WPP Bottleneck Diagnostic",
+  "order": [
+    "cover",
+    "turn",
+    "perhead",
+    "problem",
+    "frame",
+    "goal",
+    "ob1",
+    "ob2",
+    "ob3",
+    "ob4",
+    "kpi",
+    "close"
+  ],
+  "sections": {
+    "s1": { "description": "Where WPP stands today.", "start": "cover" },
+    "s2": { "description": "The single goal, and the obstacles in front of it.", "start": "frame" },
+    "s3": { "description": "The KPI to agree.", "start": "kpi" }
+  },
+  "faces": {
+    "poppins": {
+      "family": "Poppins",
+      "href": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    }
+  },
+  "designSystems": []
+}
