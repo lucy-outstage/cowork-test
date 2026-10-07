@@ -1,0 +1,33 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-06T23:00:00Z" },
+  "lists": "css",
+  "title": "WPP AI Impact Sprint",
+  "order": [
+    "cover",
+    "recap",
+    "goal",
+    "weeks",
+    "motion",
+    "gates",
+    "force",
+    "plansom",
+    "included",
+    "investment",
+    "team",
+    "addenda",
+    "close"
+  ],
+  "sections": {
+    "s1": { "description": "What the diagnostic found, and the goal we would set.", "start": "cover" },
+    "s2": { "description": "The work: the shape, the motion, the review and the people.", "start": "weeks" },
+    "s3": { "description": "Plansom, the terms, and what sits behind this.", "start": "plansom" }
+  },
+  "faces": {
+    "poppins": {
+      "family": "Poppins",
+      "href": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    }
+  },
+  "designSystems": []
+}
