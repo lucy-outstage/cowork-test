@@ -1,0 +1,31 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-07T10:00:00Z" },
+  "lists": "css",
+  "title": "WPP Solution Hypothesis",
+  "order": [
+    "cover",
+    "recap",
+    "hypothesis",
+    "pilot",
+    "channels",
+    "force",
+    "sprint",
+    "measure",
+    "stop",
+    "behind",
+    "close"
+  ],
+  "sections": {
+    "s1": { "description": "What the diagnostic found, and the hypothesis it points to.", "start": "cover" },
+    "s2": { "description": "The test: the accounts, the channels and the people.", "start": "pilot" },
+    "s3": { "description": "How we would run it, and what would tell us to stop.", "start": "sprint" }
+  },
+  "faces": {
+    "poppins": {
+      "family": "Poppins",
+      "href": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    }
+  },
+  "designSystems": []
+}
